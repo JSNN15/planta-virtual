@@ -333,10 +333,18 @@
     return out.sort((a, b) => a.p - b.p || ORD[a.k] - ORD[b.k]);
   };
   const KIND = {pred: 'Alarma que viene', causa: 'Causa probable', anom: 'Anomalía', rec: 'Recomendación'};
-  const insItem = (it, i, compact) => `<div class="ins k-${it.k} p${it.p}" data-ins="${i}" title="Ir a la pantalla"><span class="ik">${KIND[it.k]}</span><b>${esc(it.t)}</b>${compact ? '' : `<span class="small">${esc(it.d)}</span>`}</div>`;
+  const seenIns = new Map();
+  const stableIns = (fresh) => {
+    const now = performance.now(), keys = new Set();
+    fresh.forEach((it) => { const k = it.k + '|' + (it.go || it.scr || '') + '|' + it.t.replace(/\d+([,.]\d+)?/g, '#'); keys.add(k); seenIns.set(k, {it, t: now}); });
+    for (const [k, v] of seenIns) if (!keys.has(k) && now - v.t > 20000) seenIns.delete(k);
+    const ORD = {causa: 0, pred: 1, anom: 2, rec: 3};
+    return [...seenIns.values()].map((v) => v.it).sort((a, b) => a.p - b.p || ORD[a.k] - ORD[b.k]);
+  };
+  const insItem = (it, i, compact) => `<div class="ins k-${it.k} p${it.p}" data-ins="${i}" title="Ir a la pantalla"><span class="ik">${KIND[it.k]}<button class="askai" data-askai="${i}" title="Preguntarle a la IA de NVIDIA por este aviso">✦ Preguntar a la IA</button></span><b>${esc(it.t)}</b>${compact ? '' : `<span class="small">${esc(it.d)}</span>`}</div>`;
   const assistBox = (ar) => {
     const all = state.ins || [], list = all.map((it, i) => [it, i]).filter(([it]) => !ar || it.area === ar || it.k === 'causa');
-    let h = `<div class="ai-box"><div class="ai-h"><span class="spark">✦</span> Asistente de turno<button data-tab="assist" class="ai-all">${all.length ? all.length + ' avisos' : 'ver'} ▸</button></div>`;
+    let h = `<div class="ai-box"><div class="ai-h"><span class="spark">✦</span> Asistente de turno<button data-tab="assist" class="ai-all">${all.length ? all.length + ' avisos' : 'ver'} ▸</button></div><div class="ai-sub"><span>Vigila la planta cada segundo</span><button class="askai big" data-askai="-1">✦ Pregúntale a la IA · NVIDIA</button></div>`;
     const alm = P.AD.some((a) => (a.st === 'U' || a.st === 'A') && (!ar || a.area === ar));
     h += list.length ? list.slice(0, 3).map(([it, i]) => insItem(it, i, true)).join('') : `<p class="small muted" style="margin:0">${alm ? 'Sin avisos nuevos. Atiende las alarmas activas de abajo.' : 'Todo en orden en esta área. El asistente vigila tendencias, anomalías y alarmas.'}</p>`;
     return h + '</div>';
@@ -350,8 +358,8 @@
     return h;
   };
   const pageAssist = () => {
-    let h = `<div class="page"><div class="row"><h2 style="margin:0;font-size:1.05rem;flex:1"><span class="spark">✦</span> Asistente de turno</h2></div>`;
-    h += `<p class="small muted" style="margin:0;max-width:80ch">Mira la planta completa cada segundo y avisa antes de que suene la alarma. Haz clic en un aviso para ir a la pantalla y al equipo.</p>`;
+    let h = `<div class="page"><div class="row"><h2 style="margin:0;font-size:1.05rem;flex:1"><span class="spark">✦</span> Asistente de turno</h2><button class="askai big" data-askai="-1">✦ Pregúntale a la IA · NVIDIA Nemotron</button></div>`;
+    h += `<div class="ai-layers"><div><b>1 · Vigilancia continua</b><span class="small">Corre en tu navegador cada segundo: alarmas que vienen, causa probable, anomalías y recomendaciones. Haz clic en un aviso para ir al equipo.</span></div><div><b>2 · Conversación con IA de NVIDIA</b><span class="small">Nemotron 3.5 Super recibe lo mismo que ves (alarmas, estos avisos, tags, motores, KPI y bitácora) y responde citando los tags. Toca «Preguntar a la IA» en cualquier aviso.</span></div></div>`;
     h += `<div id="as-list" style="display:flex;flex-direction:column;gap:14px">${assistList()}</div>`;
     h += `<div class="notice"><b>Cómo funciona</b><span class="small">Los avisos se calculan en el navegador, sin enviar datos a ninguna nube. <b>Alarmas que vienen:</b> regresión lineal de los últimos 20 min de cada variable con alarma, y tiempo estimado hasta su límite. <b>Causa probable:</b> agrupa las alarmas que aparecieron después de un disparo o de un interruptor abierto en las áreas que ese equipo alimenta. <b>Anomalías:</b> puntaje z del último minuto contra las últimas 2 h, para ver cambios bruscos antes de que lleguen al límite. <b>Recomendaciones:</b> reglas de operación de la planta. No reemplaza el criterio del operador.</span></div>`;
     return h + '</div>';
@@ -925,7 +933,7 @@
     });
     root.querySelectorAll('[data-cell]').forEach((e) => { const k = +e.dataset.cell, sh = P.X.shorts[k], known = P.X.monitor || P.X.seen[k]; e.setAttribute('class', 'cell' + (known && sh > 0 ? (sh >= 3 ? ' s2' : ' s1') : '') + (P.X.fixing.find((x) => x.k === k) ? ' fx' : '')); });
     root.querySelectorAll('[data-org]').forEach((e) => { });
-    markSel(root); fillTip();
+    markSel(root); fillTip(); markScn(root);
     const cr = root.querySelector('[data-crud]'); if (cr) { const h = Math.min(30, P.X.crud * 120); cr.setAttribute('height', h); cr.setAttribute('y', 111 + 22 - h / 2); }
     root.querySelectorAll('[data-btxt]').forEach((e) => { const a = e.dataset.btxt, on = a === 'delay' ? P.X.delayComp : a === 'monitor' ? P.X.monitor : a === 'cap' ? P.X.capBank : false; e.parentNode.classList.toggle('on', on); });
     root.querySelectorAll('[data-brk]').forEach((e) => { const on = P.BRK[e.dataset.brk]; e.classList.toggle('on', on); e.classList.toggle('open', !on); });
@@ -940,13 +948,15 @@
     $('clock').textContent = `${P.hhmm()} · Turno ${P.shiftOf()}`;
     $('simst').className = 'simst' + (speed ? '' : ' paused'); $('simst').lastChild.textContent = speed ? ` SIM ×${speed}` : ' SIM EN PAUSA';
     if (state.confirm && performance.now() - state.confirm.t > 10000) { state.confirm = null; renderFp(); }
-    document.querySelectorAll('[data-tcount]').forEach((e) => { const ar = areaOf(e.dataset.tcount); if (!ar) { e.textContent = ''; return; } const n = act.filter((a) => a.area === ar); const pmin = Math.min(4, ...n.map((a) => a.prio)); e.innerHTML = n.length ? `<span class="pr p${pmin} ${n.some((a) => a.st === 'U') ? 'blink' : ''}">${n.length}</span>` : ''; });
+    document.querySelectorAll('[data-tcount]').forEach((e) => { if (e.dataset.tcount === 'assist') return; const ar = areaOf(e.dataset.tcount); if (!ar) { e.textContent = ''; return; } const n = act.filter((a) => a.area === ar); const pmin = Math.min(4, ...n.map((a) => a.prio)); e.innerHTML = n.length ? `<span class="pr p${pmin} ${n.some((a) => a.st === 'U') ? 'blink' : ''}">${n.length}</span>` : ''; });
     const nowR = performance.now();
     if (force || nowR - lastSide > 1000) {
       lastSide = nowR;
       const ae = document.activeElement, selFoc = ae && ae.tagName === 'SELECT';
-      state.ins = insights();
+      state.ins = stableIns(insights());
+      window.__plantaIns = state.ins.map((it) => ({tipo: KIND[it.k], prioridad: it.p, area: it.area, aviso: it.t, detalle: it.d}));
       const at = document.querySelector('[data-tab="assist"] i'); if (at) at.innerHTML = state.ins.length ? `<span class="aicnt">${state.ins.length}</span>` : '';
+      renderScnBar();
       if (state.sel && !(ae && ae.closest && ae.closest('#fpw input'))) renderFp();
       if (state.role === 'op' && !PAGES[state.screen]) { renderSide(); drawSpk(); }
       else if (state.screen === 'trends' && state.role === 'op') { drawTrends(); document.querySelectorAll('[data-pv]').forEach((e) => { const p = state.trend.pens[+e.dataset.pv]; e.textContent = ft(p) + ' ' + P.T[p].unit; }); }
@@ -1010,7 +1020,7 @@
     if (d.win) { state.trend.win = +d.win; show(); return; }
     if (d.mact) { const a = d.mact; runCmd(() => { if (a === 'bearing') P.cmd.bearing(); if (a === 'calibrate') P.cmd.calibrate(); if (a === 'crud') P.cmd.cleanCrud(); if (a === 'hx') P.cmd.fixHX(); if (a === 'cells') P.cmd.fixAllSeen(); if (a === 'monitor') P.cmd.monitor(!P.X.monitor); }); $('screen').innerHTML = pageMaint(); drawMaint(); return; }
     if (d.msel) { state.maintSel = d.msel; $('screen').innerHTML = pageMaint(); drawMaint(); return; }
-    if (d.scn) { runCmd(() => P.scenario(d.scn)); $('m-scn').classList.remove('show'); const s = P.SCN.find((x) => x.id === d.scn); state.role = 'op'; state.screen = 'a' + s.area; state.sel = null; show(); return; }
+    if (d.scn) { runCmd(() => P.scenario(d.scn)); $('m-scn').classList.remove('show'); const s = P.SCN.find((x) => x.id === d.scn); state.role = 'op'; state.screen = (SCNW[d.scn] && SCNW[d.scn].scr) || 'a' + s.area; state.sel = null; show(); startScn(d.scn); return; }
     if (d.close != null) { t.closest('.modal').classList.remove('show'); return; }
   });
   document.addEventListener('change', (ev) => {
@@ -1045,6 +1055,54 @@
   if (document.documentElement.requestFullscreen) $('btn-fs').onclick = () => { if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(() => {}); };
   else $('btn-fs').hidden = true;
 
+
+  /* =================== escenario en curso =================== */
+  const vibZ = (id) => { const m = P.M[id]; const z = m.z || [2.3, 4.5, 7.1]; return m.vib > z[2] ? 'D' : m.vib > z[1] ? 'C' : m.vib > z[0] ? 'B' : 'A'; };
+  const tagLine = (tag) => { const t = P.T[tag]; return t ? `${tag} ${f(t.v, t.dec)} ${t.unit}` : ''; };
+  const SCNW = {
+    cord: {eq: ['CV-101'], scr: 'a100', look: 'La correa CV-101 se detuvo y el enclavamiento cortó ácido y agua. Mira las alarmas del área 100 y rearma en secuencia.'},
+    bearing: {eq: ['M-103'], scr: 'a100', slow: true, look: () => `Vibración M-103: ${f(P.M['M-103'].vib, 2)} mm/s, zona ${vibZ('M-103')}. La alarma salta en zona C (> ${f((P.M['M-103'].z || [0, 4.5])[1], 1)} mm/s).`, done: () => vibZ('M-103') >= 'C', doneMsg: 'M-103 entró en zona C de vibración: mira la vista de Mantenimiento o pregúntale a la IA'},
+    p201: {eq: ['P-201A', 'P-201B'], scr: 'a200', look: () => `P-201A disparada. ${tagLine('PIT-202')}. ¿Partió la bomba de respaldo?`},
+    mcc: {eq: ['P-201A', 'P-201B', 'P-202A', 'P-202B'], scr: 'a200', look: 'MCC-200 abierto: disparan las bombas de riego y de PLS a la vez. El asistente agrupa la avalancha y señala la causa.'},
+    ph: {scr: 'a200', slow: true, tag: 'AIT-207', look: () => `${tagLine('AIT-207')} contra laboratorio ${f(P.X.labPH, 2)}. La diferencia crece hasta que el asistente la marca.`, done: () => Math.abs(tv('AIT-207') - P.X.labPH) > 0.1, doneMsg: 'AIT-207 ya no coincide con el laboratorio: el asistente lo marcó'},
+    ore: {scr: 'a200', slow: true, tag: 'AIT-206', look: () => `${tagLine('AIT-206')} (cobre en PLS). Baja en unas horas y arrastra a SX y EW.`, done: () => tv('AIT-206') < P.T['AIT-206'].nl, doneMsg: 'El cobre del PLS salió de su banda normal'},
+    crud: {scr: 'a300', slow: true, tag: 'AIT-407', look: () => `${tagLine('AIT-407')} (hierro en el electrolito). Sube en días: a ×300 se ve en minutos.`},
+    shorts: {scr: 'a400', look: 'Diez celdas con cortocircuito. Sin monitoreo continuo no se ven hasta la próxima ronda: activa el monitoreo en la nave.'},
+    rt: {eq: ['RT-401'], scr: 'a400', look: () => `RT-401 ${P.RECT.state === 'RUN' ? 'en marcha' : 'detenido'}: la nave sin corriente. Rearma y usa la puesta en servicio de la nave.`},
+    hx: {scr: 'a400', slow: true, tag: 'TIT-403', look: () => `${tagLine('TIT-403')}: baja lento y sube el voltaje de celda.`, done: () => tv('TIT-403') < P.T['TIT-403'].nl, doneMsg: 'La temperatura del electrolito salió de su banda normal'},
+    acid: {scr: 'a500', slow: true, tag: 'LIT-501', look: () => `Stock de ácido ${f(P.X.tk501)} t. Sin camiones por 12 h.`}
+  };
+  const startScn = (id) => {
+    const s = P.SCN.find((x) => x.id === id), w = SCNW[id] || {};
+    state.scn = {id, name: s.name, w, done: false};
+    window.__plantaScn = {escenario: s.name, descripcion: s.desc};
+    if (w.slow) { speed = 300; buildBars(); toast('Simulación a ×300 para que veas el efecto pronto. Vuelve a ×60 cuando quieras.'); }
+    renderScnBar();
+  };
+  const renderScnBar = () => {
+    const b = $('scnbar'); if (!b) return; const s = state.scn;
+    if (!s) { b.hidden = true; return; }
+    const w = s.w, look = typeof w.look === 'function' ? w.look() : w.look || '';
+    if (!s.done && w.done && w.done()) { s.done = true; if (w.slow && speed > 60) { speed = 60; buildBars(); } toast(w.doneMsg || 'El escenario ya muestra su efecto', 'err'); }
+    b.hidden = false; b.className = 'scnbar' + (s.done ? ' done' : '');
+    b.innerHTML = `<span class="scn-k">${s.done ? 'Ya se ve' : 'Escenario en curso'}</span><b>${esc(s.name)}</b><span class="scn-l">${esc(look)}</span><span class="sp"></span>` +
+      (w.eq && w.eq[0] && P.M[w.eq[0]] ? `<button data-scngo="${w.eq[0]}">Ver ${w.eq[0]}</button>` : w.tag ? `<button data-scngo="${w.tag}">Ver ${w.tag}</button>` : '') +
+      (w.eq && w.eq[0] && P.M[w.eq[0]] ? `<button data-scnmt="1">Vista de mantenimiento</button>` : '') +
+      `<button class="askai" data-askai="-2">✦ Preguntarle a la IA</button><button data-scnx="1" title="Ocultar esta barra">✕</button>`;
+  };
+  const markScn = (root) => { const eq = state.scn && state.scn.w.eq || []; root.querySelectorAll('[data-eq]').forEach((e) => e.classList.toggle('scnhl', eq.includes(e.dataset.eq))); };
+  document.addEventListener('click', (ev) => {
+    const t = ev.target.closest('[data-askai],[data-scngo],[data-scnmt],[data-scnx]'); if (!t) return; ev.stopPropagation(); ev.preventDefault();
+    const d = t.dataset;
+    if (d.askai != null) {
+      const i = +d.askai, it = (state.ins || [])[i], s = state.scn;
+      const q = i >= 0 && it ? `El asistente de turno avisa: «${it.t}». ${it.d} ¿Qué significa y qué hago?` : i === -2 && s ? `Provoqué el escenario «${s.name}». ¿Qué está pasando en la planta y qué debería hacer cada rol?` : '';
+      if (window.PlantaIA) window.PlantaIA.ask(q); return;
+    }
+    if (d.scngo) { state.role = 'op'; state.screen = state.scn && state.scn.w.scr || state.screen; state.sel = null; show(); const fp = P.M[d.scngo] || d.scngo === 'RT-401' ? d.scngo : loopOfPV(d.scngo); if (fp) openFp(fp); return; }
+    if (d.scnmt) { state.role = 'mt'; show(); return; }
+    if (d.scnx) { state.scn = null; renderScnBar(); markScn($('screen')); return; }
+  }, true);
 
   /* =================== bucle de tiempo =================== */
   let last = performance.now(), acc = 0, lastUI = 0;

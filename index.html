@@ -367,12 +367,44 @@ svg .aq{fill:none}
 .ins.p1{border-left-color:var(--p1)}.ins.p2{border-left-color:var(--p2)}.ins.k-rec{border-left-color:#c08cff}
 .ins .ik{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .insl{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:8px}
+.scnbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 14px;background:linear-gradient(90deg,rgba(142,92,224,.22),rgba(142,92,224,.06));border-bottom:1px solid #8e5ce0;font-size:.86rem}
+.scnbar[hidden]{display:none}
+.scnbar .scn-k{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;background:#8e5ce0;color:#fff;padding:2px 7px;border-radius:3px}
+.scnbar.done{background:linear-gradient(90deg,rgba(255,176,32,.25),rgba(255,176,32,.06));border-bottom-color:#ffb020}
+.scnbar.done .scn-k{background:#ffb020;color:#111}
+.scnbar .scn-l{color:var(--fg);opacity:.9}
+.scnbar .sp{flex:1}
+.scnbar button{padding:3px 10px;font-size:.8rem}
+.askai{background:#8e5ce0!important;border-color:#8e5ce0!important;color:#fff!important;font-weight:600}
+.ins .askai{margin-left:8px;padding:0 6px;font-size:.66rem;letter-spacing:0;text-transform:none;border-radius:3px;opacity:.85}
+.ins .askai:hover{opacity:1}
+.ai-sub{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.74rem;color:var(--muted);margin:2px 0 6px}
+.askai.big{padding:4px 10px;font-size:.78rem;border-radius:4px}
+.ai-layers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,24rem),1fr));gap:10px}
+.ai-layers>div{background:var(--panel);border:1px solid var(--line);border-left:3px solid #8e5ce0;border-radius:6px;padding:9px 12px;display:flex;flex-direction:column;gap:4px}
+svg .eq.scnhl circle,svg .eq.scnhl rect{stroke:#c08cff!important;stroke-width:3.5!important;filter:drop-shadow(0 0 6px #c08cff)}
+svg .eq.scnhl{animation:scnp 1.6s ease-in-out infinite}
+@keyframes scnp{50%{opacity:.55}}
+@media (prefers-reduced-motion:reduce){svg .eq.scnhl{animation:none}}
 .aicnt{display:inline-block;min-width:18px;text-align:center;font-family:var(--mono);font-weight:600;font-size:.72rem;padding:1px 4px;border-radius:2px;background:#8e5ce0;color:#fff}
+</style>
+<style id="jnbar-css">
+.jnb{position:relative;z-index:50;display:flex;align-items:center;gap:10px;padding:6px max(14px,env(safe-area-inset-left,0px));background:#0b0f13;border-bottom:1px solid #26313b;font:500 13px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#cfd8df}
+.jnb a{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:6px;border-radius:999px;white-space:nowrap}
+.jnb .jnb-back{background:#e9eef2;color:#0b0f13;font-weight:700;padding:6px 13px 6px 10px;box-shadow:0 0 0 3px rgba(233,238,242,.12)}
+.jnb .jnb-back:hover{background:#fff}
+.jnb .jnb-who{color:#8a98a5;overflow:hidden;text-overflow:ellipsis}
+.jnb .jnb-who b{color:#cfd8df;font-weight:600}
+.jnb .jnb-sp{flex:1}
+.jnb .jnb-gh,.jnb .jnb-in{border:1px solid #34414d;padding:5px 11px;background:#121920}
+.jnb .jnb-gh:hover,.jnb .jnb-in:hover{border-color:#8a98a5;color:#fff}
+@media (max-width:640px){.jnb .jnb-who{display:none}.jnb .jnb-gh span,.jnb .jnb-in span{display:none}.jnb .jnb-gh,.jnb .jnb-in{padding:6px 8px}}
+@media print{.jnb{display:none}}
 </style>
 </head>
 <body>
+<!--jnbar--><div class="jnb" role="navigation" aria-label="Portafolio y código"><a class="jnb-back" href="https://jsnn15.github.io/">← Portafolio</a><span class="jnb-who"><b>Planta virtual LX-SX-EW</b> · DelaCruz · Julián Neira Nova</span><span class="jnb-sp"></span><a class="jnb-gh" href="https://github.com/JSNN15/planta-virtual" target="_blank" rel="noopener" title="Ver el código de esta máquina en GitHub"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Código en GitHub</span></a><a class="jnb-in" href="https://www.linkedin.com/in/julian-neira-nova/" target="_blank" rel="noopener" title="Julián Neira Nova en LinkedIn"><svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><rect width="16" height="16" rx="3" fill="currentColor"/><path fill="#0b0f13" d="M3.6 6.2h2v6.2h-2zM4.6 3.2a1.15 1.15 0 110 2.3 1.15 1.15 0 010-2.3zM7 6.2h1.9v.85c.27-.5.93-1 1.9-1 2 0 2.4 1.3 2.4 3v3.35h-2V9.4c0-.73-.01-1.67-1.02-1.67-1.02 0-1.18.8-1.18 1.62v3.05H7z"/></svg><span>LinkedIn</span></a></div><!--/jnbar-->
 <header class="bar">
-  <a class="home" href="../" aria-label="Volver al portafolio">← <span>jsnn15.github.io</span></a>
   <h1>Planta virtual LX-SX-EW <abbr class="ots" title="Simulador de entrenamiento de operadores (Operator Training Simulator)">OTS</abbr></h1>
   <span class="clock" id="clock">—</span>
   <span class="simst" id="simst" title="Estado del motor de simulación"><i></i> SIM</span>
@@ -389,6 +421,7 @@ svg .aq{fill:none}
   <button id="ack-all">Reconocer</button>
   <button id="go-alarms">Ver alarmas</button>
 </div>
+<div class="scnbar" id="scnbar" hidden></div>
 <nav class="areas" id="tabs"></nav>
 <main>
   <section id="screen"></section>

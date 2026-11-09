@@ -31,10 +31,10 @@
   @media (max-width:640px){#ast{top:auto;height:78vh;width:100vw;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(105%)}#ast.open{transform:none}}`;
   const st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
   document.body.insertAdjacentHTML('beforeend', `
-  <button id="ast-btn" aria-controls="ast" aria-expanded="false"><i></i>Pregúntale a la planta · IA</button>
+  <button id="ast-btn" aria-controls="ast" aria-expanded="false"><i></i>✦ Asistente IA · NVIDIA</button>
   <section id="ast" aria-label="Pregúntale a la planta">
-    <header><b>Pregúntale a la planta</b><small>NVIDIA Nemotron</small><button id="ast-x" aria-label="Cerrar">✕</button></header>
-    <div class="msgs" id="ast-msgs"><div class="m a">Leo la planta en vivo: alarmas, tags, lazos, motores y KPI del turno. Pregúntame qué está pasando o qué hacer. Provoca una falla en <b>Escenarios</b> y pregúntame por ella.</div></div>
+    <header><b>✦ Asistente de turno · IA</b><small>NVIDIA Nemotron 3.5 Super</small><button id="ast-x" aria-label="Cerrar">✕</button></header>
+    <div class="msgs" id="ast-msgs"><div class="m a">Soy la capa de IA del asistente de turno. Recibo lo mismo que ves: alarmas, los avisos del asistente, tags, lazos, motores, KPI y bitácora. Pregúntame qué está pasando o qué hacer. Provoca una falla en <b>Escenarios</b> y pregúntame por ella.</div></div>
     <div class="chips" id="ast-chips">
       <button>¿Cómo está la planta?</button><button>¿Por qué hay alarmas?</button><button>¿Qué equipo está más cerca de fallar?</button><button>¿Cuánto cobre llevamos en el turno?</button><button>Resumen para el cambio de turno</button>
     </div>
@@ -43,6 +43,8 @@
   const $ = (id) => document.getElementById(id);
   const open = (on) => { $('ast').classList.toggle('open', on); $('ast-btn').setAttribute('aria-expanded', on); if (on) setTimeout(() => $('ast-q').focus(), 200); };
   $('ast-btn').onclick = () => open(true); $('ast-x').onclick = () => open(false);
+  // otras partes de la HMI (avisos, escenario) abren el chat con una pregunta lista
+  window.PlantaIA = {open: () => open(true), ask: (q) => { open(true); if (q) { $('ast-q').value = q; setTimeout(() => $('ast-f').requestSubmit(), 250); } }};
 
   const r = (v, d = 1) => (typeof v === 'number' && isFinite(v) ? +v.toFixed(d) : v);
   const KEY = ['WIT-101', 'KY-102', 'AIT-105', 'PIT-202', 'FIT-200', 'LIT-201', 'LIT-204', 'AIT-206', 'AIT-207', 'FIT-205', 'AIT-208', 'KY-303', 'LIT-303', 'IIT-401', 'KY-402', 'TIT-403', 'AIT-405', 'AIT-406', 'AIT-407', 'KY-405', 'KY-406', 'KY-407', 'JIT-500', 'KY-501', 'LIT-501'];
@@ -58,6 +60,8 @@
     const shorts = Array.from(X.shorts).filter((s) => s >= 1).length;
     return {
       hora_planta: p.hhmm(), turno: p.shiftOf(),
+      escenario_provocado: window.__plantaScn || null,
+      avisos_del_asistente_de_turno: (window.__plantaIns || []).slice(0, 10),
       alarmas_activas: p.AD.filter((a) => a.st === 'U' || a.st === 'A').sort((a, b) => a.prio - b.prio).slice(0, 25).map((a) => ({id: a.id, prioridad: PR[a.prio] || a.prio, estado: a.st === 'U' ? 'sin reconocer' : 'reconocida', desc: a.desc || (T[a.tag] ? T[a.tag].desc + ' ' + a.type : a.id), desde: a.since ? p.hm(a.since) : null})),
       tags_fuera_de_banda: Object.fromEntries(fuera.map((t) => [t.id, tagv(t)])),
       tags_clave: Object.fromEntries(KEY.filter((k) => T[k]).map((k) => [k, tagv(T[k])])),

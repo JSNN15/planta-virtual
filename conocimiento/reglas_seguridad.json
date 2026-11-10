@@ -1,0 +1,142 @@
+{
+  "descripcion": "Reglas de seguridad. Las reglas duras las aplica el verificador del asistente en código: ninguna respuesta del modelo las puede saltar. Los riesgos por área alimentan los manuales y las respuestas de «cómo se hace».",
+  "normativa": [
+    {
+      "id": "DS132",
+      "nombre": "DS 132 · Reglamento de Seguridad Minera",
+      "aplica": "Operación de faenas mineras, incluida la planta de procesos."
+    },
+    {
+      "id": "DS594",
+      "nombre": "DS 594 · Condiciones sanitarias y ambientales básicas en los lugares de trabajo",
+      "aplica": "Exposición a agentes químicos (neblina ácida), ruido, EPP."
+    },
+    {
+      "id": "DS43",
+      "nombre": "DS 43 · Reglamento de almacenamiento de sustancias peligrosas",
+      "aplica": "Bodega de ácido sulfúrico y diluyente de SX."
+    },
+    {
+      "id": "L16744",
+      "nombre": "Ley 16.744 · Seguro contra accidentes del trabajo y enfermedades profesionales",
+      "aplica": "Marco de prevención de riesgos."
+    },
+    {
+      "id": "IEC61511",
+      "nombre": "IEC 61511 · Seguridad funcional en la industria de procesos",
+      "aplica": "Separación entre control básico y sistema instrumentado de seguridad."
+    }
+  ],
+  "duras": [
+    {
+      "id": "S1",
+      "regla": "El asistente nunca anula enclavamientos ni permisivos: solo propone acciones cuyos permisivos se cumplen.",
+      "verificacion": "permisivos"
+    },
+    {
+      "id": "S2",
+      "regla": "No se rearma un equipo disparado por protección eléctrica, vibración o temperatura sin inspección de mantenimiento: el asistente lo enseña como pasos manuales.",
+      "verificacion": "rearme_proteccion"
+    },
+    {
+      "id": "S3",
+      "regla": "El asistente no inhibe alarmas ni cambia límites de alarma o de disparo.",
+      "verificacion": "fuera_de_catalogo"
+    },
+    {
+      "id": "S4",
+      "regla": "La nave no se energiza sin circulación de electrolito, temperatura ≥ 38 °C y cobalto ≥ 110 mg/L: la única vía es la secuencia de puesta en servicio.",
+      "verificacion": "nave_por_secuencia"
+    },
+    {
+      "id": "S5",
+      "regla": "El cierre de un interruptor tras una protección lo hace el eléctrico de turno con bloqueo y etiquetado: nunca el asistente.",
+      "verificacion": "fuera_de_catalogo"
+    },
+    {
+      "id": "S6",
+      "regla": "Toda consigna nueva queda dentro de la banda normal del tag y cambia como máximo 10 % del rango por paso.",
+      "verificacion": "consigna"
+    },
+    {
+      "id": "S7",
+      "regla": "Las acciones de riesgo alto (detener, rearmar, energizar la nave) exigen confirmación reforzada y quedan a nombre de quien aprueba.",
+      "verificacion": "riesgo_alto"
+    },
+    {
+      "id": "S8",
+      "regla": "Máximo tres acciones por respuesta, y se ejecutan de a una.",
+      "verificacion": "cantidad"
+    },
+    {
+      "id": "S9",
+      "regla": "Cada acción la aprueba el rol responsable (operador, mantenimiento o jefe de turno; el jefe de turno puede aprobar las de operación y mantenimiento). Gerencia consulta, no opera.",
+      "verificacion": "rol"
+    }
+  ],
+  "riesgos": [
+    {
+      "area": 100,
+      "peligros": [
+        "Atrapamiento en correas y tambor (partes móviles)",
+        "Proyección de material en el chancador",
+        "Salpicadura de ácido sulfúrico concentrado en la dosificación",
+        "Polvo con sílice"
+      ],
+      "controles": [
+        "Bloqueo y etiquetado antes de intervenir",
+        "Cordones de emergencia operativos",
+        "EPP químico en la zona de ácido (careta, guantes, traje)",
+        "Supresión de polvo"
+      ]
+    },
+    {
+      "area": 200,
+      "peligros": [
+        "Inmersión en piscinas",
+        "Contacto con solución ácida",
+        "Equipos pesados sobre las pilas",
+        "Derrumbe del talud de la pila"
+      ],
+      "controles": ["Barandas y aros salvavidas", "Tránsito señalizado", "Inspección de taludes"]
+    },
+    {
+      "area": 300,
+      "peligros": [
+        "Incendio del orgánico (diluyente tipo queroseno)",
+        "Electricidad estática en el bombeo de orgánico",
+        "Vapores orgánicos"
+      ],
+      "controles": [
+        "Sistema de detección y extinción de incendios",
+        "Puesta a tierra de equipos y cañerías",
+        "Prohibición de fuentes de ignición",
+        "Permiso de trabajo en caliente"
+      ]
+    },
+    {
+      "area": 400,
+      "peligros": [
+        "Neblina ácida sobre las celdas",
+        "Contacto eléctrico con barras de corriente continua",
+        "Quemaduras con electrolito caliente",
+        "Atrapamiento con el puente grúa en la cosecha"
+      ],
+      "controles": [
+        "Supresores de neblina y extracción",
+        "Herramientas aisladas para cortocircuitos",
+        "Monitoreo de exposición (DS 594)",
+        "Zona de exclusión bajo el puente grúa"
+      ]
+    },
+    {
+      "area": 500,
+      "peligros": ["Arco eléctrico en tableros y MCC", "Derrame de ácido en la descarga de camiones"],
+      "controles": [
+        "Bloqueo y etiquetado",
+        "EPP de arco eléctrico",
+        "Muro de contención y ducha de emergencia"
+      ]
+    }
+  ]
+}

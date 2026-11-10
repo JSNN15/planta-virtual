@@ -140,6 +140,7 @@
     `<text x="${x}" y="${y + (vert ? 4 : 22)}" dx="${vert ? 16 : 0}" class="unit" text-anchor="${vert ? 'start' : 'middle'}"><tspan>${VALVE[loop] || ''} </tspan><tspan data-op="${loop}">0</tspan>%</text>`;
   // Fluido de cada línea para el estilo clásico de faena (color por fluido, trazo de flujo animado). Se puede forzar con 'f-xxx' en cls.
   const FLUID = {
+    'WIT-100': 'ore',
     'WIT-101': 'ore',
     'FIT-102': 'acid',
     'LIT-103': 'acid',
@@ -231,7 +232,11 @@
 
   SCREENS.a100 = () => `<svg viewBox="0 0 1200 560" role="img" aria-label="P&ID área 100">
     ${T_(16, 24, '100 · Chancado fino, aglomeración y curado ácido', 'ttl')}
-    <polygon class="heap" points="40,262 135,150 230,262"/>${T_(135, 140, 'Acopio de mineral chancado', 'lbl', 'middle')}
+    ${off(16, 44, 'de chancado secundario', null)}${pipe('M40,56 L40,66 L52,66', 'WIT-100', 50, 'thin')}
+    <g class="eq" data-eq="CR-101" data-fp="CR-101"><path d="M52,58 L112,58 L100,104 L64,104 Z"/><path class="st" d="M64,70 L100,70 M70,84 L94,84"/></g>${T_(82, 120, 'CR-101 chancador', 'tagt', 'middle')}${ALM(118, 54, 'CR-101.TRIP')}${ALM(118, 74, 'CR-101.VIB')}
+    ${pipe('M100,104 L135,148', 'WIT-100', 50, 'thin')}
+    ${bub(222, 70, 'AIT-100', {v: 'AIT-100', vx: 22, vy: 4})}${sig('M206,78 L118,122')}
+    <polygon class="heap" points="40,262 135,150 230,262"/>${T_(135, 140, '', 'lbl', 'middle')}${V_(135, 240, 'LIT-100', 'middle')}${ALM(232, 236, 'LIT-100')}
     <g class="eq" data-eq="FD-101" data-fp="FD-101"><rect x="92" y="266" width="90" height="20"/></g>${T_(137, 302, 'FD-101', 'tagt', 'middle')}${ALM(190, 262, 'FD-101.TRIP')}
     ${V_(137, 318, 'SIT-101', 'middle')}
     <g class="eq" data-eq="CV-101" data-fp="CV-101"><path class="b" d="M180,292 L690,292 L760,252 L760,258 L692,298 L180,298 Z"/></g>
@@ -392,7 +397,11 @@
       pipe('M690,100 L820,100', 'FIT-301', 50, 'thin') +
       `<rect class="vessel" x="820" y="70" width="80" height="60" rx="3"/><rect class="fill f-org" x="822" y="94" width="76" height="34"/>` +
       T_(860, 62, 'TK-306 orgánico cargado', 'tagt', 'middle');
-    s += bub(738, 62, 'AIT-302', {v: 'AIT-302'}) + sig('M738,77 L738,100');
+    s += bub(712, 50, 'AIT-302', {v: 'AIT-302'}) + sig('M712,65 L712,100');
+    s +=
+      `<rect class="vessel" x="760" y="90" width="52" height="30" rx="2"/><rect class="aq f-water" x="761" y="106" width="50" height="13"/>` +
+      motor(786, 54, 'M-304') +
+      T_(786, 134, 'W1 lavado', 'unit', 'middle');
     s += pipe('M900,115 L1160,115 L1160,368 L250,368 L250,450 L300,450', 'FIT-301', 50, 'thin');
     // orgánico descargado
     s +=
@@ -495,7 +504,7 @@
       sig('M848,478 L880,478 L880,487');
     // analizadores
     s +=
-      `<rect x="790" y="350" width="390" height="110" rx="6" fill="var(--panel)" stroke="var(--line)"/>` +
+      `<rect x="790" y="344" width="390" height="122" rx="6" fill="var(--panel)" stroke="var(--line)"/>` +
       T_(802, 370, 'Analizadores del electrolito', 'ttl');
     s +=
       T_(802, 394, 'Cu', 'lbl') +
@@ -508,8 +517,14 @@
       ALM(930, 411, 'AIT-407') +
       T_(960, 416, 'Co', 'lbl') +
       V_(1010, 416, 'AIT-408') +
-      ALM(1100, 411, 'AIT-408');
-    s += K_(802, 446, 'qual-a', 'lbl');
+      ALM(1100, 411, 'AIT-408') +
+      T_(802, 438, 'Cl', 'lbl') +
+      V_(830, 438, 'AIT-410') +
+      ALM(930, 433, 'AIT-410') +
+      T_(960, 438, 'rico/pobre', 'lbl') +
+      K_(1040, 438, 'rich-spent', 'val');
+    s += K_(802, 458, 'qual-a', 'lbl');
+    s += K_(16, 340, 'plan-i', 'lbl');
     s += '</svg>';
     return s;
   };
@@ -643,6 +658,11 @@
       ['Demanda eléctrica', f(tv('JIT-500'), 1) + ' MW'],
     ],
     a100: () => [
+      ['P80 del chancado', ft('AIT-100') + ' mm'],
+      [
+        'Acopio fino',
+        f(P.X.stock / 1000, 1) + ' kt · ' + f(P.X.stock / Math.max(1, P.X.tonDrum), 0) + ' h de autonomía',
+      ],
       ['Mineral al tambor', f(P.X.tonDrum) + ' t/h'],
       ['Dosis real', ft('KY-102') + ' kg/t'],
       ['Humedad', ft('AIT-105') + ' %'],
@@ -655,6 +675,8 @@
       ['pH (analizador / lab.)', ft('AIT-207') + ' / ' + f(P.X.labPH, 2)],
     ],
     a300: () => [
+      ['Lavado W1', P.M['M-304'].state === 'RUN' ? 'en servicio' : 'FUERA DE SERVICIO'],
+      ['Cloruro en PLS', ft('AIT-210') + ' g/L'],
       ['Extracción', ft('KY-303') + ' %'],
       ['Razón O/A', ft('KY-301')],
       ['Orgánico cargado / descargado', f(P.X.yL, 2) + ' / ' + f(P.X.ys, 2) + ' g/L'],
@@ -697,209 +719,10 @@
   };
 
   /* =================== asistente de turno =================== */
-  // Analítica en el navegador, sin nube: predicción de alarmas por tendencia (regresión lineal de 20 min),
-  // causa probable por agrupación de alarmas, anomalías por puntaje z sobre 2 h y reglas de operación.
-  const linfit = (d) => {
-    const n = d.length;
-    if (n < 8) return null;
-    const t0 = d[n - 1][0];
-    let st = 0,
-      sv = 0,
-      stt = 0,
-      stv = 0;
-    for (const [t, v] of d) {
-      const x = t - t0;
-      st += x;
-      sv += v;
-      stt += x * x;
-      stv += x * v;
-    }
-    const den = n * stt - st * st;
-    if (!den) return null;
-    const b = (n * stv - st * sv) / den;
-    return {b, a: (sv - b * st) / n};
-  };
-  const CAUSE = {
-    'MCC-100': [100],
-    'MCC-200': [200, 300],
-    'MCC-300': [300, 400],
-    'MCC-400': [400],
-    '52-RT': [400],
-    'P-202A': [200, 300],
-    'P-202B': [200, 300],
-    'P-305': [300, 400],
-    'P-401A': [400],
-    'P-401B': [400],
-    'RT-401': [400],
-  };
-  const ANOM = [
-    'AIT-206',
-    'AIT-207',
-    'AIT-208',
-    'AIT-309',
-    'FIT-200',
-    'PIT-202',
-    'FIT-203',
-    'KY-406',
-    'KY-402',
-    'TIT-403',
-    'AIT-405',
-    'AIT-407',
-    'AIT-105',
-    'JIT-500',
-  ];
-  const insights = () => {
-    const out = [],
-      X = P.X;
-    // 1) alarmas que vienen: la tendencia cruza el límite antes de 2 h
-    const seen = new Set();
-    P.AD.forEach((a) => {
-      // TK-103 se rellena solo con P-501 al bajar de 40 %: su tendencia lineal no anticipa ese relleno y daría avisos falsos
-      if (
-        a.type === 'DISC' ||
-        a.tag === 'LIT-103' ||
-        a.st === 'U' ||
-        a.st === 'A' ||
-        a.supp ||
-        (a.shelved && P.S.t < a.shelved) ||
-        seen.has(a.tag)
-      )
-        return;
-      const r = linfit(P.histGet(a.tag, 1200));
-      if (!r) return;
-      const t = P.T[a.tag],
-        hi = a.type[0] === 'H';
-      if (Math.abs(r.b) * 3600 < (t.hi - t.lo) * 0.01 || (hi ? r.b <= 0 : r.b >= 0)) return;
-      const eta = (a.lim - r.a) / r.b;
-      if (eta > 0 && eta < 7200) {
-        seen.add(a.tag);
-        out.push({
-          k: 'pred',
-          p: a.prio,
-          area: a.area,
-          t: `${a.tag}: alarma ${a.type} en unos ${f(eta / 60)} min`,
-          d: `${a.desc}. Va ${r.b > 0 ? 'subiendo' : 'bajando'} ${f(Math.abs(r.b) * 3600, t.dec + 1)} ${t.unit}/h y el límite es ${f(a.lim, t.dec)} ${t.unit}.`,
-          go: a.id,
-        });
-      }
-    });
-    // 2) causa probable: disparos e interruptores abiertos con las alarmas que aparecieron después en sus áreas
-    const act = P.AD.filter((a) => a.st === 'U' || a.st === 'A');
-    const roots = act
-      .filter((a) => /\.(TRIP|OPEN|FAIL)$/.test(a.id))
-      .sort((a, b) => (/\.OPEN$/.test(b.id) ? 1 : 0) - (/\.OPEN$/.test(a.id) ? 1 : 0) || a.since - b.since);
-    const used = new Set();
-    roots.forEach((r) => {
-      if (used.has(r)) return;
-      const areas = CAUSE[r.tag] || [r.area];
-      const kids = act.filter(
-        (a) => a !== r && !used.has(a) && areas.includes(a.area) && a.since >= r.since - 30
-      );
-      kids.forEach((a) => used.add(a));
-      const tags = [...new Set(kids.map((a) => a.tag))],
-        lst = tags.slice(0, 5).join(', ') + (tags.length > 5 ? ' y otras' : '');
-      out.push({
-        k: 'causa',
-        p: r.prio,
-        area: r.area,
-        t: kids.length ? `Causa probable: ${r.desc}` : r.desc,
-        d: kids.length
-          ? `${kids.length} alarma${kids.length > 1 ? 's aparecieron' : ' apareció'} después y probablemente ${kids.length > 1 ? 'son consecuencia' : 'es consecuencia'} (${lst}). Atiende primero la causa.`
-          : 'Por ahora no hay alarmas derivadas. Revisa la causa antes de rearmar o reintentar.',
-        go: r.id,
-      });
-    });
-    // 3) anomalías: cambio brusco frente a las últimas 2 h, aunque no haya alarma
-    ANOM.forEach((tag) => {
-      const d = P.histGet(tag, 7200);
-      if (d.length < 90 || act.some((a) => a.tag === tag)) return;
-      const base = d.slice(0, -12).map((q) => q[1]),
-        last = d.slice(-6).reduce((s, q) => s + q[1], 0) / 6,
-        t = P.T[tag];
-      const m = base.reduce((s, v) => s + v, 0) / base.length,
-        sd = Math.sqrt(base.reduce((s, v) => s + (v - m) ** 2, 0) / base.length),
-        z = (last - m) / Math.max(sd, (t.hi - t.lo) * 0.004);
-      if (Math.abs(z) > 4)
-        out.push({
-          k: 'anom',
-          p: 3,
-          area: t.area,
-          t: `Cambio anómalo en ${tag}`,
-          d: `${t.desc}: ${f(last, t.dec)} ${t.unit} contra ${f(m, t.dec)} de promedio en 2 h (${z > 0 ? '+' : '−'}${f(Math.abs(z), 1)} desviaciones). Aún sin alarma.`,
-          scr: 'a' + t.area,
-          fp: loopOfPV(tag),
-        });
-    });
-    if (Math.abs(tv('AIT-207') - X.labPH) > 0.1)
-      out.push({
-        k: 'anom',
-        p: 3,
-        area: 200,
-        t: 'AIT-207 no coincide con el laboratorio',
-        d: `Analizador ${ft('AIT-207')} y laboratorio ${f(X.labPH, 2)}: posible deriva del electrodo. Calíbralo antes de usarlo para controlar.`,
-        scr: 'a200',
-      });
-    // 4) recomendaciones de operación
-    if (!X.capBank)
-      out.push({
-        k: 'rec',
-        p: 3,
-        area: 500,
-        t: 'Pon en servicio el filtro y los condensadores',
-        d: `Factor de potencia ${ft('KY-501')} y distorsión ${ft('KY-502')} %. Con el filtro sube a 0,96 y la distorsión baja a 3 %.`,
-        scr: 'a500',
-      });
-    if (X.Ce > 48 && P.RECT.I < 30)
-      out.push({
-        k: 'rec',
-        p: 2,
-        area: 400,
-        t: 'Cobre alto con corriente baja: reduce la transferencia de SX',
-        d: `Electrolito en ${ft('AIT-405')} g/L con ${ft('IIT-401')} kA. Baja la razón O/A o el caudal de PLS, o vuelve a producción con la puesta en servicio.`,
-        scr: 'a300',
-      });
-    if (!X.delayComp)
-      out.push({
-        k: 'rec',
-        p: 3,
-        area: 100,
-        t: 'Activa la compensación de retardo de la correa',
-        d: 'Sin ella, el ácido llega 45 s antes que el mineral y la dosis varía más.',
-        scr: 'a100',
-      });
-    const ks = knownShorts();
-    let hid = 0;
-    if (!X.monitor) for (let k = 0; k < P.NCELL; k++) if (X.shorts[k] > 0 && !X.seen[k]) hid++;
-    if (hid >= 3)
-      out.push({
-        k: 'rec',
-        p: 3,
-        area: 400,
-        t: `${hid} cortocircuitos sin detectar en la nave`,
-        d: 'La próxima ronda manual está lejos. Activa el monitoreo continuo de voltaje de celdas para verlos al aparecer.',
-        scr: 'a400',
-      });
-    if (ks >= 4)
-      out.push({
-        k: 'rec',
-        p: 3,
-        area: 400,
-        t: `Corrige las ${ks} celdas con cortocircuito`,
-        d: `Cada una resta corriente útil: pérdida del turno ${f(X.lostShorts, 2)} t de cobre (US$ ${f(X.lostShorts * P.CU_PRICE)}).`,
-        scr: 'a400',
-      });
-    if (X.tk501 < 600)
-      out.push({
-        k: 'rec',
-        p: X.tk501 < 300 ? 2 : 3,
-        area: 500,
-        t: `Stock de ácido para unas ${f(X.tk501 / Math.max(1, X.acidQ * 1.84), 1)} h`,
-        d: `Quedan ${f(X.tk501)} t y la aglomeración consume ${f(X.acidQ * 1.84)} t/h. Coordina camiones o baja la dosis.`,
-        scr: 'a500',
-      });
-    const ORD = {causa: 0, pred: 1, anom: 2, rec: 3};
-    return out.sort((a, b) => a.p - b.p || ORD[a.k] - ORD[b.k]);
-  };
+  // La vigilancia por reglas vive en ia-nucleo.js, compartida con el asistente de IA y con las pruebas.
+  // Aquí se crea con la base de conocimiento vacía; asistente.js la recarga con conocimiento/ y manuales/.
+  Planta.nucleo = window.IANucleo ? IANucleo.crear(() => P, {}) : null;
+  const insights = () => (Planta.nucleo ? Planta.nucleo.vigilar() : []);
   const KIND = {pred: 'Alarma que viene', causa: 'Causa probable', anom: 'Anomalía', rec: 'Recomendación'};
   const seenIns = new Map();
   const stableIns = (fresh) => {
@@ -914,12 +737,13 @@
     const ORD = {causa: 0, pred: 1, anom: 2, rec: 3};
     return [...seenIns.values()].map((v) => v.it).sort((a, b) => a.p - b.p || ORD[a.k] - ORD[b.k]);
   };
+  // Cada aviso trae lo que se puede hacer: la acción del catálogo (se aprueba en el asistente), por qué y cómo
   const insItem = (it, i, compact) =>
-    `<div class="ins k-${it.k} p${it.p}" data-ins="${i}" title="Ir a la pantalla"><span class="ik">${KIND[it.k]}<button class="askai" data-askai="${i}" title="Preguntarle a la IA de NVIDIA por este aviso">✦ Preguntar a la IA</button></span><b>${esc(it.t)}</b>${compact ? '' : `<span class="small">${esc(it.d)}</span>`}</div>`;
+    `<div class="ins k-${it.k} p${it.p}" data-ins="${i}" title="Ir a la pantalla"><span class="ik">${KIND[it.k]}</span><b>${esc(it.t)}</b>${compact ? '' : `<span class="small">${esc(it.d)}</span>`}<span class="ins-a">${it.accion ? `<button class="on" data-iaact="${i}" title="Revisar y aprobar en el asistente">▶ ${esc(it.accionTitulo || 'Proponer acción')}</button>` : ''}<button data-askai="${i}" title="El asistente explica la causa con la evidencia">Por qué</button>${it.manual ? `<button data-iaman="${esc(it.manual)}" title="Abrir el procedimiento del manual">Cómo · ${esc(it.manual)}</button>` : ''}</span></div>`;
   const assistBox = (ar) => {
     const all = state.ins || [],
       list = all.map((it, i) => [it, i]).filter(([it]) => !ar || it.area === ar || it.k === 'causa');
-    let h = `<div class="ai-box"><div class="ai-h"><span class="spark">✦</span> Asistente de turno<button data-tab="assist" class="ai-all">${all.length ? all.length + ' avisos' : 'ver'} ▸</button></div><div class="ai-sub"><span>Vigila la planta cada segundo</span><button class="askai big" data-askai="-1">✦ Pregúntale a la IA · NVIDIA</button></div>`;
+    let h = `<div class="ai-box"><div class="ai-h"><span class="spark">✦</span> Asistente de turno<button data-tab="assist" class="ai-all">${all.length ? all.length + ' avisos' : 'ver'} ▸</button></div><div class="ai-sub"><span>Vigila la planta cada segundo</span><button class="askai big" data-askai="-1">✦ Abrir asistente</button></div>`;
     const alm = P.AD.some((a) => (a.st === 'U' || a.st === 'A') && (!ar || a.area === ar));
     h += list.length
       ? list
@@ -948,10 +772,10 @@
     return h;
   };
   const pageAssist = () => {
-    let h = `<div class="page"><div class="row"><h2 style="margin:0;font-size:1.05rem;flex:1"><span class="spark">✦</span> Asistente de turno</h2><button class="askai big" data-askai="-1">✦ Pregúntale a la IA · NVIDIA Nemotron</button></div>`;
-    h += `<div class="ai-layers"><div><b>1 · Vigilancia continua</b><span class="small">Corre en tu navegador cada segundo: alarmas que vienen, causa probable, anomalías y recomendaciones. Haz clic en un aviso para ir al equipo.</span></div><div><b>2 · Conversación con IA de NVIDIA</b><span class="small">Nemotron 3.5 Super recibe lo mismo que ves (alarmas, estos avisos, tags, motores, KPI y bitácora) y responde citando los tags. Toca «Preguntar a la IA» en cualquier aviso.</span></div></div>`;
+    let h = `<div class="page"><div class="row"><h2 style="margin:0;font-size:1.05rem;flex:1"><span class="spark">✦</span> Asistente de turno</h2><button class="askai big" data-askai="-1">✦ Abrir asistente</button></div>`;
+    h += `<div class="ai-layers"><div><b>1 · Vigilancia por reglas</b><span class="small">Corre en tu navegador cada segundo: alarmas que vienen, causa probable, anomalías y recomendaciones, con la acción del catálogo que corresponde y su procedimiento.</span></div><div><b>2 · Diagnóstico con IA</b><span class="small">«Por qué» envía la pregunta al pipeline: entender, consultar la planta y los manuales, diagnosticar con NVIDIA Nemotron y verificar contra el estado real. Sin conexión responde el diagnóstico por reglas.</span></div><div><b>3 · Acción con aprobación</b><span class="small">Ninguna acción se ejecuta sola: el asistente la propone con su riesgo y precondiciones, y una persona la aprueba en dos pasos. Después vigila que tenga el efecto esperado.</span></div></div>`;
     h += `<div id="as-list" style="display:flex;flex-direction:column;gap:14px">${assistList()}</div>`;
-    h += `<div class="notice"><b>Cómo funciona</b><span class="small">Los avisos se calculan en el navegador, sin enviar datos a ninguna nube. <b>Alarmas que vienen:</b> regresión lineal de los últimos 20 min de cada variable con alarma, y tiempo estimado hasta su límite. <b>Causa probable:</b> agrupa las alarmas que aparecieron después de un disparo o de un interruptor abierto en las áreas que ese equipo alimenta. <b>Anomalías:</b> puntaje z del último minuto contra las últimas 2 h, para ver cambios bruscos antes de que lleguen al límite. <b>Recomendaciones:</b> reglas de operación de la planta. No reemplaza el criterio del operador.</span></div>`;
+    h += `<div class="notice"><b>Cómo funciona</b><span class="small">Los avisos se calculan en el navegador, sin enviar datos a ninguna nube. <b>Alarmas que vienen:</b> regresión lineal de los últimos 20 min de cada variable con alarma, y tiempo estimado hasta su límite. <b>Causa probable:</b> agrupa las alarmas que aparecieron después de un disparo o de un interruptor abierto en las áreas que ese equipo alimenta. <b>Anomalías:</b> puntaje z del último minuto contra las últimas 2 h, para ver cambios bruscos antes de que lleguen al límite. <b>Recomendaciones:</b> reglas de operación de la planta. Las reglas, las fichas de alarma y el catálogo de acciones están en <code>conocimiento/</code>, y los procedimientos en <code>manuales/</code>. No reemplaza el criterio del operador.</span></div>`;
     return h + '</div>';
   };
   const knownShorts = () => {
@@ -1924,6 +1748,20 @@
           a: '',
         });
     });
+    if (P.X.p80 > 14 || P.X.liner > 0.25)
+      N.push({
+        p: P.X.p80 > 15 ? 2 : 3,
+        t: 'CR-101 · revestimientos gastados',
+        d: `P80 del producto ${ft('AIT-100')} mm (diseño 12,5 mm). El mineral grueso baja la recuperación de la pila nueva. El acopio fino tiene ${f(P.X.stock / 1000, 1)} kt: alcanza para detener el chancador 2 h.`,
+        a: '<button data-mact="liners">Cambiar revestimientos (detiene 2 h)</button>',
+      });
+    if (P.X.Cl > 25 || P.X.pit > 0)
+      N.push({
+        p: P.X.Cl > 30 ? 2 : 3,
+        t: 'Nave EW · cloruro en el electrolito',
+        d: `Cloruro ${ft('AIT-410')} mg/L${P.X.pit > 0 ? `; índice de picado acumulado ${f(P.X.pit)} mg/L·h sobre 30 mg/L` : ''}. Sobre 30 mg/L el cloruro pica el acero inoxidable del cátodo permanente y el cobre se pega en el despegue. Revisar el lavado W1 (${P.M['M-304'].state === 'RUN' ? 'en servicio' : 'FUERA DE SERVICIO'}) y aumentar el sangrado.`,
+        a: P.M['M-304'].state !== 'RUN' ? '<button data-mact="wash">Rearmar y partir W1</button>' : '',
+      });
     const dev = Math.abs(tv('AIT-207') - P.X.labPH);
     if (dev > 0.1)
       N.push({
@@ -2035,7 +1873,7 @@
     const kwh = X.cathShift > 0.1 ? (X.energyShift * 1000) / X.cathShift : 0;
     const acidKg = X.oreShift > 1 ? (X.acidShift * 1000) / X.oreShift : 0;
     const proj = (X.cathShift / shH) * 8,
-      plan8 = 6.45 * 8;
+      plan8 = X.planTph * 8;
     const gap = Math.max(0, X.plannedShift - X.cathShift),
       other = Math.max(0, gap - X.lostShorts - X.lostRect);
     const rate = X.alarmsShift / shH;
@@ -2058,7 +1896,7 @@
     h += card(
       'Ingreso del turno',
       'US$ ' + f((X.cathShift * P.CU_PRICE) / 1000) + ' mil',
-      'cobre a US$ 6,5/lb'
+      `cobre a US$ ${f(P.CU_PRICE / 2204.62, 2)}/lb`
     );
     h += card(
       'Energía específica de la planta',
@@ -2078,6 +1916,18 @@
       avail < 98 ? 'warn' : ''
     );
     h += card('Consumo de ácido', f(acidKg, 1) + ' kg/t', 'por tonelada de mineral aglomerado');
+    const cuFed = X.oreShift * 0.006,
+      recG = cuFed > 0.1 ? (100 * X.cathShift) / cuFed : 0;
+    h += card(
+      'Recuperación global del turno',
+      f(recG, 1) + ' %',
+      'cátodo / cobre que entró a las pilas (curva de 90 días: 64,6 %)'
+    );
+    h += card(
+      'Agua fresca',
+      f(X.oreShift > 1 ? (X.waterShift || 0) / X.oreShift : 0, 3) + ' m³/t',
+      `por t de mineral · ${f(X.cathShift > 0.1 ? (X.waterShift || 0) / X.cathShift : 0)} m³ por t de cátodo`
+    );
     h += card(
       'Alarmas por hora',
       f(rate, 1),
@@ -2096,6 +1946,12 @@
       <tr><td>Rectificador fuera de servicio</td><td class="num">${f(X.lostRect, 2)} t</td><td class="num">US$ ${f(X.lostRect * P.CU_PRICE)}</td></tr>
       <tr><td>Menos cobre desde pilas y SX (mineral, riego, extracción)</td><td class="num">${f(other, 2)} t</td><td class="num">US$ ${f(other * P.CU_PRICE)}</td></tr>
       <tr><td><b>Brecha contra el plan</b></td><td class="num"><b>${f(gap, 2)} t</b></td><td class="num"><b>US$ ${f(gap * P.CU_PRICE)}</b></td></tr></tbody></table></div>`;
+    const hv = X.harvests || [];
+    h += `<h3 style="margin:0;font-size:.85rem">Cosechas de cátodos (ciclo de 7 días, un lote por día a las 06:00)</h3>`;
+    h += hv.length
+      ? `<div class="tblw"><table><thead><tr><th>Día</th><th>Lote</th><th>Celdas</th><th>Cátodo</th><th>Pb · S · Fe (ppm)</th><th>Calidad</th></tr></thead><tbody>${hv.map((r) => `<tr><td>${P.hhmm(r.t)}</td><td class="num">${r.lote}</td><td class="mono small">${r.celdas}</td><td class="num">${f(r.ton, 1)} t</td><td class="num">${f(r.pb, 1)} · ${f(r.s, 1)} · ${f(r.fe, 1)}</td><td>${r.gradoA ? 'Grado A' : '<b style="color:var(--p1)">Fuera de norma</b>'}</td></tr>`).join('')}</tbody></table></div>`
+      : '<p class="small muted" style="margin:0">La primera cosecha es a las 06:00 del día 2. Súbele la velocidad a ×300 para verla.</p>';
+    h += `<div class="row" style="gap:10px;flex-wrap:wrap"><label class="small" for="mg-plan">Plan de cátodo (t/h)</label><input id="mg-plan" type="number" step="0.05" min="1" max="10" value="${X.planTph}" style="width:80px"><button data-mgset="plan">Aplicar</button><label class="small" for="mg-price">Precio del cobre (US$/lb)</label><input id="mg-price" type="number" step="0.05" min="1" max="20" value="${f(P.CU_PRICE / 2204.62, 2).replace(',', '.')}" style="width:80px"><button data-mgset="price">Aplicar</button></div>`;
     h += `<h3 style="margin:0;font-size:.85rem">Producción acumulada del turno contra plan</h3><canvas id="mg-cv" height="200" style="width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:6px"></canvas>`;
     if (X.shiftHist.length)
       h += `<h3 style="margin:0;font-size:.85rem">Turnos anteriores</h3><div class="tblw"><table><thead><tr><th>Turno</th><th>Cátodo</th><th>Plan</th><th>kWh/t</th><th>Pérdidas</th><th>Alarmas</th></tr></thead><tbody>${X.shiftHist.map((s) => `<tr><td>${s.id} · ${s.day}</td><td class="num">${f(s.cath, 1)} t</td><td class="num">${f(s.plan, 1)} t</td><td class="num">${f(s.cath > 0.1 ? (s.mwh * 1000) / s.cath : 0)}</td><td class="num">${f(s.lostShorts + s.lostRect, 2)} t</td><td class="num">${s.alarms}</td></tr>`).join('')}</tbody></table></div>`;
@@ -2123,7 +1979,7 @@
     const shStart = P.S.t - ((P.now() - 8 * 3600) % 28800);
     const d = P.histGet('KY-405', P.S.t - shStart).filter((p) => p[0] >= shStart);
     const mg = {l: 40, r: 10, t: 10, b: 20},
-      hi = 6.45 * 8 * 1.1;
+      hi = P.X.planTph * 8 * 1.1;
     const X = (tt) => mg.l + ((W - mg.l - mg.r) * (tt - shStart)) / 28800,
       Y = (v) => mg.t + ((H - mg.t - mg.b) * (hi - v)) / hi;
     x.strokeStyle = css('--line');
@@ -2141,7 +1997,7 @@
     x.strokeStyle = css('--muted');
     x.beginPath();
     x.moveTo(X(shStart), Y(0));
-    x.lineTo(X(shStart + 28800), Y(6.45 * 8));
+    x.lineTo(X(shStart + 28800), Y(P.X.planTph * 8));
     x.stroke();
     x.setLineDash([]);
     let acc = 0,
@@ -2158,7 +2014,7 @@
     x.stroke();
     x.textAlign = 'left';
     x.fillStyle = css('--muted');
-    x.fillText('plan', X(shStart + 28800) - 30, Y(6.45 * 8) - 6);
+    x.fillText('plan', X(shStart + 28800) - 30, Y(P.X.planTph * 8) - 6);
   };
 
   /* =================== navegación =================== */
@@ -2309,9 +2165,14 @@
     'lab-ph': () => `pH lab. ${P.hm(P.S.t0 + P.X.labT)}: ${f(P.X.labPH, 2)}`,
     oa: () => `O/A ${ft('KY-301')} · consigna ${f(P.L['FFIC-301'].ratio, 2)}`,
     'sx-sum': () =>
-      `O/A ${ft('KY-301')} · extracción ${ft('KY-303')} % · orgánico cargado ${f(P.X.yL, 2)} g/L · descargado ${f(P.X.ys, 2)} g/L · cobre transferido ${ft('KY-304')} t/h · arrastre ${ft('AIT-309')} ppm`,
+      `O/A ${ft('KY-301')} · extracción ${ft('KY-303')} % · orgánico cargado ${f(P.X.yL, 2)} / descargado ${f(P.X.ys, 2)} g/L · Cu transferido ${ft('KY-304')} t/h · arrastre ${ft('AIT-309')} ppm · Cl en PLS ${ft('AIT-210')} g/L · lavado W1 ${P.M['M-304'].state === 'RUN' ? 'en servicio' : 'FUERA'}`,
     'cells-sum': () =>
-      `Voltaje medio ${ft('KY-402')} V · ${P.X.monitor ? 'monitoreo continuo' : `ronda cada 4 h (última ${P.hm(P.S.t0 + P.X.lastRound)})`} · ${knownShorts()} cortocircuitos conocidos`,
+      `Voltaje medio ${ft('KY-402')} V · ${P.X.monitor ? 'monitoreo continuo' : `ronda cada 4 h (última ${P.hm(P.S.t0 + P.X.lastRound)})`} · ${knownShorts()} cortocircuitos conocidos · cosecha diaria 06:00 (ciclo de 7 días)`,
+    'rich-spent': () => `${ft('AIT-411')} / ${ft('AIT-412')} g/L`,
+    'plan-i': () =>
+      P.L['IIC-401'].mode === 'CAS'
+        ? 'Corriente en cascada con AIC-405'
+        : `Plan: ${f(P.L['IIC-401'].sp, 1)} kA · recálculo en cada cambio de turno`,
     'qual-a': () =>
       `Cátodo estimado: Pb ${f(P.X.Pb, 1)} · S ${f(P.X.Sppm, 1)} · Fe ${f(P.X.FeC, 1)} ppm → ${P.X.quality ? 'grado A' : 'FUERA DE NORMA'}`,
     'qual-b': () => (P.X.quality ? 'cátodo grado A' : 'cátodo fuera de norma'),
@@ -2541,8 +2402,11 @@
         $('screen').innerHTML = pageMaint();
         drawMaint();
       } else if (state.role === 'mg') {
-        $('screen').innerHTML = pageMgmt();
-        drawMgmt();
+        // no re-dibujar mientras se escribe en un campo de la planilla
+        if (!(ae && ae.tagName === 'INPUT' && ae.closest('#screen'))) {
+          $('screen').innerHTML = pageMgmt();
+          drawMgmt();
+        }
       }
     }
   };
@@ -2550,7 +2414,7 @@
   /* =================== eventos =================== */
   document.addEventListener('click', (ev) => {
     const t = ev.target.closest(
-      '[data-speed],[data-role],[data-tab],[data-go],[data-fp],[data-fp2],[data-close-fp],[data-mode],[data-set],[data-cmd],[data-ask],[data-ok],[data-cancel],[data-nudge],[data-totrend],[data-csv],[data-act],[data-fixcell],[data-cell],[data-galm],[data-ins],[data-ack],[data-shelve],[data-ackall],[data-win],[data-mact],[data-msel],[data-scn],[data-close]'
+      '[data-speed],[data-role],[data-tab],[data-go],[data-fp],[data-fp2],[data-close-fp],[data-mode],[data-set],[data-cmd],[data-ask],[data-ok],[data-cancel],[data-nudge],[data-totrend],[data-csv],[data-act],[data-fixcell],[data-cell],[data-galm],[data-ins],[data-ack],[data-shelve],[data-ackall],[data-win],[data-mact],[data-msel],[data-mgset],[data-scn],[data-close]'
     );
     if (!t) return;
     const d = t.dataset;
@@ -2744,9 +2608,21 @@
         if (a === 'hx') P.cmd.fixHX();
         if (a === 'cells') P.cmd.fixAllSeen();
         if (a === 'monitor') P.cmd.monitor(!P.X.monitor);
+        if (a === 'liners') P.cmd.liners();
+        if (a === 'wash') {
+          P.cmd.reset('M-304');
+          P.cmd.start('M-304', 'Mantenimiento');
+        }
       });
       $('screen').innerHTML = pageMaint();
       drawMaint();
+      return;
+    }
+    if (d.mgset) {
+      const v = +$(d.mgset === 'plan' ? 'mg-plan' : 'mg-price').value;
+      runCmd(() => (d.mgset === 'plan' ? P.cmd.planRate(v) : P.cmd.price(v)));
+      $('screen').innerHTML = pageMgmt();
+      drawMgmt();
       return;
     }
     if (d.msel) {
@@ -3000,7 +2876,7 @@
           ? `<button data-scngo="${w.tag}">Ver ${w.tag}</button>`
           : '') +
       (w.eq && w.eq[0] && P.M[w.eq[0]] ? `<button data-scnmt="1">Vista de mantenimiento</button>` : '') +
-      `<button class="askai" data-askai="-2">✦ Preguntarle a la IA</button><button data-scnx="1" title="Ocultar esta barra">✕</button>`;
+      `<button class="askai" data-askai="-2">✦ Preguntar al asistente</button><button data-scnx="1" title="Ocultar esta barra">✕</button>`;
   };
   const markScn = (root) => {
     const eq = (state.scn && state.scn.w.eq) || [];
@@ -3009,22 +2885,33 @@
   document.addEventListener(
     'click',
     (ev) => {
-      const t = ev.target.closest('[data-askai],[data-scngo],[data-scnmt],[data-scnx]');
+      const t = ev.target.closest(
+        '[data-askai],[data-iaact],[data-iaman],[data-scngo],[data-scnmt],[data-scnx]'
+      );
       if (!t) return;
       ev.stopPropagation();
       ev.preventDefault();
       const d = t.dataset;
+      if (d.iaact != null) {
+        const it = (state.ins || [])[+d.iaact];
+        if (it && it.accion && Planta.ia) Planta.ia.proponer(it.accion, it);
+        return;
+      }
+      if (d.iaman) {
+        if (Planta.ia) Planta.ia.manual(d.iaman);
+        return;
+      }
       if (d.askai != null) {
         const i = +d.askai,
           it = (state.ins || [])[i],
           s = state.scn;
         const q =
           i >= 0 && it
-            ? `El asistente de turno avisa: «${it.t}». ${it.d} ¿Qué significa y qué hago?`
+            ? `¿Por qué aparece este aviso y qué hago? «${it.t}». ${it.d}`
             : i === -2 && s
               ? `Provoqué el escenario «${s.name}». ¿Qué está pasando en la planta y qué debería hacer cada rol?`
               : '';
-        if (Planta.ia) Planta.ia.ask(q);
+        if (Planta.ia) Planta.ia.ask(q, i >= 0 ? it : null);
         return;
       }
       if (d.scngo) {

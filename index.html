@@ -2011,17 +2011,22 @@
         color: #fff !important;
         font-weight: 600;
       }
-      .ins .askai {
-        margin-left: 8px;
-        padding: 0 6px;
-        font-size: 0.66rem;
-        letter-spacing: 0;
-        text-transform: none;
-        border-radius: 3px;
-        opacity: 0.85;
+      .ins-a {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 3px;
       }
-      .ins .askai:hover {
-        opacity: 1;
+      .ins-a button {
+        padding: 1px 7px;
+        font-size: 0.72rem;
+        border-radius: 3px;
+      }
+      .ins-a button.on {
+        background: #8e5ce0;
+        border-color: #8e5ce0;
+        color: #fff;
+        font-weight: 600;
       }
       .ai-sub {
         display: flex;
@@ -2280,6 +2285,7 @@
     </div>
 
     <script src="sim.js"></script>
+    <script src="ia-nucleo.js"></script>
     <script src="hmi.js"></script>
     <script src="asistente.js"></script>
   </body>

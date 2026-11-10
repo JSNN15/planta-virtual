@@ -1,0 +1,1111 @@
+{
+  "descripcion": "Tags de la planta según ISA-5.1, con su rango, banda normal de operación, lazo y alarmas. Generado desde sim.js por herramientas/generar-conocimiento.js.",
+  "tags": [
+    {
+      "id": "AIT-100",
+      "descripcion": "P80 del producto del chancado",
+      "unidad": "mm",
+      "area": 100,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 30],
+      "banda_normal": [10, 15],
+      "lazo": null,
+      "alarmas": ["AIT-100.H"]
+    },
+    {
+      "id": "LIT-100",
+      "descripcion": "Acopio de mineral fino",
+      "unidad": "t",
+      "area": 100,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 60000],
+      "banda_normal": [10000, 50000],
+      "lazo": null,
+      "alarmas": ["LIT-100.L", "LIT-100.LL"]
+    },
+    {
+      "id": "WIT-100",
+      "descripcion": "Producto del chancado al acopio",
+      "unidad": "t/h",
+      "area": 100,
+      "variable": "peso",
+      "fuente": "medición",
+      "rango": [0, 2500],
+      "banda_normal": [1400, 1950],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "WIT-101",
+      "descripcion": "Tonelaje en pesómetro",
+      "unidad": "t/h",
+      "area": 100,
+      "variable": "peso",
+      "fuente": "medición",
+      "rango": [0, 2500],
+      "banda_normal": [1500, 1900],
+      "lazo": "WIC-101",
+      "alarmas": ["WIT-101.L"]
+    },
+    {
+      "id": "SIT-101",
+      "descripcion": "Velocidad alimentador",
+      "unidad": "%",
+      "area": 100,
+      "variable": "velocidad",
+      "fuente": "medición",
+      "rango": [0, 100],
+      "banda_normal": [50, 95],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "FIT-102",
+      "descripcion": "Caudal de ácido",
+      "unidad": "m³/h",
+      "area": 100,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 30],
+      "banda_normal": [14, 23],
+      "lazo": "FFIC-102",
+      "alarmas": []
+    },
+    {
+      "id": "KY-102",
+      "descripcion": "Dosis real de ácido",
+      "unidad": "kg/t",
+      "area": 100,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [0, 40],
+      "banda_normal": [18, 22],
+      "lazo": null,
+      "alarmas": ["KY-102.H", "KY-102.L"]
+    },
+    {
+      "id": "FIT-104",
+      "descripcion": "Caudal de agua",
+      "unidad": "m³/h",
+      "area": 100,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 250],
+      "banda_normal": [90, 150],
+      "lazo": "FFIC-104",
+      "alarmas": []
+    },
+    {
+      "id": "AIT-105",
+      "descripcion": "Humedad del aglomerado",
+      "unidad": "%",
+      "area": 100,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 20],
+      "banda_normal": [8, 10.5],
+      "lazo": null,
+      "alarmas": ["AIT-105.H", "AIT-105.L"]
+    },
+    {
+      "id": "LIT-103",
+      "descripcion": "Nivel estanque diario de ácido",
+      "unidad": "%",
+      "area": 100,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 100],
+      "banda_normal": [30, 95],
+      "lazo": null,
+      "alarmas": ["LIT-103.L"]
+    },
+    {
+      "id": "PIT-202",
+      "descripcion": "Presión cabezal de riego",
+      "unidad": "bar",
+      "area": 200,
+      "variable": "presión",
+      "fuente": "medición",
+      "rango": [0, 7],
+      "banda_normal": [3, 5],
+      "lazo": null,
+      "alarmas": ["PIT-202.L", "PIT-202.LL"]
+    },
+    {
+      "id": "FIT-211",
+      "descripcion": "Riego módulo 1",
+      "unidad": "m³/h",
+      "area": 200,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 1200],
+      "banda_normal": [600, 850],
+      "lazo": "FIC-211",
+      "alarmas": []
+    },
+    {
+      "id": "FIT-212",
+      "descripcion": "Riego módulo 2",
+      "unidad": "m³/h",
+      "area": 200,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 1200],
+      "banda_normal": [600, 850],
+      "lazo": "FIC-212",
+      "alarmas": []
+    },
+    {
+      "id": "FIT-213",
+      "descripcion": "Riego módulo 3",
+      "unidad": "m³/h",
+      "area": 200,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 1200],
+      "banda_normal": [600, 850],
+      "lazo": "FIC-213",
+      "alarmas": []
+    },
+    {
+      "id": "FIT-200",
+      "descripcion": "Riego total",
+      "unidad": "m³/h",
+      "area": 200,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 3500],
+      "banda_normal": [1900, 2500],
+      "lazo": null,
+      "alarmas": ["FIT-200.L"]
+    },
+    {
+      "id": "LIT-201",
+      "descripcion": "Nivel piscina de refino",
+      "unidad": "m",
+      "area": 200,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 5],
+      "banda_normal": [2, 4.2],
+      "lazo": "LIC-201",
+      "alarmas": ["LIT-201.H", "LIT-201.L", "LIT-201.LL"]
+    },
+    {
+      "id": "FIT-206",
+      "descripcion": "Agua de reposición",
+      "unidad": "m³/h",
+      "area": 200,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 300],
+      "banda_normal": [0, 200],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "FIT-203",
+      "descripcion": "Caudal de PLS desde pilas",
+      "unidad": "m³/h",
+      "area": 200,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 3500],
+      "banda_normal": [1800, 2500],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "LIT-204",
+      "descripcion": "Nivel piscina PLS",
+      "unidad": "m",
+      "area": 200,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 5],
+      "banda_normal": [2, 4.2],
+      "lazo": "LIC-204",
+      "alarmas": ["LIT-204.H", "LIT-204.HH", "LIT-204.L", "LIT-204.LL"]
+    },
+    {
+      "id": "AIT-206",
+      "descripcion": "Cobre en PLS",
+      "unidad": "g/L",
+      "area": 200,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 6],
+      "banda_normal": [2.5, 4.5],
+      "lazo": null,
+      "alarmas": ["AIT-206.L"]
+    },
+    {
+      "id": "AIT-207",
+      "descripcion": "pH del PLS",
+      "unidad": "pH",
+      "area": 200,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 4],
+      "banda_normal": [1.6, 2.2],
+      "lazo": null,
+      "alarmas": ["AIT-207.H", "AIT-207.L"]
+    },
+    {
+      "id": "AIT-210",
+      "descripcion": "Cloruro en PLS",
+      "unidad": "g/L",
+      "area": 200,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 25],
+      "banda_normal": [0, 6],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "FIT-205",
+      "descripcion": "Alimentación a SX",
+      "unidad": "m³/h",
+      "area": 200,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 3000],
+      "banda_normal": [1800, 2400],
+      "lazo": "FIC-205",
+      "alarmas": ["FIT-205.L"]
+    },
+    {
+      "id": "AIT-208",
+      "descripcion": "Cobre en refino",
+      "unidad": "g/L",
+      "area": 300,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 2],
+      "banda_normal": [0, 0.4],
+      "lazo": null,
+      "alarmas": ["AIT-208.H"]
+    },
+    {
+      "id": "FIT-301",
+      "descripcion": "Caudal de orgánico",
+      "unidad": "m³/h",
+      "area": 300,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 3500],
+      "banda_normal": [1500, 2300],
+      "lazo": "FFIC-301",
+      "alarmas": []
+    },
+    {
+      "id": "KY-301",
+      "descripcion": "Razón O/A",
+      "unidad": "",
+      "area": 300,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [0, 2],
+      "banda_normal": [0.8, 1.05],
+      "lazo": null,
+      "alarmas": ["KY-301.L"]
+    },
+    {
+      "id": "AIT-302",
+      "descripcion": "Cobre en orgánico cargado",
+      "unidad": "g/L",
+      "area": 300,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 9.24],
+      "banda_normal": [4.5, 7],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "KY-303",
+      "descripcion": "Extracción",
+      "unidad": "%",
+      "area": 300,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [50, 100],
+      "banda_normal": [90, 100],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "LIT-303",
+      "descripcion": "Interfase E1 (espesor orgánico)",
+      "unidad": "m",
+      "area": 300,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 0.6],
+      "banda_normal": [0.2, 0.35],
+      "lazo": null,
+      "alarmas": ["LIT-303.H"]
+    },
+    {
+      "id": "AIT-309",
+      "descripcion": "Arrastre acuoso en orgánico",
+      "unidad": "ppm",
+      "area": 300,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 2000],
+      "banda_normal": [0, 400],
+      "lazo": null,
+      "alarmas": ["AIT-309.H"]
+    },
+    {
+      "id": "KY-304",
+      "descripcion": "Transferencia de cobre",
+      "unidad": "t/h",
+      "area": 300,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [0, 10],
+      "banda_normal": [5.5, 7.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "IIT-401",
+      "descripcion": "Corriente del rectificador",
+      "unidad": "kA",
+      "area": 400,
+      "variable": "corriente",
+      "fuente": "medición",
+      "rango": [0, 50],
+      "banda_normal": [33, 40],
+      "lazo": "IIC-401",
+      "alarmas": ["IIT-401.L"]
+    },
+    {
+      "id": "EIT-401",
+      "descripcion": "Voltaje del rectificador",
+      "unidad": "V",
+      "area": 400,
+      "variable": "voltaje",
+      "fuente": "medición",
+      "rango": [0, 450],
+      "banda_normal": [250, 360],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "JIT-401",
+      "descripcion": "Potencia del rectificador",
+      "unidad": "MW",
+      "area": 400,
+      "variable": "potencia",
+      "fuente": "medición",
+      "rango": [0, 20],
+      "banda_normal": [8, 14],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "KY-401",
+      "descripcion": "Densidad de corriente",
+      "unidad": "A/m²",
+      "area": 400,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [0, 450],
+      "banda_normal": [250, 340],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "KY-402",
+      "descripcion": "Voltaje medio de celda",
+      "unidad": "V",
+      "area": 400,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [1.5, 2.5],
+      "banda_normal": [1.85, 2.15],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "FIT-402",
+      "descripcion": "Caudal de electrolito a celdas",
+      "unidad": "m³/h",
+      "area": 400,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 1500],
+      "banda_normal": [800, 1200],
+      "lazo": null,
+      "alarmas": ["FIT-402.L", "FIT-402.LL"]
+    },
+    {
+      "id": "TIT-403",
+      "descripcion": "Temperatura del electrolito",
+      "unidad": "°C",
+      "area": 400,
+      "variable": "temperatura",
+      "fuente": "medición",
+      "rango": [20, 65],
+      "banda_normal": [42, 50],
+      "lazo": "TIC-403",
+      "alarmas": ["TIT-403.H", "TIT-403.L", "TIT-403.HH"]
+    },
+    {
+      "id": "AIT-405",
+      "descripcion": "Cobre en electrolito",
+      "unidad": "g/L",
+      "area": 400,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [30, 55],
+      "banda_normal": [40, 48],
+      "lazo": "AIC-405",
+      "alarmas": ["AIT-405.L", "AIT-405.H"]
+    },
+    {
+      "id": "AIT-406",
+      "descripcion": "Ácido en electrolito",
+      "unidad": "g/L",
+      "area": 400,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [140, 220],
+      "banda_normal": [170, 195],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "AIT-407",
+      "descripcion": "Hierro en electrolito",
+      "unidad": "mg/L",
+      "area": 400,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 3000],
+      "banda_normal": [0, 1200],
+      "lazo": null,
+      "alarmas": ["AIT-407.H"]
+    },
+    {
+      "id": "AIT-408",
+      "descripcion": "Cobalto en electrolito",
+      "unidad": "mg/L",
+      "area": 400,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 300],
+      "banda_normal": [120, 200],
+      "lazo": null,
+      "alarmas": ["AIT-408.L"]
+    },
+    {
+      "id": "AIT-410",
+      "descripcion": "Cloruro en electrolito",
+      "unidad": "mg/L",
+      "area": 400,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [0, 100],
+      "banda_normal": [0, 25],
+      "lazo": null,
+      "alarmas": ["AIT-410.H", "AIT-410.HH"]
+    },
+    {
+      "id": "FIT-410",
+      "descripcion": "Electrolito de avance a reextracción",
+      "unidad": "m³/h",
+      "area": 400,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 1200],
+      "banda_normal": [500, 900],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "AIT-411",
+      "descripcion": "Cobre en electrolito rico (de SX)",
+      "unidad": "g/L",
+      "area": 400,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [30, 60],
+      "banda_normal": [44, 52],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "AIT-412",
+      "descripcion": "Cobre en electrolito pobre (de celdas)",
+      "unidad": "g/L",
+      "area": 400,
+      "variable": "análisis",
+      "fuente": "medición",
+      "rango": [25, 50],
+      "banda_normal": [34, 42],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "LIT-401",
+      "descripcion": "Nivel estanque de electrolito",
+      "unidad": "%",
+      "area": 400,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 100],
+      "banda_normal": [40, 85],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "KY-405",
+      "descripcion": "Producción de cátodo",
+      "unidad": "t/h",
+      "area": 400,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [0, 10],
+      "banda_normal": [5.5, 7.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "KY-406",
+      "descripcion": "Eficiencia de corriente",
+      "unidad": "%",
+      "area": 400,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [60, 100],
+      "banda_normal": [88, 100],
+      "lazo": null,
+      "alarmas": ["KY-406.L"]
+    },
+    {
+      "id": "KY-407",
+      "descripcion": "Energía específica",
+      "unidad": "kWh/t",
+      "area": 400,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [1000, 3500],
+      "banda_normal": [1600, 2200],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "FIT-404",
+      "descripcion": "Dosificación de cobalto",
+      "unidad": "L/h",
+      "area": 400,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 100],
+      "banda_normal": [30, 70],
+      "lazo": "FIC-404",
+      "alarmas": []
+    },
+    {
+      "id": "FIT-409",
+      "descripcion": "Sangrado de electrolito",
+      "unidad": "m³/h",
+      "area": 400,
+      "variable": "caudal",
+      "fuente": "medición",
+      "rango": [0, 20],
+      "banda_normal": [3, 12],
+      "lazo": "FIC-409",
+      "alarmas": []
+    },
+    {
+      "id": "JIT-500",
+      "descripcion": "Demanda total de la planta",
+      "unidad": "MW",
+      "area": 500,
+      "variable": "potencia",
+      "fuente": "medición",
+      "rango": [0, 25],
+      "banda_normal": [10, 18],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "KY-501",
+      "descripcion": "Factor de potencia",
+      "unidad": "",
+      "area": 500,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [0.5, 1],
+      "banda_normal": [0.92, 1],
+      "lazo": null,
+      "alarmas": ["KY-501.L"]
+    },
+    {
+      "id": "KY-502",
+      "descripcion": "Distorsión armónica (THD)",
+      "unidad": "%",
+      "area": 500,
+      "variable": "calculado",
+      "fuente": "calculado",
+      "rango": [0, 15],
+      "banda_normal": [0, 5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "LIT-501",
+      "descripcion": "Stock de ácido",
+      "unidad": "t",
+      "area": 500,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 2000],
+      "banda_normal": [500, 1900],
+      "lazo": null,
+      "alarmas": ["LIT-501.L", "LIT-501.LL"]
+    },
+    {
+      "id": "LIT-502",
+      "descripcion": "Piscina de agua de proceso",
+      "unidad": "m³",
+      "area": 500,
+      "variable": "nivel",
+      "fuente": "medición",
+      "rango": [0, 5000],
+      "banda_normal": [1500, 4800],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-CR-101",
+      "descripcion": "Vibración CR-101",
+      "unidad": "mm/s",
+      "area": 100,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 11.36],
+      "banda_normal": [0, 4.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-M-103",
+      "descripcion": "Vibración M-103",
+      "unidad": "mm/s",
+      "area": 100,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 11.36],
+      "banda_normal": [0, 4.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-CV-101",
+      "descripcion": "Vibración CV-101",
+      "unidad": "mm/s",
+      "area": 100,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 11.36],
+      "banda_normal": [0, 4.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-FD-101",
+      "descripcion": "Vibración FD-101",
+      "unidad": "mm/s",
+      "area": 100,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-102",
+      "descripcion": "Vibración P-102",
+      "unidad": "mm/s",
+      "area": 100,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-104",
+      "descripcion": "Vibración P-104",
+      "unidad": "mm/s",
+      "area": 100,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-201A",
+      "descripcion": "Vibración P-201A",
+      "unidad": "mm/s",
+      "area": 200,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 11.36],
+      "banda_normal": [0, 4.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-201B",
+      "descripcion": "Vibración P-201B",
+      "unidad": "mm/s",
+      "area": 200,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 11.36],
+      "banda_normal": [0, 4.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-202A",
+      "descripcion": "Vibración P-202A",
+      "unidad": "mm/s",
+      "area": 200,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 11.36],
+      "banda_normal": [0, 4.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-202B",
+      "descripcion": "Vibración P-202B",
+      "unidad": "mm/s",
+      "area": 200,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 11.36],
+      "banda_normal": [0, 4.5],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-M-301",
+      "descripcion": "Vibración M-301",
+      "unidad": "mm/s",
+      "area": 300,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-M-302",
+      "descripcion": "Vibración M-302",
+      "unidad": "mm/s",
+      "area": 300,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-M-303",
+      "descripcion": "Vibración M-303",
+      "unidad": "mm/s",
+      "area": 300,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-M-304",
+      "descripcion": "Vibración M-304",
+      "unidad": "mm/s",
+      "area": 300,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-305",
+      "descripcion": "Vibración P-305",
+      "unidad": "mm/s",
+      "area": 300,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-401A",
+      "descripcion": "Vibración P-401A",
+      "unidad": "mm/s",
+      "area": 400,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-401B",
+      "descripcion": "Vibración P-401B",
+      "unidad": "mm/s",
+      "area": 400,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    },
+    {
+      "id": "VIT-P-501",
+      "descripcion": "Vibración P-501",
+      "unidad": "mm/s",
+      "area": 500,
+      "variable": "vibración",
+      "fuente": "medición",
+      "rango": [0, 7.2],
+      "banda_normal": [0, 2.8],
+      "lazo": null,
+      "alarmas": []
+    }
+  ],
+  "lazos": [
+    {
+      "id": "WIC-101",
+      "descripcion": "Tonelaje a la correa",
+      "unidad": "t/h",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 0.6,
+        "ti_s": 40,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "FFIC-102",
+      "descripcion": "Razón ácido / mineral",
+      "unidad": "m³/h",
+      "modo_normal": "CAS",
+      "modos": ["MAN", "AUTO", "CAS"],
+      "sintonia": {
+        "kp": 0.8,
+        "ti_s": 8,
+        "accion": "inversa"
+      },
+      "razon": {
+        "valor": 20,
+        "unidad": "kg/t"
+      }
+    },
+    {
+      "id": "FFIC-104",
+      "descripcion": "Razón agua / mineral",
+      "unidad": "m³/h",
+      "modo_normal": "CAS",
+      "modos": ["MAN", "AUTO", "CAS"],
+      "sintonia": {
+        "kp": 0.8,
+        "ti_s": 8,
+        "accion": "inversa"
+      },
+      "razon": {
+        "valor": 0.07,
+        "unidad": "m³/t"
+      }
+    },
+    {
+      "id": "FIC-211",
+      "descripcion": "Riego módulo 1",
+      "unidad": "m³/h",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 0.5,
+        "ti_s": 20,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "FIC-212",
+      "descripcion": "Riego módulo 2",
+      "unidad": "m³/h",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 0.5,
+        "ti_s": 20,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "FIC-213",
+      "descripcion": "Riego módulo 3",
+      "unidad": "m³/h",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 0.5,
+        "ti_s": 20,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "LIC-201",
+      "descripcion": "Nivel piscina de refino (agua de reposición)",
+      "unidad": "m",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 4,
+        "ti_s": 900,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "LIC-204",
+      "descripcion": "Nivel piscina PLS (consigna a FIC-205)",
+      "unidad": "m",
+      "modo_normal": "MAN",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 3,
+        "ti_s": 1200,
+        "accion": "directa"
+      },
+      "razon": null
+    },
+    {
+      "id": "FIC-205",
+      "descripcion": "Alimentación de PLS a SX",
+      "unidad": "m³/h",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO", "CAS"],
+      "sintonia": {
+        "kp": 0.5,
+        "ti_s": 15,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "FFIC-301",
+      "descripcion": "Razón orgánico / acuoso (O/A)",
+      "unidad": "m³/h",
+      "modo_normal": "CAS",
+      "modos": ["MAN", "AUTO", "CAS"],
+      "sintonia": {
+        "kp": 0.5,
+        "ti_s": 15,
+        "accion": "inversa"
+      },
+      "razon": {
+        "valor": 0.9,
+        "unidad": "O/A"
+      }
+    },
+    {
+      "id": "IIC-401",
+      "descripcion": "Corriente del rectificador (consigna del plan)",
+      "unidad": "kA",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO", "CAS"],
+      "sintonia": {
+        "kp": 1,
+        "ti_s": 10,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "AIC-405",
+      "descripcion": "Cobre en electrolito (consigna a IIC-401 solo en cascada)",
+      "unidad": "g/L",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 6,
+        "ti_s": 6000,
+        "accion": "directa"
+      },
+      "razon": null
+    },
+    {
+      "id": "TIC-403",
+      "descripcion": "Temperatura del electrolito",
+      "unidad": "°C",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 3,
+        "ti_s": 1200,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "FIC-404",
+      "descripcion": "Dosificación de cobalto",
+      "unidad": "L/h",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 0.6,
+        "ti_s": 10,
+        "accion": "inversa"
+      },
+      "razon": null
+    },
+    {
+      "id": "FIC-409",
+      "descripcion": "Sangrado de electrolito",
+      "unidad": "m³/h",
+      "modo_normal": "AUTO",
+      "modos": ["MAN", "AUTO"],
+      "sintonia": {
+        "kp": 0.6,
+        "ti_s": 10,
+        "accion": "inversa"
+      },
+      "razon": null
+    }
+  ]
+}

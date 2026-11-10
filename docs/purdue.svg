@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" width="1100" height="580" role="img" aria-label="Modelo Purdue de la planta virtual y dónde entra la IA">
+<style>.bg{fill:#fff} .lv{fill:#f6f8fa;stroke:#d0d7de} .lvn{fill:#1f2328;font:700 13px ui-monospace,Consolas,monospace} .lvt{fill:#59636e;font:600 11px system-ui,-apple-system,'Segoe UI',sans-serif}
+.bx{fill:#fff;stroke:#57606a;stroke-width:1.3} .bxi{fill:#f3edff;stroke:#8e5ce0;stroke-width:1.6} .bxd{fill:#fff8e6;stroke:#d4a72c;stroke-width:1.6}
+.t{fill:#1f2328;font:600 12px system-ui,-apple-system,'Segoe UI',sans-serif} .s{fill:#59636e;font:10.5px system-ui,-apple-system,'Segoe UI',sans-serif} .ttl{fill:#1f2328;font:700 15px system-ui,-apple-system,'Segoe UI',sans-serif}
+.up{stroke:#2f6fd6;stroke-width:2.5;fill:none} .dn{stroke:#c0392b;stroke-width:2.5;fill:none} .lt{fill:#59636e;font:11px system-ui,-apple-system,'Segoe UI',sans-serif}</style>
+<defs><marker id="au" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#2f6fd6"/></marker>
+<marker id="ad" markerWidth="9" markerHeight="9" refX="4.5" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#c0392b"/></marker></defs>
+<rect class="bg" width="1100" height="580"/>
+<text class="ttl" x="20" y="28">Modelo Purdue (ISA-95 / IEC 62443) · dónde vive cada pieza y por dónde entra la IA</text>
+<rect class="lv" x="20" y="48" width="760" height="64" rx="6"/><text class="lvn" x="34" y="76">Nube</text><text class="lvt" x="34" y="94">Inferencia</text>
+<rect class="bxi" x="130" y="57" width="640" height="46" rx="5"/><text class="t" x="450" y="78" text-anchor="middle">NVIDIA NIM</text><text class="s" x="450" y="94" text-anchor="middle">Nemotron Lightning · Super · Embed</text>
+<rect class="lv" x="20" y="118" width="760" height="64" rx="6"/><text class="lvn" x="34" y="146">4</text><text class="lvt" x="34" y="164">Negocio</text>
+<rect class="bx" x="130" y="127" width="640" height="46" rx="5"/><text class="t" x="450" y="148" text-anchor="middle">Vista de gerencia</text><text class="s" x="450" y="164" text-anchor="middle">plan, precio, pérdidas, cosechas</text>
+<rect class="lv" x="20" y="188" width="760" height="64" rx="6"/><text class="lvn" x="34" y="216">3.5</text><text class="lvt" x="34" y="234">DMZ</text>
+<rect class="bxd" x="130" y="197" width="640" height="46" rx="5"/><text class="t" x="450" y="218" text-anchor="middle">nv-gateway (Cloudflare Worker)</text><text class="s" x="450" y="234" text-anchor="middle">clave protegida · orígenes · límite · prompts fijos</text>
+<rect class="lv" x="20" y="258" width="760" height="64" rx="6"/><text class="lvn" x="34" y="286">3</text><text class="lvt" x="34" y="304">Operaciones</text>
+<rect class="bxi" x="130" y="267" width="205" height="46" rx="5"/><text class="t" x="233" y="288" text-anchor="middle">Asistente de IA</text><text class="s" x="233" y="304" text-anchor="middle">vigilancia · verificador · aprobación</text>
+<rect class="bx" x="347" y="267" width="205" height="46" rx="5"/><text class="t" x="450" y="288" text-anchor="middle">Base de conocimiento</text><text class="s" x="450" y="304" text-anchor="middle">fichas · acciones · reglas · manuales</text>
+<rect class="bx" x="565" y="267" width="205" height="46" rx="5"/><text class="t" x="667" y="288" text-anchor="middle">Historiador y bitácora</text><text class="s" x="667" y="304" text-anchor="middle">8 h de tendencias · eventos</text>
+<rect class="lv" x="20" y="328" width="760" height="64" rx="6"/><text class="lvn" x="34" y="356">2</text><text class="lvt" x="34" y="374">Supervisión</text>
+<rect class="bx" x="130" y="337" width="640" height="46" rx="5"/><text class="t" x="450" y="358" text-anchor="middle">HMI de sala</text><text class="s" x="450" y="374" text-anchor="middle">ISA-101 · alarmas ISA-18.2 · secuencias ISA-106</text>
+<rect class="lv" x="20" y="398" width="760" height="64" rx="6"/><text class="lvn" x="34" y="426">1</text><text class="lvt" x="34" y="444">Control</text>
+<rect class="bx" x="130" y="407" width="314" height="46" rx="5"/><text class="t" x="287" y="428" text-anchor="middle">Lazos PID y cascadas</text><text class="s" x="287" y="444" text-anchor="middle">permisivos · enclavamientos · disparos</text>
+<rect class="bx" x="456" y="407" width="314" height="46" rx="5"/><text class="t" x="613" y="428" text-anchor="middle">SIS (en planta real)</text><text class="s" x="613" y="444" text-anchor="middle">independiente, IEC 61511</text>
+<rect class="lv" x="20" y="468" width="760" height="64" rx="6"/><text class="lvn" x="34" y="496">0</text><text class="lvt" x="34" y="514">Proceso</text>
+<rect class="bx" x="130" y="477" width="640" height="46" rx="5"/><text class="t" x="450" y="498" text-anchor="middle">Sensores y actuadores</text><text class="s" x="450" y="514" text-anchor="middle">75 tags · válvulas · motores · rectificador</text>
+<path class="up" d="M820,520 L820,70" marker-end="url(#au)"/>
+<text class="t" x="836" y="90" fill="#2f6fd6">Datos hacia arriba</text>
+<text class="lt" x="836" y="108">Solo lectura: la IA recibe una foto</text>
+<text class="lt" x="836" y="123">del estado y el resultado de</text>
+<text class="lt" x="836" y="138">herramientas de consulta.</text>
+<text class="lt" x="836" y="153">Nunca escribe en la planta.</text>
+<path class="dn" d="M1072,275 L1072,450" marker-end="url(#ad)"/>
+<text class="t" x="836" y="300" fill="#c0392b">Acciones hacia abajo</text>
+<text class="lt" x="836" y="318">Solo desde el nivel 2-3, por los</text>
+<text class="lt" x="836" y="333">mismos comandos de la HMI y con</text>
+<text class="lt" x="836" y="348">aprobación humana en dos pasos.</text>
+<text class="lt" x="836" y="363">Permisivos, enclavamientos y SIS</text>
+<text class="lt" x="836" y="378">siguen mandando (reglas S1 a S9).</text>
+<text class="lt" x="20" y="548">Violeta: componentes de IA. Ámbar: zona desmilitarizada, la única salida hacia la nube. En una planta real la nube no llega bajo el nivel 3.5,</text>
+<text class="lt" x="20" y="564">el asistente corre en la red de operaciones y el SIS es independiente del sistema de control y de la IA.</text>
+</svg>

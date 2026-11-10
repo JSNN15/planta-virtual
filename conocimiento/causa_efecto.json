@@ -1,0 +1,132 @@
+{
+  "descripcion": "Matriz causa-efecto: permisivos de partida y enclavamientos y disparos de proceso. En una planta real los disparos de seguridad viven en un sistema instrumentado independiente (IEC 61511); aquí están en el motor y se documentan juntos.",
+  "permisivos": [
+    {
+      "equipo": "CV-101",
+      "tipo": "permisivo",
+      "condiciones": ["Tambor M-103 en marcha", "Cordón de emergencia rearmado", "MCC-100 energizado"]
+    },
+    {
+      "equipo": "FD-101",
+      "tipo": "permisivo",
+      "condiciones": ["Correa CV-101 en marcha", "MCC-100 energizado"]
+    },
+    {
+      "equipo": "P-102",
+      "tipo": "permisivo",
+      "condiciones": ["Correa CV-101 en marcha", "Tambor M-103 en marcha", "Nivel estanque de ácido > 10 %"]
+    },
+    {
+      "equipo": "P-104",
+      "tipo": "permisivo",
+      "condiciones": ["Correa CV-101 en marcha", "Tambor M-103 en marcha"]
+    },
+    {
+      "equipo": "P-201A",
+      "tipo": "permisivo",
+      "condiciones": ["Nivel piscina de refino > 0,8 m", "MCC-200 energizado"]
+    },
+    {
+      "equipo": "P-201B",
+      "tipo": "permisivo",
+      "condiciones": ["Nivel piscina de refino > 0,8 m", "MCC-200 energizado"]
+    },
+    {
+      "equipo": "P-202A",
+      "tipo": "permisivo",
+      "condiciones": ["Nivel piscina PLS > 0,8 m", "MCC-200 energizado"]
+    },
+    {
+      "equipo": "P-202B",
+      "tipo": "permisivo",
+      "condiciones": ["Nivel piscina PLS > 0,8 m", "MCC-200 energizado"]
+    },
+    {
+      "equipo": "RT-401",
+      "tipo": "permisivo",
+      "condiciones": ["Caudal de electrolito > 500 m³/h", "Temperatura < 58 °C", "Interruptor 52-RT cerrado"]
+    },
+    {
+      "equipo": "P-501",
+      "tipo": "permisivo",
+      "condiciones": ["Stock de ácido > 50 t"]
+    },
+    {
+      "equipo": "CR-101",
+      "tipo": "permisivo",
+      "condiciones": ["Acopio de mineral fino < 58.000 t", "MCC-100 energizado"]
+    }
+  ],
+  "enclavamientos": [
+    {
+      "causa": "Tambor M-103 detenido",
+      "efecto": "Detiene la correa CV-101",
+      "tipo": "enclavamiento"
+    },
+    {
+      "causa": "Correa CV-101 detenida",
+      "efecto": "Detiene el alimentador FD-101",
+      "tipo": "enclavamiento"
+    },
+    {
+      "causa": "Correa o tambor detenidos",
+      "efecto": "Detiene las bombas de ácido P-102 y de agua P-104",
+      "tipo": "enclavamiento"
+    },
+    {
+      "causa": "Acopio de mineral fino sobre 58.000 t",
+      "efecto": "Detiene el chancador CR-101",
+      "tipo": "enclavamiento"
+    },
+    {
+      "causa": "Nivel de la piscina de refino bajo 0,8 m",
+      "efecto": "Dispara P-201A y P-201B",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Nivel de la piscina PLS bajo 0,8 m",
+      "efecto": "Dispara P-202A y P-202B",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Nivel del estanque de electrolito bajo 10 %",
+      "efecto": "Dispara P-401A y P-401B",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Caudal de electrolito bajo 500 m³/h",
+      "efecto": "Dispara el rectificador RT-401",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Temperatura del electrolito ≥ 58 °C",
+      "efecto": "Dispara el rectificador RT-401",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Interruptor 52-RT abierto",
+      "efecto": "Dispara el rectificador RT-401",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "MCC sin tensión",
+      "efecto": "Disparan todos los motores de ese MCC",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Vibración sobre 1,25 × el límite C/D de su grupo",
+      "efecto": "Dispara el motor",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Stock de ácido agotado",
+      "efecto": "Dispara la bomba de transferencia P-501",
+      "tipo": "disparo"
+    },
+    {
+      "causa": "Bomba A disparada con la B en respaldo",
+      "efecto": "Parte la bomba B",
+      "tipo": "respaldo"
+    }
+  ]
+}

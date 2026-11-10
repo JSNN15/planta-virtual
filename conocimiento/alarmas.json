@@ -1,0 +1,597 @@
+{
+  "descripcion": "Base maestra de alarmas (ISA-18.2 · IEC 62682): por cada alarma, su causa, su consecuencia, la acción del operador y el tiempo disponible para responder. La planta la carga junto al motor; las pruebas verifican que cada alarma del simulador tenga su ficha.",
+  "prioridades": {
+    "1": "alta: actuar ya (minutos)",
+    "2": "media: actuar en el turno (decenas de minutos)",
+    "3": "baja: programar (horas)"
+  },
+  "alarmas": [
+    {
+      "id": "AIT-100.H",
+      "causas": [
+        "Revestimientos del chancador terciario gastados",
+        "Abertura de descarga (CSS) desajustada",
+        "Harnero del circuito cerrado con malla rota"
+      ],
+      "consecuencia": "Mineral más grueso a la pila nueva: baja la recuperación del sector 1 y el cobre del PLS cae en uno o dos días.",
+      "accion_operador": [
+        "Confirmar la tendencia de AIT-100 de las últimas horas",
+        "Avisar a mantenimiento para programar el cambio de revestimientos",
+        "Verificar que el acopio fino alcance para detener el chancador 2 h"
+      ],
+      "tiempo_respuesta_min": 240,
+      "acciones_sugeridas": ["cambiar_revestimientos"],
+      "manual": "MT-3.3",
+      "justificacion_prioridad": "Pérdida económica lenta, sin riesgo a personas: prioridad baja."
+    },
+    {
+      "id": "LIT-100.L",
+      "causas": ["Chancador detenido o con menor capacidad", "Alimentador consumiendo sobre lo normal"],
+      "consecuencia": "Quedan pocas horas de mineral para aglomeración; si se vacía, se detiene toda la alimentación a pilas.",
+      "accion_operador": [
+        "Revisar estado de CR-101",
+        "Calcular horas de autonomía (acopio / tonelaje)",
+        "Si el chancador no vuelve pronto, bajar el tonelaje con WIC-101"
+      ],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["partir_equipo", "consigna_lazo"],
+      "manual": "OP-4.1",
+      "justificacion_prioridad": "Pérdida de producción en horas: prioridad media."
+    },
+    {
+      "id": "LIT-100.LL",
+      "causas": ["Chancador detenido por largo tiempo"],
+      "consecuencia": "El alimentador queda sin mineral: se corta la aglomeración y la pila nueva deja de crecer.",
+      "accion_operador": [
+        "Parar el área 100 con la parada secuencial antes de que la correa corra vacía",
+        "Coordinar la vuelta del chancador"
+      ],
+      "tiempo_respuesta_min": 10,
+      "acciones_sugeridas": ["secuencia_partida_area100"],
+      "manual": "OP-4.1",
+      "justificacion_prioridad": "Detención inminente del área: prioridad alta."
+    },
+    {
+      "id": "WIT-101.L",
+      "causas": [
+        "Alimentador con poca carga o atollado",
+        "Acopio vacío",
+        "WIC-101 en manual con salida baja"
+      ],
+      "consecuencia": "Menos mineral a la pila: se pierde producción futura.",
+      "accion_operador": [
+        "Revisar FD-101 y el modo de WIC-101",
+        "Revisar el nivel del acopio fino (LIT-100)"
+      ],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["lazo_modo_normal"],
+      "manual": "OP-4.1",
+      "justificacion_prioridad": "Pérdida lenta: prioridad baja."
+    },
+    {
+      "id": "KY-102.H",
+      "causas": [
+        "Pesómetro mide menos que el mineral real",
+        "FFIC-102 con razón mal ingresada",
+        "Compensación de retardo desactivada"
+      ],
+      "consecuencia": "Sobre consumo de ácido (costo) y aglomerado con exceso de ácido libre.",
+      "accion_operador": [
+        "Comparar FIT-102 con la consigna de razón",
+        "Activar la compensación de retardo si está desactivada"
+      ],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["compensacion_retardo"],
+      "manual": "OP-4.1",
+      "justificacion_prioridad": "Costo directo y calidad del curado: prioridad media."
+    },
+    {
+      "id": "KY-102.L",
+      "causas": ["Estanque diario TK-103 bajo", "Bomba P-102 sin caudal", "Razón mal ingresada"],
+      "consecuencia": "Curado insuficiente: el mineral consume ácido en la pila y baja la recuperación.",
+      "accion_operador": ["Revisar LIT-103 y P-102", "Revisar la razón de FFIC-102"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["compensacion_retardo", "recibir_camion_acido"],
+      "manual": "OP-4.1",
+      "justificacion_prioridad": "Afecta la recuperación de todo el mineral que pasa: prioridad media."
+    },
+    {
+      "id": "AIT-105.H",
+      "causas": ["Exceso de agua en el tambor", "Mineral con humedad natural alta"],
+      "consecuencia": "Aglomerado blando que colapsa en la pila y baja la permeabilidad.",
+      "accion_operador": ["Bajar la razón de FFIC-104"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["consigna_lazo"],
+      "manual": "OP-4.1",
+      "justificacion_prioridad": "Efecto en días: prioridad baja."
+    },
+    {
+      "id": "AIT-105.L",
+      "causas": ["Poca agua al tambor", "Bomba P-104 detenida"],
+      "consecuencia": "Aglomerado seco con finos sueltos: canalización en la pila.",
+      "accion_operador": ["Revisar P-104 y la razón de FFIC-104"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["partir_equipo"],
+      "manual": "OP-4.1",
+      "justificacion_prioridad": "Efecto en días: prioridad baja."
+    },
+    {
+      "id": "LIT-103.L",
+      "causas": ["P-501 no transfiere desde la bodega", "Stock de ácido agotado"],
+      "consecuencia": "Si TK-103 se vacía, P-102 queda sin ácido y la dosis cae.",
+      "accion_operador": ["Revisar P-501 y LIT-501", "Pedir camiones si el stock está bajo"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["partir_equipo", "recibir_camion_acido"],
+      "manual": "OP-4.5",
+      "justificacion_prioridad": "Pérdida del curado en minutos: prioridad media."
+    },
+    {
+      "id": "PIT-202.L",
+      "causas": ["Bomba de riego con falla", "Fuga o rotura en el cabezal"],
+      "consecuencia": "Riego insuficiente: baja el cobre que entregan las pilas.",
+      "accion_operador": ["Revisar P-201A/B", "Partir la bomba de respaldo si la A disparó"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["partir_equipo", "respaldo_automatico"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Pérdida de lixiviación en horas: prioridad media."
+    },
+    {
+      "id": "PIT-202.LL",
+      "causas": ["Ambas bombas de riego detenidas", "MCC-200 sin energía"],
+      "consecuencia": "Las pilas dejan de recibir solución; la piscina de refino sube.",
+      "accion_operador": [
+        "Identificar la causa (MCC-200, disparos)",
+        "Partir la bomba disponible tan pronto se normalice la energía"
+      ],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": ["partir_equipo", "respaldo_automatico"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Sin riego toda la planta pierde producción: prioridad alta."
+    },
+    {
+      "id": "FIT-200.L",
+      "causas": ["Válvulas de riego cerrando", "Presión de cabezal baja"],
+      "consecuencia": "Riego bajo: el PLS baja de caudal en horas.",
+      "accion_operador": ["Revisar FIC-211 a 213 y PIT-202"],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["lazo_modo_normal"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Pérdida en horas: prioridad media."
+    },
+    {
+      "id": "LIT-201.H",
+      "causas": ["Riego detenido mientras SX sigue devolviendo refino", "Reposición de agua excesiva"],
+      "consecuencia": "Riesgo de rebalse de la piscina de refino (derrame de solución ácida).",
+      "accion_operador": ["Normalizar el riego", "Bajar FIC-205 si el riego no vuelve pronto"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["partir_equipo", "consigna_lazo"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Riesgo ambiental: prioridad media."
+    },
+    {
+      "id": "LIT-201.L",
+      "causas": ["Evaporación sin reposición", "LIC-201 en manual"],
+      "consecuencia": "Las bombas de riego pueden disparar por nivel muy bajo.",
+      "accion_operador": ["Poner LIC-201 en automático", "Revisar el stock de agua TK-502"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["lazo_modo_normal"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Pérdida del riego en horas: prioridad media."
+    },
+    {
+      "id": "LIT-201.LL",
+      "causas": ["Reposición detenida por tiempo prolongado"],
+      "consecuencia": "Disparo de P-201A/B por protección de nivel.",
+      "accion_operador": ["Reponer agua de inmediato", "Bajar el riego"],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": ["lazo_modo_normal"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Disparo inminente del riego: prioridad alta."
+    },
+    {
+      "id": "LIT-204.H",
+      "causas": ["Bombas de PLS a SX detenidas", "FIC-205 con consigna baja"],
+      "consecuencia": "Se pierde capacidad de pulmón de la piscina PLS.",
+      "accion_operador": ["Revisar P-202A/B", "Subir FIC-205 si SX lo permite"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["partir_equipo", "consigna_lazo"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Riesgo de rebalse en horas: prioridad media."
+    },
+    {
+      "id": "LIT-204.HH",
+      "causas": ["Alimentación a SX detenida con drenaje de pilas activo"],
+      "consecuencia": "Rebalse de PLS: derrame de solución ácida con cobre (incidente ambiental reportable).",
+      "accion_operador": [
+        "Restablecer el bombeo a SX",
+        "Si no es posible, bajar el riego para reducir el drenaje"
+      ],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": ["partir_equipo", "respaldo_automatico"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Derrame inminente: prioridad alta."
+    },
+    {
+      "id": "LIT-204.L",
+      "causas": ["Drenaje de pilas bajo (riego detenido horas antes)", "FIC-205 sobre el drenaje"],
+      "consecuencia": "Las bombas a SX pueden quedar sin succión.",
+      "accion_operador": ["Bajar FIC-205 al caudal que entrega la pila"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["consigna_lazo"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Pérdida de alimentación a SX en horas: prioridad media."
+    },
+    {
+      "id": "LIT-204.LL",
+      "causas": ["Bombeo a SX mayor que el drenaje por tiempo prolongado"],
+      "consecuencia": "Disparo de P-202A/B por protección de nivel; SX sin alimentación.",
+      "accion_operador": ["Bajar FIC-205 de inmediato"],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": ["consigna_lazo"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Detención de SX inminente: prioridad alta."
+    },
+    {
+      "id": "FIT-205.L",
+      "causas": ["Bombas de PLS detenidas", "FCV-205 cerrando"],
+      "consecuencia": "Menos cobre a SX y a la nave.",
+      "accion_operador": ["Revisar P-202A/B y FIC-205"],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["partir_equipo", "lazo_modo_normal"],
+      "manual": "OP-4.3",
+      "justificacion_prioridad": "Pérdida de producción en horas: prioridad media."
+    },
+    {
+      "id": "AIT-206.L",
+      "causas": [
+        "Cambio de mineral (menos cobre soluble)",
+        "Riego bajo en los sectores nuevos",
+        "P80 alto en el chancado"
+      ],
+      "consecuencia": "Menos cobre transferido; la nave produce menos.",
+      "accion_operador": ["Revisar el tipo de mineral y el P80 (AIT-100)", "Revisar el riego por sector"],
+      "tiempo_respuesta_min": 120,
+      "acciones_sugeridas": ["cambiar_revestimientos"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Efecto económico lento: prioridad baja."
+    },
+    {
+      "id": "AIT-207.H",
+      "causas": ["Dosis de curado baja", "Mineral con más ganga consumidora de ácido", "Deriva del pHmetro"],
+      "consecuencia": "Menos cobre disuelto y precipitación de hierro en la pila.",
+      "accion_operador": ["Comparar con la muestra de laboratorio", "Revisar la dosis de ácido (KY-102)"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["calibrar_ph"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Efecto lento: prioridad baja."
+    },
+    {
+      "id": "AIT-207.L",
+      "causas": ["Dosis de curado excesiva", "Deriva del pHmetro"],
+      "consecuencia": "Mayor arrastre de impurezas y consumo de ácido.",
+      "accion_operador": ["Comparar con laboratorio"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["calibrar_ph"],
+      "manual": "OP-4.2",
+      "justificacion_prioridad": "Efecto lento: prioridad baja."
+    },
+    {
+      "id": "AIT-208.H",
+      "causas": [
+        "Una etapa de extracción sin mezcla",
+        "Razón O/A baja",
+        "PLS con más cobre que la capacidad del orgánico"
+      ],
+      "consecuencia": "Cobre que vuelve a las pilas en el refino: pérdida de extracción.",
+      "accion_operador": ["Revisar M-301 y M-302", "Revisar FFIC-301"],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["partir_equipo", "lazo_modo_normal"],
+      "manual": "OP-4.3",
+      "justificacion_prioridad": "Pérdida directa de extracción: prioridad media."
+    },
+    {
+      "id": "KY-301.L",
+      "causas": ["P-305 con falla", "FFIC-301 en manual"],
+      "consecuencia": "Menos orgánico: baja la extracción y sube el cobre en refino.",
+      "accion_operador": ["Revisar P-305 y el modo de FFIC-301"],
+      "tiempo_respuesta_min": 15,
+      "acciones_sugeridas": ["lazo_modo_normal", "partir_equipo"],
+      "manual": "OP-4.3",
+      "justificacion_prioridad": "Pérdida de extracción en minutos: prioridad media."
+    },
+    {
+      "id": "LIT-303.H",
+      "causas": ["Formación de borra (sólidos finos, sílice coloidal)", "Razón O/A muy alta"],
+      "consecuencia": "Sube el arrastre de acuoso al electrolito con hierro y cloruro.",
+      "accion_operador": ["Avisar a mantenimiento para retirar la borra"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["retirar_borra"],
+      "manual": "MT-3.5",
+      "justificacion_prioridad": "Degrada el electrolito en días: prioridad media."
+    },
+    {
+      "id": "AIT-309.H",
+      "causas": ["Borra en E1", "Mezclador detenido o mal ajustado"],
+      "consecuencia": "Hierro y cloruro hacia la nave; baja la eficiencia de corriente.",
+      "accion_operador": ["Retirar borra", "Confirmar que el lavado W1 esté en servicio"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["retirar_borra", "partir_lavado"],
+      "manual": "MT-3.5",
+      "justificacion_prioridad": "Degrada el electrolito en días: prioridad media."
+    },
+    {
+      "id": "IIT-401.L",
+      "causas": ["Rectificador limitado o en rampa", "Consigna del plan baja"],
+      "consecuencia": "Menos cátodo; el cobre se acumula en el electrolito.",
+      "accion_operador": ["Revisar el estado de RT-401 y la consigna del plan"],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["recalcular_corriente_plan"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Pérdida de producción en horas: prioridad media."
+    },
+    {
+      "id": "FIT-402.L",
+      "causas": ["Bomba de electrolito con falla", "Filtro tapado"],
+      "consecuencia": "Si baja de 500 m³/h dispara el rectificador.",
+      "accion_operador": ["Partir P-401B si la A falló"],
+      "tiempo_respuesta_min": 10,
+      "acciones_sugeridas": ["partir_equipo", "respaldo_automatico"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Disparo de la nave cercano: prioridad media."
+    },
+    {
+      "id": "FIT-402.LL",
+      "causas": ["Ambas bombas de electrolito detenidas"],
+      "consecuencia": "Disparo de RT-401 por enclavamiento: la nave queda sin corriente.",
+      "accion_operador": ["Restablecer la circulación", "Usar la puesta en servicio de la nave para volver"],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": ["partir_equipo", "secuencia_puesta_servicio_nave"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Pérdida total de producción: prioridad alta."
+    },
+    {
+      "id": "TIT-403.H",
+      "causas": ["TIC-403 con consigna alta", "Potencia DC alta con intercambiador saturado"],
+      "consecuencia": "Mayor evaporación y neblina ácida; degradación del orgánico arrastrado.",
+      "accion_operador": ["Revisar TIC-403"],
+      "tiempo_respuesta_min": 10,
+      "acciones_sugeridas": ["lazo_modo_normal"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Riesgo de disparo por temperatura: prioridad media."
+    },
+    {
+      "id": "TIT-403.L",
+      "causas": ["Intercambiador HX-401 sin transferencia", "TIC-403 en manual"],
+      "consecuencia": "Baja la conductividad: sube el voltaje y la energía por tonelada; depósito rugoso bajo 40 °C.",
+      "accion_operador": ["Revisar HX-401 y TIC-403"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["reparar_intercambiador", "lazo_modo_normal"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Costo de energía y calidad: prioridad media."
+    },
+    {
+      "id": "TIT-403.HH",
+      "causas": ["Falla de control de temperatura"],
+      "consecuencia": "Disparo de RT-401 a 58 °C.",
+      "accion_operador": ["Bajar la consigna de TIC-403", "Avisar al jefe de turno"],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": ["consigna_lazo"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Disparo inminente: prioridad alta."
+    },
+    {
+      "id": "AIT-405.L",
+      "causas": ["Corriente sobre lo que entrega SX", "Transferencia de SX baja"],
+      "consecuencia": "Depósito pobre y riesgo de cátodo nodular.",
+      "accion_operador": ["Recalcular la corriente por plan"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["recalcular_corriente_plan"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Calidad en horas: prioridad media."
+    },
+    {
+      "id": "AIT-405.H",
+      "causas": ["Nave en corriente baja o sin corriente con SX transfiriendo", "Plan de corriente atrasado"],
+      "consecuencia": "Electrolito cerca de saturación en frío; se pierde capacidad de reextracción.",
+      "accion_operador": [
+        "Recalcular la corriente por plan",
+        "Si la nave está en protección, bajar la transferencia de SX"
+      ],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["recalcular_corriente_plan", "consigna_lazo"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Efecto en horas: prioridad baja."
+    },
+    {
+      "id": "AIT-407.H",
+      "causas": ["Borra en E1", "Lavado W1 fuera de servicio", "Sangrado bajo"],
+      "consecuencia": "El Fe³⁺ consume corriente: baja la eficiencia de corriente.",
+      "accion_operador": ["Revisar borra y lavado", "Aumentar el sangrado con FIC-409"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["retirar_borra", "partir_lavado", "consigna_lazo"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Costo en días: prioridad media."
+    },
+    {
+      "id": "AIT-408.L",
+      "causas": ["Dosificación de cobalto detenida o baja"],
+      "consecuencia": "El ánodo de plomo se corroe más rápido y el cátodo sale con plomo.",
+      "accion_operador": ["Revisar FIC-404"],
+      "tiempo_respuesta_min": 120,
+      "acciones_sugeridas": ["lazo_modo_normal"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Calidad en días: prioridad baja."
+    },
+    {
+      "id": "AIT-410.H",
+      "causas": [
+        "Lavado W1 fuera de servicio",
+        "Arrastre acuoso alto (borra)",
+        "Agua de riego con más cloruro"
+      ],
+      "consecuencia": "Sobre 30 mg/L el cloruro pica el acero inoxidable del cátodo permanente: el cobre se adhiere y falla el despegue.",
+      "accion_operador": [
+        "Partir el lavado W1",
+        "Aumentar el sangrado",
+        "Avisar a mantenimiento para revisar cátodos permanentes"
+      ],
+      "tiempo_respuesta_min": 120,
+      "acciones_sugeridas": ["partir_lavado", "consigna_lazo"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Daño a activos en días: prioridad media."
+    },
+    {
+      "id": "AIT-410.HH",
+      "causas": ["Lavado fuera de servicio por días"],
+      "consecuencia": "Corrosión acelerada de cátodos y ánodos; riesgo de desprendimiento de cloro en el ánodo.",
+      "accion_operador": [
+        "Partir el lavado W1 de inmediato",
+        "Subir el sangrado al máximo que permita el balance",
+        "Informar al jefe de turno"
+      ],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["partir_lavado", "consigna_lazo"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Daño a activos y riesgo a personas: prioridad alta."
+    },
+    {
+      "id": "KY-406.L",
+      "causas": ["Cortocircuitos sin corregir", "Hierro alto", "Electrolito frío"],
+      "consecuencia": "Cada punto de eficiencia es cobre que no se deposita y energía perdida.",
+      "accion_operador": [
+        "Activar el monitoreo de celdas y corregir cortocircuitos",
+        "Revisar hierro y temperatura"
+      ],
+      "tiempo_respuesta_min": 120,
+      "acciones_sugeridas": ["activar_monitoreo_celdas", "corregir_celdas"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Pérdida económica: prioridad baja."
+    },
+    {
+      "id": "KY-501.L",
+      "causas": ["Filtro de armónicos y condensadores fuera de servicio"],
+      "consecuencia": "Multa por factor de potencia y calentamiento por armónicos.",
+      "accion_operador": ["Poner en servicio el filtro y los condensadores"],
+      "tiempo_respuesta_min": 60,
+      "acciones_sugeridas": ["filtro_armonicos"],
+      "manual": "OP-4.5",
+      "justificacion_prioridad": "Costo: prioridad baja."
+    },
+    {
+      "id": "LIT-501.L",
+      "causas": ["Camiones atrasados", "Consumo de curado alto"],
+      "consecuencia": "Quedan pocas horas de ácido para el curado.",
+      "accion_operador": ["Coordinar camiones", "Evaluar bajar la dosis o el tonelaje"],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["recibir_camion_acido"],
+      "manual": "OP-4.5",
+      "justificacion_prioridad": "Pérdida del curado en horas: prioridad media."
+    },
+    {
+      "id": "LIT-501.LL",
+      "causas": ["Abastecimiento detenido"],
+      "consecuencia": "P-501 dispara por stock agotado y el curado se detiene.",
+      "accion_operador": ["Bajar el tonelaje", "Priorizar la descarga de camiones"],
+      "tiempo_respuesta_min": 10,
+      "acciones_sugeridas": ["recibir_camion_acido", "consigna_lazo"],
+      "manual": "OP-4.5",
+      "justificacion_prioridad": "Detención del curado inminente: prioridad alta."
+    }
+  ],
+  "discretas": [
+    {
+      "patron": "*.TRIP",
+      "descripcion": "Disparo de un equipo",
+      "causas": [
+        "Protección eléctrica (sobrecorriente)",
+        "Vibración muy alta",
+        "Enclavamiento de proceso (nivel, caudal)",
+        "Cordón de emergencia",
+        "Falta de tensión en el MCC"
+      ],
+      "consecuencia": "El equipo se detiene y los enclavamientos detienen los equipos aguas arriba o aguas abajo.",
+      "accion_operador": [
+        "Leer la causa registrada en la placa del equipo",
+        "Si la causa es protección eléctrica o vibración, no rearmar sin inspección de mantenimiento",
+        "Si hay bomba de respaldo, confirmar que partió"
+      ],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": ["respaldo_automatico", "partir_equipo", "rearmar_equipo"],
+      "manual": "OP-3.2",
+      "justificacion_prioridad": "Pérdida inmediata de función: prioridad alta."
+    },
+    {
+      "patron": "*.VIB",
+      "descripcion": "Vibración en zona C (ISO 20816-3)",
+      "causas": ["Daño incipiente de rodamiento", "Desalineamiento", "Desbalance"],
+      "consecuencia": "Operación restringida: el daño progresa y puede terminar en zona D y disparo.",
+      "accion_operador": [
+        "Vigilar la tendencia",
+        "Avisar a mantenimiento para programar la intervención en las próximas horas"
+      ],
+      "tiempo_respuesta_min": 480,
+      "acciones_sugeridas": ["cambiar_rodamiento"],
+      "manual": "MT-3.1",
+      "justificacion_prioridad": "Riesgo de falla en horas o días: prioridad baja."
+    },
+    {
+      "patron": "*.VIBH",
+      "descripcion": "Vibración en zona D (ISO 20816-3)",
+      "causas": ["Daño avanzado de rodamiento"],
+      "consecuencia": "Riesgo de daño mayor; dispara a 1,25 veces el límite C/D.",
+      "accion_operador": ["Detener en forma controlada y avisar a mantenimiento"],
+      "tiempo_respuesta_min": 30,
+      "acciones_sugeridas": ["cambiar_rodamiento", "detener_equipo"],
+      "manual": "MT-3.1",
+      "justificacion_prioridad": "Falla inminente: prioridad media."
+    },
+    {
+      "patron": "*.OPEN",
+      "descripcion": "Interruptor abierto",
+      "causas": ["Protección eléctrica", "Apertura manual"],
+      "consecuencia": "Todos los motores del centro de control quedan sin tensión.",
+      "accion_operador": [
+        "Avisar al eléctrico de turno",
+        "El cierre lo hace el eléctrico tras revisar la protección (bloqueo y etiquetado)",
+        "Partir los equipos en secuencia después del cierre"
+      ],
+      "tiempo_respuesta_min": 5,
+      "acciones_sugeridas": [],
+      "manual": "OP-3.3",
+      "justificacion_prioridad": "Pérdida de un área completa: prioridad alta."
+    },
+    {
+      "patron": "SEQ-*.FAIL",
+      "descripcion": "Secuencia detenida",
+      "causas": ["Un paso no se confirmó en su tiempo máximo"],
+      "consecuencia": "La partida o parada quedó a medias.",
+      "accion_operador": ["Leer la causa en la placa de la secuencia", "Corregir y reiniciar la secuencia"],
+      "tiempo_respuesta_min": 10,
+      "acciones_sugeridas": ["secuencia_partida_area100", "secuencia_puesta_servicio_nave"],
+      "manual": "OP-5.1",
+      "justificacion_prioridad": "Equipos en estado intermedio: prioridad media."
+    },
+    {
+      "patron": "AIT-207.DEV",
+      "descripcion": "pHmetro desviado contra laboratorio",
+      "causas": ["Electrodo sucio o envejecido"],
+      "consecuencia": "Un lazo que use esta medición controlaría con un valor falso.",
+      "accion_operador": ["Avisar a instrumentación para calibrar"],
+      "tiempo_respuesta_min": 120,
+      "acciones_sugeridas": ["calibrar_ph"],
+      "manual": "MT-3.4",
+      "justificacion_prioridad": "Medición no confiable: prioridad baja."
+    },
+    {
+      "patron": "CELDA-*.V",
+      "descripcion": "Voltaje bajo de celda (posible cortocircuito)",
+      "causas": ["Nódulo o cátodo torcido que toca el ánodo"],
+      "consecuencia": "La celda pierde corriente útil y se calienta el contacto.",
+      "accion_operador": ["Enviar la cuadrilla de nave a corregir (en operación, con herramienta aislada)"],
+      "tiempo_respuesta_min": 120,
+      "acciones_sugeridas": ["corregir_celdas"],
+      "manual": "OP-4.4",
+      "justificacion_prioridad": "Pérdida económica: prioridad baja."
+    }
+  ]
+}

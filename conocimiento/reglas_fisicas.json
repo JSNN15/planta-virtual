@@ -1,0 +1,69 @@
+{
+  "descripcion": "Leyes y balances que el modelo debe cumplir. Cada regla tiene una verificación que las pruebas ejecutan contra el simulador y que el asistente usa para no citar números imposibles.",
+  "reglas": [
+    {
+      "id": "F1",
+      "nombre": "Ley de Faraday",
+      "enunciado": "El cobre depositado es la corriente por el equivalente electroquímico por el número de celdas por la eficiencia de corriente.",
+      "formula": "D [kg/h] = I [kA] × 1,1855 [kg/kAh] × 160 celdas × EC",
+      "verificacion": "faraday",
+      "tolerancia": "1 %"
+    },
+    {
+      "id": "F2",
+      "nombre": "Balance de cobre del electrolito",
+      "enunciado": "En régimen, lo que transfiere SX es igual a lo depositado más lo que sale en el sangrado.",
+      "formula": "T = D + Q_sangrado × Cu_electrolito",
+      "verificacion": "balance_cobre_electrolito",
+      "tolerancia": "3 %"
+    },
+    {
+      "id": "F3",
+      "nombre": "Estequiometría del ácido en EW",
+      "enunciado": "Por cada tonelada de cobre depositado se regeneran 1,543 t de ácido sulfúrico (98,08 / 63,55).",
+      "formula": "Cu²⁺ + H₂O → Cu⁰ + 2H⁺ + ½O₂",
+      "verificacion": "estequiometria_acido",
+      "tolerancia": "exacta"
+    },
+    {
+      "id": "F4",
+      "nombre": "Voltaje de celda",
+      "enunciado": "El voltaje de celda es la suma del potencial reversible, los sobrepotenciales anódico y catódico, la caída óhmica y las pérdidas en contactos.",
+      "formula": "V = 0,89 + η_a + η_c + j·d/κ + V_contactos ≈ 1,9 a 2,1 V",
+      "verificacion": "voltaje_celda",
+      "tolerancia": "1,8 a 2,2 V"
+    },
+    {
+      "id": "F5",
+      "nombre": "Capacidad del orgánico",
+      "enunciado": "El orgánico cargado no puede superar la carga máxima del extractante (0,6 g/L de Cu por % v/v).",
+      "formula": "y_cargado ≤ 0,6 × 15,4 = 9,24 g/L",
+      "verificacion": "carga_organico",
+      "tolerancia": "≤ 100 % de la carga máxima"
+    },
+    {
+      "id": "F6",
+      "nombre": "Densidad de corriente",
+      "enunciado": "La densidad de corriente es la corriente dividida por el área catódica activa (60 cátodos × 2 caras × 1 m²).",
+      "formula": "j [A/m²] = I [A] / 120 m²",
+      "verificacion": "densidad_corriente",
+      "tolerancia": "250 a 340 A/m² en producción"
+    },
+    {
+      "id": "F7",
+      "nombre": "Balance de cobre de la planta",
+      "enunciado": "En régimen, el cobre que entregan las pilas sale como cátodo o en el sangrado.",
+      "formula": "Cu_pilas = D + Q_sangrado × Cu_electrolito",
+      "verificacion": "balance_cobre_planta",
+      "tolerancia": "3 %"
+    },
+    {
+      "id": "F8",
+      "nombre": "Energía específica",
+      "enunciado": "Energía DC por tonelada de cátodo: potencia de la nave dividida por la producción.",
+      "formula": "kWh/t = P_DC [MW] × 1000 / D [t/h]",
+      "verificacion": "energia_especifica",
+      "tolerancia": "1.600 a 2.200 kWh/t"
+    }
+  ]
+}

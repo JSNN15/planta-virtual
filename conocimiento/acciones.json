@@ -1,0 +1,370 @@
+{
+  "descripcion": "Lista blanca de acciones que el asistente puede proponer. Cada acción se ejecuta solo con aprobación humana en dos pasos, después de verificar sus precondiciones contra el estado de la planta. Lo que no está aquí (cerrar interruptores, rearmar tras una protección, inhibir alarmas, cambiar límites) el asistente lo enseña como pasos manuales.",
+  "roles": {
+    "operador": "Operador de sala",
+    "mantenimiento": "Mantenimiento",
+    "jefe_turno": "Jefe de turno",
+    "gerencia": "Gerencia"
+  },
+  "riesgo": {
+    "bajo": "reversible y sin efecto en la producción",
+    "medio": "cambia la operación; reversible",
+    "alto": "detiene producción o energiza equipos: confirmación reforzada"
+  },
+  "acciones": [
+    {
+      "id": "partir_equipo",
+      "titulo": "Partir un equipo",
+      "rol": "operador",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "motor"
+      },
+      "precondiciones": ["permisivos_ok", "equipo_detenido"],
+      "efecto_esperado": {
+        "estado": "RUN",
+        "min": 1
+      },
+      "manual": "OP-3.2",
+      "descripcion": "Da la orden de partida; el equipo parte solo si cumple sus permisivos."
+    },
+    {
+      "id": "detener_equipo",
+      "titulo": "Detener un equipo",
+      "rol": "operador",
+      "riesgo": "alto",
+      "objetivo": {
+        "tipo": "motor"
+      },
+      "precondiciones": ["equipo_en_marcha"],
+      "efecto_esperado": {
+        "estado": "STOP",
+        "min": 1
+      },
+      "manual": "OP-3.2",
+      "descripcion": "Detiene el equipo. Los enclavamientos detienen los equipos que dependen de él."
+    },
+    {
+      "id": "rearmar_equipo",
+      "titulo": "Rearmar un equipo disparado",
+      "rol": "operador",
+      "riesgo": "alto",
+      "objetivo": {
+        "tipo": "motor"
+      },
+      "precondiciones": ["equipo_disparado", "disparo_sin_proteccion"],
+      "efecto_esperado": {
+        "estado": "REARMADO",
+        "min": 1
+      },
+      "manual": "OP-3.2",
+      "descripcion": "Rearma el disparo para permitir una nueva partida. Nunca tras una protección eléctrica o de vibración sin inspección."
+    },
+    {
+      "id": "respaldo_automatico",
+      "titulo": "Dejar la bomba B en respaldo automático",
+      "rol": "operador",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "motor",
+        "valores": ["P-201B", "P-202B", "P-401B"]
+      },
+      "precondiciones": ["sin_respaldo"],
+      "efecto_esperado": {
+        "estado": "RESPALDO",
+        "min": 1
+      },
+      "manual": "OP-3.2",
+      "descripcion": "Si la bomba A dispara, la B parte sola."
+    },
+    {
+      "id": "lazo_modo_normal",
+      "titulo": "Devolver un lazo a su modo normal",
+      "rol": "operador",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "lazo"
+      },
+      "precondiciones": ["lazo_fuera_de_modo_normal"],
+      "efecto_esperado": {
+        "modo": "normal",
+        "min": 1
+      },
+      "manual": "OP-3.1",
+      "descripcion": "Pasa el lazo a su modo de diseño (automático o cascada) sin salto."
+    },
+    {
+      "id": "consigna_lazo",
+      "titulo": "Cambiar la consigna de un lazo",
+      "rol": "operador",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "lazo"
+      },
+      "precondiciones": ["lazo_en_auto", "consigna_en_banda"],
+      "efecto_esperado": {
+        "pv_hacia_sp": true,
+        "min": 30
+      },
+      "manual": "OP-3.1",
+      "descripcion": "Cambia la consigna dentro de la banda normal y en pasos de hasta 10 % del rango.",
+      "valor": {
+        "regla": "banda normal del tag y paso máximo de 10 % del rango"
+      }
+    },
+    {
+      "id": "activar_monitoreo_celdas",
+      "titulo": "Activar el monitoreo continuo de celdas",
+      "rol": "mantenimiento",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["monitoreo_inactivo"],
+      "efecto_esperado": {
+        "tag": "KY-406",
+        "dir": "estable",
+        "min": 5
+      },
+      "manual": "MT-3.2",
+      "descripcion": "Mide el voltaje de cada celda y detecta los cortocircuitos al aparecer."
+    },
+    {
+      "id": "corregir_celdas",
+      "titulo": "Enviar la cuadrilla a corregir las celdas con cortocircuito",
+      "rol": "mantenimiento",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["celdas_conocidas"],
+      "efecto_esperado": {
+        "tag": "KY-406",
+        "dir": "sube",
+        "min": 40
+      },
+      "manual": "OP-4.4",
+      "descripcion": "La cuadrilla separa o retira el cátodo con herramienta aislada, en operación."
+    },
+    {
+      "id": "filtro_armonicos",
+      "titulo": "Poner en servicio el filtro de armónicos y los condensadores",
+      "rol": "operador",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["filtro_fuera"],
+      "efecto_esperado": {
+        "tag": "KY-501",
+        "dir": "sube",
+        "min": 2
+      },
+      "manual": "OP-4.5",
+      "descripcion": "Sube el factor de potencia a 0,96 y baja la distorsión a 3 %."
+    },
+    {
+      "id": "compensacion_retardo",
+      "titulo": "Activar la compensación de retardo de la correa",
+      "rol": "operador",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["compensacion_inactiva"],
+      "efecto_esperado": {
+        "tag": "KY-102",
+        "dir": "estable",
+        "min": 10
+      },
+      "manual": "OP-4.1",
+      "descripcion": "La razón de ácido usa el tonelaje que llega al tambor 45 s después del pesómetro."
+    },
+    {
+      "id": "calibrar_ph",
+      "titulo": "Calibrar el pHmetro AIT-207",
+      "rol": "mantenimiento",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["ph_desviado"],
+      "efecto_esperado": {
+        "tag": "AIT-207",
+        "dir": "normaliza",
+        "min": 5
+      },
+      "manual": "MT-3.4",
+      "descripcion": "Calibración con tampones pH 2 y 4."
+    },
+    {
+      "id": "retirar_borra",
+      "titulo": "Retirar la borra del decantador E1",
+      "rol": "mantenimiento",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["borra_presente"],
+      "efecto_esperado": {
+        "tag": "AIT-309",
+        "dir": "baja",
+        "min": 30
+      },
+      "manual": "MT-3.5",
+      "descripcion": "Retiro de la banda de borra de la interfase."
+    },
+    {
+      "id": "reparar_intercambiador",
+      "titulo": "Reparar el intercambiador HX-401",
+      "rol": "mantenimiento",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["hx_con_falla"],
+      "efecto_esperado": {
+        "tag": "TIT-403",
+        "dir": "sube",
+        "min": 120
+      },
+      "manual": "MT-3.6",
+      "descripcion": "Restablece la transferencia de calor al electrolito."
+    },
+    {
+      "id": "cambiar_rodamiento",
+      "titulo": "Cambiar el rodamiento de M-103",
+      "rol": "mantenimiento",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["vibracion_alta_M103"],
+      "efecto_esperado": {
+        "tag": "VIT-M-103",
+        "dir": "baja",
+        "min": 40
+      },
+      "manual": "MT-3.1",
+      "descripcion": "Detiene el tambor 30 min: por enclavamiento se detiene toda el área 100."
+    },
+    {
+      "id": "cambiar_revestimientos",
+      "titulo": "Cambiar los revestimientos del chancador CR-101",
+      "rol": "mantenimiento",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["revestimientos_gastados", "acopio_suficiente"],
+      "efecto_esperado": {
+        "tag": "AIT-100",
+        "dir": "baja",
+        "min": 150
+      },
+      "manual": "MT-3.3",
+      "descripcion": "Detiene el chancador 2 h; el acopio fino alimenta la planta mientras tanto."
+    },
+    {
+      "id": "partir_lavado",
+      "titulo": "Rearmar y partir el mezclador de lavado W1",
+      "rol": "operador",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["lavado_fuera", "lavado_rearmable"],
+      "efecto_esperado": {
+        "estado_equipo": ["M-304", "RUN"],
+        "min": 2
+      },
+      "manual": "OP-4.3",
+      "descripcion": "Restablece la barrera contra el cloruro y el hierro del arrastre acuoso."
+    },
+    {
+      "id": "recibir_camion_acido",
+      "titulo": "Recibir un camión de ácido (30 t)",
+      "rol": "operador",
+      "riesgo": "bajo",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["stock_acido_no_lleno"],
+      "efecto_esperado": {
+        "tag": "LIT-501",
+        "dir": "sube",
+        "min": 1
+      },
+      "manual": "OP-4.5",
+      "descripcion": "Descarga de 30 t a la bodega TK-501."
+    },
+    {
+      "id": "recalcular_corriente_plan",
+      "titulo": "Recalcular la corriente de la nave por plan",
+      "rol": "jefe_turno",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["nave_en_plan"],
+      "efecto_esperado": {
+        "tag": "IIT-401",
+        "dir": "hacia_plan",
+        "min": 10
+      },
+      "manual": "OP-4.4",
+      "descripcion": "La consigna deposita el cobre que llega de SX y corrige el cobre del electrolito en un turno; la corriente cambia en rampa de 2 kA/min."
+    },
+    {
+      "id": "secuencia_partida_area100",
+      "titulo": "Iniciar la partida secuencial del área 100",
+      "rol": "operador",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["area100_detenida"],
+      "efecto_esperado": {
+        "tag": "WIT-101",
+        "dir": "sube",
+        "min": 15
+      },
+      "manual": "OP-5.1",
+      "descripcion": "Parte tambor, correa y alimentador, y luego ácido y agua."
+    },
+    {
+      "id": "secuencia_puesta_servicio_nave",
+      "titulo": "Iniciar la puesta en servicio de la nave EW",
+      "rol": "jefe_turno",
+      "riesgo": "alto",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["nave_detenida_o_baja", "rectificador_rearmado"],
+      "efecto_esperado": {
+        "tag": "IIT-401",
+        "dir": "sube",
+        "min": 30
+      },
+      "manual": "OP-5.2",
+      "descripcion": "Circulación, temperatura y cobalto primero; luego rampa de corriente hasta el plan."
+    },
+    {
+      "id": "secuencia_proteccion_nave",
+      "titulo": "Bajar la nave a corriente de protección",
+      "rol": "jefe_turno",
+      "riesgo": "medio",
+      "objetivo": {
+        "tipo": "ninguno"
+      },
+      "precondiciones": ["nave_en_marcha"],
+      "efecto_esperado": {
+        "tag": "IIT-401",
+        "dir": "baja",
+        "min": 20
+      },
+      "manual": "OP-5.2",
+      "descripcion": "Rampa a 5 kA: el cátodo no se redisuelve y el ánodo conserva su capa de PbO₂."
+    }
+  ]
+}

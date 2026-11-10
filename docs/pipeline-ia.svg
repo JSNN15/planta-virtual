@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 540" width="1180" height="540" role="img" aria-label="Pipeline de inferencia del asistente: de la pregunta a la acción aprobada y su seguimiento">
+<style>.bg{fill:#fff} .n{fill:#f6f8fa;stroke:#57606a;stroke-width:1.4} .ai{fill:#f3edff;stroke:#8e5ce0;stroke-width:1.6} .det{fill:#e9f6ec;stroke:#2e9d55;stroke-width:1.6}
+.hum{fill:#fff8e6;stroke:#d4a72c;stroke-width:1.8} .pl{fill:#eef4fd;stroke:#2f6fd6;stroke-width:1.6}
+.k{fill:#59636e;font:700 11px ui-monospace,Consolas,monospace} .t{fill:#1f2328;font:600 13px system-ui,-apple-system,'Segoe UI',sans-serif} .s{fill:#59636e;font:10.5px system-ui,-apple-system,'Segoe UI',sans-serif} .ttl{fill:#1f2328;font:700 15px system-ui,-apple-system,'Segoe UI',sans-serif}
+.ar{stroke:#57606a;stroke-width:1.8;fill:none} .fb{stroke:#d9822b;stroke-width:1.8;fill:none;stroke-dasharray:6 4} .no{stroke:#c0392b;stroke-width:1.8;fill:none;stroke-dasharray:4 3} .lt{fill:#59636e;font:11px system-ui,-apple-system,'Segoe UI',sans-serif}</style>
+<defs><marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#57606a"/></marker>
+<marker id="f" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#d9822b"/></marker>
+<marker id="r" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#c0392b"/></marker></defs>
+<rect class="bg" width="1180" height="540"/>
+<text class="ttl" x="20" y="28">Cómo se suma IA a la planta · pipeline de una pregunta</text>
+<text class="lt" x="20" y="46">Violeta: modelo de lenguaje (nube). Verde: código determinista (navegador). Ámbar: persona. Azul: planta. El modelo razona; las reglas deciden qué se puede decir y hacer.</text>
+<rect class="hum" x="20" y="100" width="150" height="84" rx="8"/><text class="k" x="30" y="118">PREGUNTA</text><text class="t" x="30" y="138">Persona o aviso</text>
+<text class="s" x="30" y="156">«¿por qué baja el PLS?»</text>
+<text class="s" x="30" y="170">o «Por qué» en un aviso</text>
+<rect class="ai" x="188" y="100" width="150" height="84" rx="8"/><text class="k" x="198" y="118">1 · ENTENDER</text><text class="t" x="198" y="138">Nemotron Lightning</text>
+<text class="s" x="198" y="156">intención, objetos y</text>
+<text class="s" x="198" y="170">herramientas · esquema</text>
+<rect class="det" x="356" y="100" width="150" height="84" rx="8"/><text class="k" x="366" y="118">2 · CONSULTAR</text><text class="t" x="366" y="138">Herramientas</text>
+<text class="s" x="366" y="156">solo lectura: tag, equipo,</text>
+<text class="s" x="366" y="170">tendencia, alarma, manual</text>
+<rect class="ai" x="524" y="100" width="150" height="84" rx="8"/><text class="k" x="534" y="118">3 · DIAGNOSTICAR</text><text class="t" x="534" y="138">Nemotron Super</text>
+<text class="s" x="534" y="156">causa, evidencia y acciones</text>
+<text class="s" x="534" y="170">esquema JSON estricto</text>
+<rect class="det" x="692" y="100" width="150" height="84" rx="8"/><text class="k" x="702" y="118">4 · VERIFICAR</text><text class="t" x="702" y="138">Verificador</text>
+<text class="s" x="702" y="156">tags y valores reales,</text>
+<text class="s" x="702" y="170">catálogo y reglas S1-S9</text>
+<rect class="det" x="860" y="100" width="150" height="84" rx="8"/><text class="k" x="870" y="118">6 · PROPONER</text><text class="t" x="870" y="138">Tarjetas de acción</text>
+<text class="s" x="870" y="156">riesgo, rol y efecto,</text>
+<text class="s" x="870" y="170">precondiciones ahora</text>
+<rect class="hum" x="1028" y="100" width="150" height="84" rx="8"/><text class="k" x="1038" y="118">APROBAR</text><text class="t" x="1038" y="138">Persona con su rol</text>
+<text class="s" x="1038" y="156">dos pasos; riesgo alto pide</text>
+<text class="s" x="1038" y="170">verificación en terreno</text>
+<path class="ar" d="M170,142.0 L185,142.0" marker-end="url(#a)"/>
+<path class="ar" d="M338,142.0 L353,142.0" marker-end="url(#a)"/>
+<path class="ar" d="M506,142.0 L521,142.0" marker-end="url(#a)"/>
+<path class="ar" d="M674,142.0 L689,142.0" marker-end="url(#a)"/>
+<path class="ar" d="M842,142.0 L857,142.0" marker-end="url(#a)"/>
+<path class="ar" d="M1010,142.0 L1025,142.0" marker-end="url(#a)"/>
+<path class="fb" d="M767.0,100 C767.0,70 599.0,70 599.0,97" marker-end="url(#f)"/>
+<text class="lt" x="613.0" y="76" fill="#d9822b">5 · reanalizar una vez con la lista de errores</text>
+<rect class="pl" x="1028" y="272" width="150" height="84" rx="8"/><text class="k" x="1038" y="290">EJECUTAR</text><text class="t" x="1038" y="310">Comandos de la HMI</text>
+<text class="s" x="1038" y="328">con permisivos y</text>
+<text class="s" x="1038" y="342">enclavamientos activos</text>
+<rect class="pl" x="860" y="272" width="150" height="84" rx="8"/><text class="k" x="870" y="290">PLANTA</text><text class="t" x="870" y="310">Simulador sim.js</text>
+<text class="s" x="870" y="328">proceso, control, alarmas</text>
+<text class="s" x="870" y="342">y bitácora</text>
+<rect class="det" x="692" y="272" width="150" height="84" rx="8"/><text class="k" x="702" y="290">7 · SEGUIMIENTO</text><text class="t" x="702" y="310">¿Tuvo efecto?</text>
+<text class="s" x="702" y="328">compara el tag con</text>
+<text class="s" x="702" y="342">el efecto esperado</text>
+<path class="ar" d="M1103.0,184 L1103.0,269" marker-end="url(#a)"/>
+<text class="lt" x="1111.0" y="214">aprobada</text>
+<path class="ar" d="M1028,314.0 L1013,314.0" marker-end="url(#a)"/>
+<path class="ar" d="M860,314.0 L845,314.0" marker-end="url(#a)"/>
+<text class="lt" x="702" y="374">cumplido o sin efecto → bitácora y aviso</text>
+<rect class="det" x="188" y="272" width="318" height="84" rx="8"/><text class="k" x="198" y="290">RESPALDO SIN RED</text><text class="t" x="198" y="310">Diagnóstico por reglas</text>
+<text class="s" x="198" y="328">fichas de alarma, causa-efecto y catálogo, con la misma</text>
+<text class="s" x="198" y="342">verificación. Responde si la nube no está o se apaga la IA.</text>
+<path class="fb" d="M263.0,184 L263.0,269" marker-end="url(#f)"/>
+<path class="fb" d="M506,294.0 C672,294.0 682,224 722,187" marker-end="url(#f)"/>
+<text class="lt" x="271.0" y="232.0" fill="#d9822b">si la IA falla o tarda</text>
+<rect class="n" x="20" y="410" width="1140" height="104" rx="8"/>
+<text class="k" x="34" y="430">LO QUE EL VERIFICADOR NO DEJA PASAR · Y SE ENSEÑA CON EL MANUAL</text>
+<path class="no" d="M34,450 L50,450" marker-end="url(#r)"/><text class="t" x="60" y="454" style="font-size:12px">Tag o valor inventado</text><text class="s" x="60" y="468">se elimina o se corrige con el valor real y se marca</text>
+<path class="no" d="M594,450 L610,450" marker-end="url(#r)"/><text class="t" x="620" y="454" style="font-size:12px">Acción fuera del catálogo</text><text class="s" x="620" y="468">se descarta: no hay forma de inhibir alarmas ni cambiar límites (S3)</text>
+<path class="no" d="M34,484 L50,484" marker-end="url(#r)"/><text class="t" x="60" y="488" style="font-size:12px">Rearmar tras protección o cerrar un interruptor</text><text class="s" x="60" y="502">queda como paso manual de mantenimiento o del eléctrico (S2, S5)</text>
+<path class="no" d="M594,484 L610,484" marker-end="url(#r)"/><text class="t" x="620" y="488" style="font-size:12px">Consigna fuera de banda o salto > 10 %</text><text class="s" x="620" y="502">se rechaza con el motivo (S6); energizar la nave solo por secuencia (S4)</text>
+</svg>

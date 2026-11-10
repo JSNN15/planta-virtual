@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-label="P&amp;ID simplificado de la planta LX-SX-EW con sus lazos de control según ISA-5.1">
+<style>
+.bg{fill:#fff} .area{fill:none;stroke:#d0d7de;stroke-width:1.2;stroke-dasharray:6 4} .at{fill:#59636e;font:600 12px ui-monospace,Consolas,monospace;letter-spacing:.06em}
+.eq{fill:#f6f8fa;stroke:#57606a;stroke-width:1.6} .et{fill:#1f2328;font:600 11.5px system-ui,-apple-system,'Segoe UI',sans-serif} .es{fill:#59636e;font:10.5px system-ui,-apple-system,'Segoe UI',sans-serif}
+.b{fill:#fff;stroke:#1f2328;stroke-width:1.4} .bt{fill:#1f2328;font:600 9.5px ui-monospace,Consolas,monospace} .hmi{stroke:#1f2328;stroke-width:1.2}
+.sig{stroke:#8b949e;stroke-width:1.3;stroke-dasharray:5 3;fill:none} .lt{fill:#59636e;font:11px system-ui,-apple-system,'Segoe UI',sans-serif} .ttl{fill:#1f2328;font:700 15px system-ui,-apple-system,'Segoe UI',sans-serif}
+</style>
+<rect class="bg" width="1200" height="640"/>
+<text class="ttl" x="20" y="28">P&amp;ID simplificado · lazos principales (ISA-5.1)</text>
+<text class="lt" x="20" y="46">Burbuja con línea = instrumento en la HMI de sala. Línea punteada = señal. Colores = fluido. Detalle completo en cada pantalla de área de la planta virtual.</text>
+<rect class="area" x="14" y="62" width="330" height="300" rx="8"/><text class="at" x="22" y="78">100 · CHANCADO Y AGLOMERACIÓN</text>
+<rect class="area" x="356" y="62" width="250" height="300" rx="8"/><text class="at" x="364" y="78">200 · LIXIVIACIÓN</text>
+<rect class="area" x="618" y="62" width="250" height="300" rx="8"/><text class="at" x="626" y="78">300 · EXTRACCIÓN POR SOLVENTES</text>
+<rect class="area" x="880" y="62" width="306" height="300" rx="8"/><text class="at" x="888" y="78">400 · ELECTROOBTENCIÓN</text>
+<rect class="area" x="14" y="376" width="1172" height="150" rx="8"/><text class="at" x="22" y="392">500 · SERVICIOS · ÁCIDO, AGUA Y ENERGÍA</text>
+<path class="eq" d="M40,110 L110,110 L95,150 L55,150 Z"/><text class="et" x="75" y="132" text-anchor="middle">CR-101</text>
+<circle class="b" cx="130" cy="100" r="17"/>
+<line class="hmi" x1="113" y1="100" x2="147" y2="100"/>
+<text class="bt" x="130" y="96" text-anchor="middle">AIT</text><text class="bt" x="130" y="112" text-anchor="middle">100</text>
+<path class="eq" d="M40,235 L80,185 L120,235 Z"/><text class="es" x="80" y="250" text-anchor="middle">acopio fino</text>
+<circle class="b" cx="30" cy="195" r="17"/>
+<line class="hmi" x1="13" y1="195" x2="47" y2="195"/>
+<text class="bt" x="30" y="191" text-anchor="middle">LIT</text><text class="bt" x="30" y="207" text-anchor="middle">100</text>
+<path d="M75,150 L75,190" fill="none" stroke="#8a6a4a" stroke-width="3" stroke-linejoin="round"/>
+<path d="M75,190 L71.5,182.8 L78.5,182.8 Z" fill="#8a6a4a"/>
+<rect class="eq" x="130" y="215" width="70" height="26" rx="4"/><text class="et" x="165.0" y="232.0" text-anchor="middle">FD-101</text>
+<path d="M120,228 L130,228" fill="none" stroke="#8a6a4a" stroke-width="3" stroke-linejoin="round"/>
+<line x1="200" y1="228" x2="268" y2="228" stroke="#57606a" stroke-width="5"/><circle cx="200" cy="228" r="4" fill="#57606a"/><circle cx="268" cy="228" r="4" fill="#57606a"/><text class="es" x="234" y="248" text-anchor="middle">CV-101</text>
+<circle class="b" cx="234" cy="190" r="17"/>
+<line class="hmi" x1="217" y1="190" x2="251" y2="190"/>
+<text class="bt" x="234" y="186" text-anchor="middle">WIT</text><text class="bt" x="234" y="202" text-anchor="middle">101</text>
+<circle class="b" cx="170" cy="180" r="17"/>
+<line class="hmi" x1="153" y1="180" x2="187" y2="180"/>
+<text class="bt" x="170" y="176" text-anchor="middle">WIC</text><text class="bt" x="170" y="192" text-anchor="middle">101</text>
+<path class="sig" d="M217,190 L187,180"/>
+<path class="sig" d="M170,197 L165,215"/>
+<rect class="eq" x="276" y="206" width="58" height="44" rx="22"/><text class="et" x="305.0" y="228.0" text-anchor="middle">AD-101</text>
+<text class="es" x="305.0" y="242.0" text-anchor="middle">M-103</text>
+<path d="M268,228 L276,228" fill="none" stroke="#8a6a4a" stroke-width="3" stroke-linejoin="round"/>
+<path class="eq" d="M270,298 Q294.0,284 318,298 L318,336 L270,336 Z"/><text class="et" x="294.0" y="319.0" text-anchor="middle">TK-103</text>
+<circle class="eq" cx="250" cy="330" r="11"/><path d="M244,336 L259,330 L244,324" fill="none" stroke="#57606a" stroke-width="1.4"/><text class="es" x="250" y="355" text-anchor="middle">P-102</text>
+<path d="M283,267 L297,267 L283,285 L297,285 Z" class="eq"/>
+<text class="es" x="290" y="264" text-anchor="middle">FCV-102</text>
+<path d="M270,330 L262,330" fill="none" stroke="#c0392b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M240,330 L228,330 L228,276 L281,276" fill="none" stroke="#c0392b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M299,276 L305,276 L305,250" fill="none" stroke="#c0392b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M305,250 L308.5,257.2 L301.5,257.2 Z" fill="#c0392b"/>
+<circle class="b" cx="190" cy="300" r="17"/>
+<line class="hmi" x1="173" y1="300" x2="207" y2="300"/>
+<text class="bt" x="190" y="296" text-anchor="middle">FFIC</text><text class="bt" x="190" y="312" text-anchor="middle">102</text>
+<path class="sig" d="M207,300 L281,284"/>
+<path class="sig" d="M190,283 L234,207"/>
+<text class="es" x="40" y="300">razón ácido/mineral</text><text class="es" x="40" y="313">≈ 20 kg/t (cascada)</text>
+<path d="M334,228 L380,228 L380,170 L400,170" fill="none" stroke="#8a6a4a" stroke-width="3" stroke-linejoin="round"/>
+<path d="M400,170 L392.8,173.5 L392.8,166.5 Z" fill="#8a6a4a"/>
+<path class="eq" d="M400,200 L440,140 L540,140 L580,200 Z"/><text class="et" x="490" y="178" text-anchor="middle">Pila (3 sectores)</text>
+<circle class="eq" cx="420" cy="300" r="11"/><path d="M414,306 L429,300 L414,294" fill="none" stroke="#57606a" stroke-width="1.4"/><text class="es" x="420" y="325" text-anchor="middle">P-201A/B</text>
+<circle class="b" cx="470" cy="110" r="17"/>
+<line class="hmi" x1="453" y1="110" x2="487" y2="110"/>
+<text class="bt" x="470" y="106" text-anchor="middle">FIC</text><text class="bt" x="470" y="122" text-anchor="middle">211</text>
+<path d="M431,300 L450,300 L450,124 L500,124 L500,140" fill="none" stroke="#2b8a9e" stroke-width="3" stroke-linejoin="round"/>
+<path d="M500,140 L496.5,132.8 L503.5,132.8 Z" fill="#2b8a9e"/>
+<path class="sig" d="M470,127 L478,124"/>
+<circle class="b" cx="390" cy="300" r="17"/>
+<text class="bt" x="390" y="296" text-anchor="middle">PIT</text><text class="bt" x="390" y="312" text-anchor="middle">202</text>
+<path class="eq" d="M500,268 Q540.0,254 580,268 L580,316 L500,316 Z"/><text class="et" x="540.0" y="294.0" text-anchor="middle">TK-202</text>
+<text class="es" x="540.0" y="308.0" text-anchor="middle">PLS</text>
+<path d="M560,200 L560,260" fill="none" stroke="#2e9d55" stroke-width="3" stroke-linejoin="round"/>
+<path d="M560,260 L556.5,252.8 L563.5,252.8 Z" fill="#2e9d55"/>
+<circle class="b" cx="590" cy="240" r="17"/>
+<line class="hmi" x1="573" y1="240" x2="607" y2="240"/>
+<text class="bt" x="590" y="236" text-anchor="middle">AIT</text><text class="bt" x="590" y="252" text-anchor="middle">206</text>
+<circle class="b" cx="590" cy="286" r="17"/>
+<line class="hmi" x1="573" y1="286" x2="607" y2="286"/>
+<text class="bt" x="590" y="282" text-anchor="middle">LIT</text><text class="bt" x="590" y="298" text-anchor="middle">204</text>
+<text class="es" x="400" y="232">refino (riego)</text>
+<circle class="eq" cx="640" cy="330" r="11"/><path d="M634,336 L649,330 L634,324" fill="none" stroke="#57606a" stroke-width="1.4"/><text class="es" x="640" y="355" text-anchor="middle">P-202A/B</text>
+<path d="M580,300 L628,330" fill="none" stroke="#2e9d55" stroke-width="3" stroke-linejoin="round"/>
+<path d="M671,323 L671,337 L689,323 L689,337 Z" class="eq"/>
+<text class="es" x="680" y="318" text-anchor="middle"></text>
+<text class="es" x="680" y="352" text-anchor="middle">FCV-205</text>
+<circle class="b" cx="680" cy="290" r="17"/>
+<line class="hmi" x1="663" y1="290" x2="697" y2="290"/>
+<text class="bt" x="680" y="286" text-anchor="middle">FIC</text><text class="bt" x="680" y="302" text-anchor="middle">205</text>
+<path class="sig" d="M680,307 L680,321"/>
+<path d="M651,330 L671,330" fill="none" stroke="#2e9d55" stroke-width="3" stroke-linejoin="round"/>
+<path d="M689,330 L700,330 L700,150 L712,150" fill="none" stroke="#2e9d55" stroke-width="3" stroke-linejoin="round"/>
+<path d="M712,150 L704.8,153.5 L704.8,146.5 Z" fill="#2e9d55"/>
+<rect class="eq" x="712" y="96" width="0" height="0" rx="4"/><text class="et" x="712.0" y="100.0" text-anchor="middle"></text>
+<rect class="eq" x="712" y="96" width="0" height="0" rx="4"/><text class="et" x="712.0" y="100.0" text-anchor="middle"></text>
+<rect class="eq" x="712" y="96" width="0" height="0" rx="4"/><text class="et" x="712.0" y="100.0" text-anchor="middle"></text>
+<rect class="eq" x="712" y="96" width="0" height="0" rx="4"/><text class="et" x="712.0" y="100.0" text-anchor="middle"></text>
+<rect class="eq" x="712" y="130" width="42" height="40" rx="4"/><text class="et" x="733.0" y="154.0" text-anchor="middle">E1</text>
+<rect class="eq" x="760" y="130" width="42" height="40" rx="4"/><text class="et" x="781.0" y="154.0" text-anchor="middle">E2</text>
+<rect class="eq" x="808" y="100" width="52" height="34" rx="4"/><text class="et" x="834.0" y="117.0" text-anchor="middle">W1</text>
+<text class="es" x="834.0" y="131.0" text-anchor="middle">M-304</text>
+<rect class="eq" x="808" y="170" width="52" height="40" rx="4"/><text class="et" x="834.0" y="194.0" text-anchor="middle">S1</text>
+<path d="M754,150 L760,150" fill="none" stroke="#d9822b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M802,145 L820,134" fill="none" stroke="#d9822b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M834,134 L834,170" fill="none" stroke="#d9822b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M834,170 L830.5,162.8 L837.5,162.8 Z" fill="#d9822b"/>
+<path d="M808,200 L712,200 L712,170" fill="none" stroke="#d9822b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M712,170 L715.5,177.2 L708.5,177.2 Z" fill="#d9822b"/>
+<circle class="eq" cx="760" cy="240" r="11"/><path d="M754,246 L769,240 L754,234" fill="none" stroke="#57606a" stroke-width="1.4"/><text class="es" x="760" y="265" text-anchor="middle">P-305</text>
+<circle class="b" cx="700" cy="240" r="17"/>
+<line class="hmi" x1="683" y1="240" x2="717" y2="240"/>
+<text class="bt" x="700" y="236" text-anchor="middle">FFIC</text><text class="bt" x="700" y="252" text-anchor="middle">301</text>
+<path class="sig" d="M717,240 L749,240"/>
+<path d="M733,170 L733,110 L560,110 L560,140" fill="none" stroke="#2b8a9e" stroke-width="3" stroke-linejoin="round"/>
+<path d="M560,140 L556.5,132.8 L563.5,132.8 Z" fill="#2b8a9e"/>
+<text class="es" x="600" y="104">refino a la pila</text>
+<circle class="b" cx="845" cy="250" r="17"/>
+<line class="hmi" x1="828" y1="250" x2="862" y2="250"/>
+<text class="bt" x="845" y="246" text-anchor="middle">AIT</text><text class="bt" x="845" y="262" text-anchor="middle">309</text>
+<circle class="b" cx="650" cy="175" r="17"/>
+<text class="bt" x="650" y="171" text-anchor="middle">KY</text><text class="bt" x="650" y="187" text-anchor="middle">303</text>
+<text class="es" x="640" y="214">O/A ≈ 0,9</text>
+<path class="eq" d="M900,258 Q935.0,244 970,258 L970,310 L900,310 Z"/><text class="et" x="935.0" y="286.0" text-anchor="middle">TK-401</text>
+<text class="es" x="935.0" y="300.0" text-anchor="middle">electrolito</text>
+<path d="M860,190 L890,190 L890,270 L900,270" fill="none" stroke="#2f6fd6" stroke-width="3" stroke-linejoin="round"/>
+<path d="M900,270 L892.8,273.5 L892.8,266.5 Z" fill="#2f6fd6"/>
+<circle class="eq" cx="1000" cy="300" r="11"/><path d="M994,306 L1009,300 L994,294" fill="none" stroke="#57606a" stroke-width="1.4"/><text class="es" x="1000" y="325" text-anchor="middle">P-401A/B</text>
+<rect class="eq" x="1040" y="250" width="58" height="36" rx="4"/><text class="et" x="1069.0" y="272.0" text-anchor="middle">HX-401</text>
+<circle class="b" cx="1069" cy="310" r="17"/>
+<line class="hmi" x1="1052" y1="310" x2="1086" y2="310"/>
+<text class="bt" x="1069" y="306" text-anchor="middle">TIC</text><text class="bt" x="1069" y="322" text-anchor="middle">403</text>
+<path class="sig" d="M1069,293 L1069,286"/>
+<path d="M970,300 L988,300" fill="none" stroke="#2f6fd6" stroke-width="3" stroke-linejoin="round"/>
+<path d="M1011,300 L1030,300 L1030,268 L1040,268" fill="none" stroke="#2f6fd6" stroke-width="3" stroke-linejoin="round"/>
+<path d="M1098,268 L1120,268 L1120,230" fill="none" stroke="#2f6fd6" stroke-width="3" stroke-linejoin="round"/>
+<path d="M1120,230 L1123.5,237.2 L1116.5,237.2 Z" fill="#2f6fd6"/>
+<rect class="eq" x="990" y="120" width="170" height="110" rx="4"/>
+<rect x="1000" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1020" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1040" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1060" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1080" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1100" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1120" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1140" y="132" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1000" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1020" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1040" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1060" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1080" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1100" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1120" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1140" y="162" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1000" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1020" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1040" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1060" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1080" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1100" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1120" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<rect x="1140" y="192" width="14" height="22" fill="#e6edf5" stroke="#8b949e" stroke-width="0.8"/>
+<text class="et" x="1075" y="244" text-anchor="middle">160 celdas en serie</text>
+<path d="M990,200 L960,200 L960,250" fill="none" stroke="#7aa3e5" stroke-width="3" stroke-linejoin="round"/>
+<path d="M960,250 L956.5,242.8 L963.5,242.8 Z" fill="#7aa3e5"/>
+<path d="M950,250 L950,200 L860,200" fill="none" stroke="#7aa3e5" stroke-width="3" stroke-linejoin="round"/>
+<path d="M860,200 L867.2,196.5 L867.2,203.5 Z" fill="#7aa3e5"/>
+<rect class="eq" x="1100" y="74" width="72" height="34" rx="4"/><text class="et" x="1136.0" y="91.0" text-anchor="middle">RT-401</text>
+<text class="es" x="1136.0" y="105.0" text-anchor="middle">12 pulsos</text>
+<path d="M1136,108 L1136,120" stroke="#a855f7" stroke-width="3"/>
+<circle class="b" cx="1040" cy="102" r="17"/>
+<line class="hmi" x1="1023" y1="102" x2="1057" y2="102"/>
+<text class="bt" x="1040" y="98" text-anchor="middle">IIC</text><text class="bt" x="1040" y="114" text-anchor="middle">401</text>
+<circle class="b" cx="930" cy="105" r="17"/>
+<line class="hmi" x1="913" y1="105" x2="947" y2="105"/>
+<text class="bt" x="930" y="101" text-anchor="middle">AIC</text><text class="bt" x="930" y="117" text-anchor="middle">405</text>
+<path class="sig" d="M947,105 L1023,102"/>
+<path class="sig" d="M1057,100 L1100,92"/>
+<circle class="b" cx="915" cy="340" r="17"/>
+<line class="hmi" x1="898" y1="340" x2="932" y2="340"/>
+<text class="bt" x="915" y="336" text-anchor="middle">AIT</text><text class="bt" x="915" y="352" text-anchor="middle">408</text>
+<circle class="b" cx="955" cy="340" r="17"/>
+<line class="hmi" x1="938" y1="340" x2="972" y2="340"/>
+<text class="bt" x="955" y="336" text-anchor="middle">AIT</text><text class="bt" x="955" y="352" text-anchor="middle">410</text>
+<text class="es" x="985" y="352">cobalto FIC-404 · sangrado FIC-409</text>
+<path class="eq" d="M40,438 Q85.0,424 130,438 L130,500 L40,500 Z"/><text class="et" x="85.0" y="471.0" text-anchor="middle">TK-501</text>
+<text class="es" x="85.0" y="485.0" text-anchor="middle">bodega de ácido</text>
+<circle class="eq" cx="170" cy="470" r="11"/><path d="M164,476 L179,470 L164,464" fill="none" stroke="#57606a" stroke-width="1.4"/><text class="es" x="170" y="495" text-anchor="middle">P-501</text>
+<path d="M130,470 L159,470" fill="none" stroke="#c0392b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M181,470 L294,470 L294,336" fill="none" stroke="#c0392b" stroke-width="3" stroke-linejoin="round"/>
+<path d="M294,336 L297.5,343.2 L290.5,343.2 Z" fill="#c0392b"/>
+<circle class="b" cx="85" cy="415" r="17"/>
+<line class="hmi" x1="68" y1="415" x2="102" y2="415"/>
+<text class="bt" x="85" y="411" text-anchor="middle">LIT</text><text class="bt" x="85" y="427" text-anchor="middle">501</text>
+<path class="eq" d="M340,438 Q385.0,424 430,438 L430,500 L340,500 Z"/><text class="et" x="385.0" y="471.0" text-anchor="middle">TK-502</text>
+<text class="es" x="385.0" y="485.0" text-anchor="middle">agua</text>
+<rect class="eq" x="560" y="430" width="120" height="44" rx="4"/><text class="et" x="620.0" y="452.0" text-anchor="middle">Barra 23 kV</text>
+<text class="es" x="620.0" y="466.0" text-anchor="middle">MCC-100 a 400</text>
+<rect class="eq" x="720" y="430" width="150" height="44" rx="4"/><text class="et" x="795.0" y="452.0" text-anchor="middle">Filtro de armónicos</text>
+<text class="es" x="795.0" y="466.0" text-anchor="middle">y condensadores</text>
+<circle class="b" cx="905" cy="452" r="17"/>
+<line class="hmi" x1="888" y1="452" x2="922" y2="452"/>
+<text class="bt" x="905" y="448" text-anchor="middle">KY</text><text class="bt" x="905" y="464" text-anchor="middle">501</text>
+<path d="M680,452 L720,452" stroke="#a855f7" stroke-width="3"/><path d="M620,430 L620,400 L1179,400 L1179,91 L1172,91" fill="none" stroke="#a855f7" stroke-width="3"/><text class="es" x="980" y="394">52-RT · alimentación del rectificador</text>
+<circle class="b" cx="520" cy="452" r="17"/>
+<line class="hmi" x1="503" y1="452" x2="537" y2="452"/>
+<text class="bt" x="520" y="448" text-anchor="middle">JIT</text><text class="bt" x="520" y="464" text-anchor="middle">500</text>
+<text class="at" x="20" y="548">LEYENDA</text>
+<line x1="20" y1="566" x2="48" y2="566" stroke="#8a6a4a" stroke-width="4"/><text class="lt" x="54" y="570">Mineral</text>
+<line x1="160" y1="566" x2="188" y2="566" stroke="#c0392b" stroke-width="4"/><text class="lt" x="194" y="570">Ácido sulfúrico</text>
+<line x1="300" y1="566" x2="328" y2="566" stroke="#2b8a9e" stroke-width="4"/><text class="lt" x="334" y="570">Refino</text>
+<line x1="440" y1="566" x2="468" y2="566" stroke="#2e9d55" stroke-width="4"/><text class="lt" x="474" y="570">PLS</text>
+<line x1="580" y1="566" x2="608" y2="566" stroke="#d9822b" stroke-width="4"/><text class="lt" x="614" y="570">Orgánico</text>
+<line x1="720" y1="566" x2="748" y2="566" stroke="#2f6fd6" stroke-width="4"/><text class="lt" x="754" y="570">Electrolito rico</text>
+<line x1="860" y1="566" x2="888" y2="566" stroke="#7aa3e5" stroke-width="4"/><text class="lt" x="894" y="570">Electrolito pobre</text>
+<line x1="1000" y1="566" x2="1028" y2="566" stroke="#a855f7" stroke-width="4"/><text class="lt" x="1034" y="570">Energía</text>
+<line class="sig" x1="20" y1="594" x2="48" y2="594"/><text class="lt" x="54" y="598">Señal de control</text>
+<circle class="b" cx="200" cy="594" r="17"/>
+<line class="hmi" x1="183" y1="594" x2="217" y2="594"/>
+<text class="bt" x="200" y="590" text-anchor="middle">FIC</text><text class="bt" x="200" y="606" text-anchor="middle">205</text>
+<text class="lt" x="224" y="598">Controlador en la HMI (F caudal · L nivel · T temperatura · A análisis · I corriente · W peso · FF razón)</text>
+<text class="lt" x="20" y="628">Modelo didáctico simplificado: no reemplaza un P&amp;ID de ingeniería. Lazos completos, permisivos y enclavamientos en sim.js y en las placas de la HMI.</text>
+</svg>

@@ -175,6 +175,7 @@
     const add = (m) => {
       M[m.id] = m;
     };
+    add(mkMotor('CR-101', 'Chancador terciario (circuito cerrado)', 100, 600, 'MCC-100'));
     add(mkMotor('M-103', 'Tambor aglomerador AD-101', 100, 450, 'MCC-100'));
     add(mkMotor('CV-101', 'Correa de alimentación', 100, 315, 'MCC-100'));
     add(mkMotor('FD-101', 'Alimentador de mineral (VDF)', 100, 75, 'MCC-100'));
@@ -191,6 +192,8 @@
     add(mkMotor('M-301', 'Mezclador E1', 300, 110, 'MCC-300'));
     add(mkMotor('M-302', 'Mezclador E2', 300, 110, 'MCC-300'));
     add(mkMotor('M-303', 'Mezclador S1 (reextracción)', 300, 110, 'MCC-300'));
+    // etapa de lavado del orgánico cargado: barrera contra el cloruro y el hierro que viajan en el arrastre acuoso
+    add(mkMotor('M-304', 'Mezclador W1 (lavado)', 300, 75, 'MCC-300'));
     add(mkMotor('P-305', 'Bomba de orgánico (VDF)', 300, 250, 'MCC-300'));
     add(mkMotor('P-401A', 'Bomba de electrolito A', 400, 200, 'MCC-400'));
     add(
@@ -324,19 +327,21 @@
         modes: ['MAN', 'AUTO', 'CAS'],
         mode: 'CAS',
       }),
+      // La corriente se fija por plan de producción (consigna estable para la calidad del depósito) y se recalcula
+      // en cada cambio de turno con el balance de cobre. La cascada con AIC-405 queda como alternativa didáctica.
       'IIC-401': new PID({
-        desc: 'Corriente del rectificador',
+        desc: 'Corriente del rectificador (consigna del plan)',
         unit: 'kA',
-        sp: 37,
-        op: 74,
+        sp: 36.1,
+        op: 72,
         kp: 1,
         ti: 10,
         span: 50,
         modes: ['MAN', 'AUTO', 'CAS'],
-        mode: 'CAS',
+        mode: 'AUTO',
       }),
       'AIC-405': new PID({
-        desc: 'Cobre en electrolito (consigna a IIC-401)',
+        desc: 'Cobre en electrolito (consigna a IIC-401 solo en cascada)',
         unit: 'g/L',
         sp: 44,
         op: 74,
@@ -377,6 +382,13 @@
 
     /* ----- estado del proceso ----- */
     const X = {
+      // chancado: acopio de mineral fino entre el chancador terciario y el alimentador; P80 del producto
+      stock: 30000,
+      crushQ: 1700,
+      p80: 12.5,
+      liner: 0,
+      linerRate: 0,
+      p80F: 1,
       feeder: 77.3,
       beltBuf: new Float32Array(240),
       bi: 0,
@@ -404,7 +416,7 @@
       secR: [0, 0, 0],
       secCu: [0, 0, 0],
       qPLS: 2134,
-      cuPLS: 3.2,
+      cuPLS: 3.33,
       pHtrue: 1.9,
       pHbias: 0,
       pHdrift: 0,
@@ -428,6 +440,20 @@
       Acid: 182,
       Fe: 0.7,
       Co: 150,
+      // cloruro: el riego con agua salobre deja Cl en el PLS; llega al electrolito en el arrastre acuoso del orgánico
+      ClPLS: 3.0,
+      Cl: 12.3,
+      washEff: 1,
+      pit: 0,
+      qAdv: 700,
+      cuSol: 3.33,
+      Tavg: 6590,
+      planAuto: true,
+      planTph: 6.45,
+      cuPrice: CU_PRICE,
+      ePrice: E_PRICE,
+      lots: [],
+      harvests: [],
       lvEl: 62,
       qEl: 1000,
       Te: 45,
@@ -471,6 +497,9 @@
     const tag = (id, desc, unit, area, dec, lo, hi, nl, nh) => {
       T[id] = {id, desc, unit, area, dec, lo, hi, nl, nh, v: 0};
     };
+    tag('AIT-100', 'P80 del producto del chancado', 'mm', 100, 1, 0, 30, 10, 15);
+    tag('LIT-100', 'Acopio de mineral fino', 't', 100, 0, 0, 60000, 10000, 50000);
+    tag('WIT-100', 'Producto del chancado al acopio', 't/h', 100, 0, 0, 2500, 1400, 1950);
     tag('WIT-101', 'Tonelaje en pesómetro', 't/h', 100, 0, 0, 2500, 1500, 1900);
     tag('SIT-101', 'Velocidad alimentador', '%', 100, 0, 0, 100, 50, 95);
     tag('FIT-102', 'Caudal de ácido', 'm³/h', 100, 1, 0, 30, 14, 23);
@@ -489,6 +518,7 @@
     tag('LIT-204', 'Nivel piscina PLS', 'm', 200, 2, 0, 5, 2, 4.2);
     tag('AIT-206', 'Cobre en PLS', 'g/L', 200, 2, 0, 6, 2.5, 4.5);
     tag('AIT-207', 'pH del PLS', 'pH', 200, 2, 0, 4, 1.6, 2.2);
+    tag('AIT-210', 'Cloruro en PLS', 'g/L', 200, 1, 0, 25, 0, 6);
     tag('FIT-205', 'Alimentación a SX', 'm³/h', 200, 0, 0, 3000, 1800, 2400);
     tag('AIT-208', 'Cobre en refino', 'g/L', 300, 2, 0, 2, 0, 0.4);
     tag('FIT-301', 'Caudal de orgánico', 'm³/h', 300, 0, 0, 3500, 1500, 2300);
@@ -509,6 +539,10 @@
     tag('AIT-406', 'Ácido en electrolito', 'g/L', 400, 0, 140, 220, 170, 195);
     tag('AIT-407', 'Hierro en electrolito', 'mg/L', 400, 0, 0, 3000, 0, 1200);
     tag('AIT-408', 'Cobalto en electrolito', 'mg/L', 400, 0, 0, 300, 120, 200);
+    tag('AIT-410', 'Cloruro en electrolito', 'mg/L', 400, 0, 0, 100, 0, 25);
+    tag('FIT-410', 'Electrolito de avance a reextracción', 'm³/h', 400, 0, 0, 1200, 500, 900);
+    tag('AIT-411', 'Cobre en electrolito rico (de SX)', 'g/L', 400, 1, 30, 60, 44, 52);
+    tag('AIT-412', 'Cobre en electrolito pobre (de celdas)', 'g/L', 400, 1, 25, 50, 34, 42);
     tag('LIT-401', 'Nivel estanque de electrolito', '%', 400, 0, 0, 100, 40, 85);
     tag('KY-405', 'Producción de cátodo', 't/h', 400, 2, 0, 10, 5.5, 7.5);
     tag('KY-406', 'Eficiencia de corriente', '%', 400, 1, 60, 100, 88, 100);
@@ -546,6 +580,9 @@
       });
     const feeding = () => running('FD-101') && running('CV-101'),
       dosing = () => running('P-102') && X.tonDrum > 500;
+    al('AIT-100', 'H', 15, 3, 'P80 alto: mineral grueso a las pilas', 300, () => running('CR-101'));
+    al('LIT-100', 'L', 8000, 2, 'Acopio de mineral fino bajo');
+    al('LIT-100', 'LL', 2000, 1, 'Acopio de mineral fino casi vacío', 5);
     al('WIT-101', 'L', 1200, 3, 'Tonelaje bajo a aglomeración', 30, feeding);
     al('KY-102', 'H', 23, 2, 'Dosis de ácido alta', 10, dosing);
     al('KY-102', 'L', 17, 2, 'Dosis de ácido baja', 10, dosing);
@@ -592,6 +629,8 @@
     al('AIT-405', 'H', 50, 3, 'Cobre alto en electrolito', 60);
     al('AIT-407', 'H', 1300, 2, 'Hierro alto en electrolito', 60);
     al('AIT-408', 'L', 110, 3, 'Cobalto bajo (corrosión de ánodos)', 120);
+    al('AIT-410', 'H', 30, 2, 'Cloruro alto: picado del cátodo permanente', 120);
+    al('AIT-410', 'HH', 50, 1, 'Cloruro muy alto: corrosión acelerada de cátodos y ánodos', 60);
     al('KY-406', 'L', 87, 3, 'Eficiencia de corriente baja', 120);
     al('KY-501', 'L', 0.9, 3, 'Factor de potencia bajo', 60);
     al('LIT-501', 'L', 400, 2, 'Stock de ácido bajo');
@@ -710,6 +749,10 @@
         ['Interruptor 52-RT cerrado', BRK['52-RT']],
       ],
       'P-501': () => [['Stock de ácido > 50 t', X.tk501 > 50]],
+      'CR-101': () => [
+        ['Acopio de mineral fino < 58.000 t', X.stock < 58000],
+        ['MCC-100 energizado', BRK['MCC-100']],
+      ],
     };
     const permOK = (id) => !perms[id] || perms[id]().every((p) => p[1]);
     const whyNot = (id) => {
@@ -761,6 +804,7 @@
         m.state = 'RUN';
         m.trip = null;
         m.ilk = null;
+        m.ready = false;
         m.starts++;
         log(who, `Partida de ${id}`);
         return true;
@@ -854,6 +898,10 @@
         X.pHdrift = 0;
         log('Mantenimiento', 'AIT-207 calibrado con tampones pH 2 y 4');
       },
+      wash(v) {
+        if (v) cmd.start('M-304');
+        else cmd.stop('M-304');
+      },
       bearing() {
         const m = M['M-103'];
         m.deg = 0;
@@ -863,6 +911,35 @@
         if (m.state === 'RUN') m.state = 'STOP';
         m.maintUntil = S.t + 30 * 60;
         log('Mantenimiento', 'Cambio de rodamiento M-103: equipo detenido 30 min');
+      },
+      liners() {
+        const m = M['CR-101'];
+        m.trip = 'reset';
+        if (m.state === 'RUN') m.state = 'STOP';
+        m.maintUntil = S.t + 2 * 3600;
+        X.linerRate = 0;
+        X.linerChange = true;
+        log(
+          'Mantenimiento',
+          'Cambio de revestimientos de CR-101: chancador detenido 2 h, el acopio alimenta la planta'
+        );
+      },
+      // Corriente por plan: deposita lo que llega de SX y corrige la desviación del cobre del electrolito en un turno
+      planCurrent(who = 'Jefe de turno') {
+        const I = planI();
+        L['IIC-401'].sp = I;
+        log(who, `Plan de producción: IIC-401 consigna ${String(I).replace('.', ',')} kA (balance de cobre)`);
+        return I;
+      },
+      planRate(tph) {
+        if (!(tph > 0)) return;
+        X.planTph = tph;
+        log('Gerencia', `Plan de producción ${String(tph).replace('.', ',')} t/h de cátodo`);
+      },
+      price(usdLb) {
+        if (!(usdLb > 0)) return;
+        X.cuPrice = usdLb * 2204.62;
+        log('Gerencia', `Precio del cobre ${String(usdLb).replace('.', ',')} US$/lb`);
       },
       cleanCrud() {
         X.crudRate = 0;
@@ -1036,7 +1113,7 @@
         area: 400,
         name: 'Puesta en servicio de la nave EW',
         btn: 'Puesta en servicio',
-        note: 'Circulación, temperatura y cobalto primero; luego corriente baja, rampa hasta producción y cascada con AIC-405.',
+        note: 'Circulación, temperatura y cobalto primero; luego corriente baja, rampa hasta producción y consigna del plan.',
         steps: [
           {
             d: 'Circulación de electrolito (> 800 m³/h)',
@@ -1098,14 +1175,9 @@
                 : `corriente en ${RECT.I.toFixed(1)} kA`,
           },
           {
-            d: 'IIC-401 en cascada con AIC-405 (cambio sin salto)',
-            go: () => {
-              const a = L['AIC-405'];
-              a.op = clamp((RECT.I / 50) * 100, 0, 100);
-              a.i = null;
-              cmd.mode('IIC-401', 'CAS', 'Secuencia');
-            },
-            ok: () => L['IIC-401'].mode === 'CAS',
+            d: 'IIC-401 a la consigna del plan (balance de cobre)',
+            go: () => cmd.planCurrent('Secuencia'),
+            ok: () => L['IIC-401'].mode === 'AUTO',
             min: 5,
           },
         ],
@@ -1200,6 +1272,15 @@
         },
       },
       {
+        id: 'liner',
+        name: 'Desgaste de revestimientos del chancador CR-101',
+        area: 100,
+        desc: 'Los revestimientos del chancador terciario se gastan y el P80 del producto sube de 12,5 mm. El mineral grueso recupera menos cobre en la pila nueva: el PLS lo siente en uno o dos días. Mantenimiento cambia los revestimientos (2 h detenido) mientras el acopio alimenta la planta.',
+        go() {
+          X.linerRate = 0.25 / 3600;
+        },
+      },
+      {
         id: 'bearing',
         name: 'Rodamiento dañado en M-103',
         area: 100,
@@ -1240,7 +1321,7 @@
         id: 'ore',
         name: 'Cambio de mineral',
         area: 200,
-        desc: 'Entra mineral con menos cobre soluble y más ganga que consume ácido. Unas horas después cae el cobre del PLS y toda la cadena lo siente.',
+        desc: 'Entra mineral con menos cobre soluble y más ganga que consume ácido. La solución retenida en la pila amortigua el cambio: el cobre del PLS cae a lo largo de uno o dos días y toda la cadena lo siente.',
         go() {
           X.oreF = 0.72;
         },
@@ -1252,6 +1333,15 @@
         desc: 'Se forma una banda de borra en la interfase. Sube el arrastre de PLS hacia el electrolito y con él el hierro, que baja la eficiencia de corriente. Con 1.800 m³ de electrolito el hierro sube en días: míralo a ×300.',
         go() {
           X.crudRate = 0.06 / 3600;
+        },
+      },
+      {
+        id: 'wash',
+        name: 'Falla del mezclador de lavado W1',
+        area: 300,
+        desc: 'Dispara el mezclador de la etapa de lavado. El orgánico cargado llega a la reextracción con su arrastre acuoso completo: cloruro y hierro del PLS pasan al electrolito. Con 1.800 m³ el cloruro sube en días y pasa de 30 mg/L en unas 48 h: míralo a ×300.',
+        go() {
+          tripMotor('M-304', 'sobrecarga del accionamiento');
         },
       },
       {
@@ -1308,6 +1398,21 @@
       }
     };
 
+    // Corriente del plan (kA): deposita el cobre que llega de SX menos el sangrado y corrige la desviación de AIT-405 en 8 h
+    const planI = () => {
+      const ce = Math.max(0.6, X.CE / 100),
+        need = Math.max(0, X.Tavg - (X.bleedQ || 7) * X.Ce + ((X.Ce - L['AIC-405'].sp) * VEL) / 8);
+      return clamp(Math.round((need / (1.1855 * NCELL * ce)) * 10) / 10, 20, 42);
+    };
+    // Cosecha: la nave se cosecha por lotes, uno por día, con un ciclo de depósito de 7 días
+    const NLOT = 7,
+      lotOf = (k) => Math.min(NLOT - 1, Math.floor(k / Math.ceil(NCELL / NLOT)));
+    for (let g = 0; g < NLOT; g++) {
+      const age = 7 * 24 - 22 - g * 24; // horas de depósito al partir: el lote 1 se cosecha a las 06:00 del día 2
+      const t0 = (6.28 / NLOT) * age;
+      X.lots.push({t: t0, pb: t0 * 1.3, s: t0 * 3.7, fe: t0 * 2.0, h: age});
+    }
+
     /* ---------- un paso de 1 s ---------- */
     function step() {
       const dt = 1;
@@ -1341,14 +1446,34 @@
         }
       });
       // mantenimiento en curso
-      const m103 = M['M-103'];
-      if (m103.maintUntil && S.t >= m103.maintUntil) {
-        m103.maintUntil = 0;
-        log('Mantenimiento', 'M-103 disponible tras cambio de rodamiento');
-      }
+      Object.values(M).forEach((m) => {
+        if (m.maintUntil && S.t >= m.maintUntil) {
+          m.maintUntil = 0;
+          if (m.id === 'CR-101' && X.linerChange) {
+            X.liner = 0;
+            X.linerChange = false;
+          }
+          m.ready = true; // mantenimiento entrega; operación parte el equipo
+          log('Mantenimiento', `${m.id} disponible tras la intervención: operación puede partirlo`);
+        }
+      });
       seqTick();
 
-      /* --- Área 100 --- */
+      /* --- Área 100: chancado y acopio --- */
+      if (running('CR-101') && X.stock > 58000) ilkStop('CR-101', 'acopio de mineral fino lleno');
+      X.crushQ = lag(
+        X.crushQ,
+        running('CR-101') ? clamp(1700 + 0.02 * (30000 - X.stock), 0, 1900) : 0,
+        30,
+        dt
+      );
+      X.liner = Math.min(1.5, X.liner + X.linerRate * dt);
+      if (running('CR-101')) X.p80 = lag(X.p80, 12.5 * (1 + 0.6 * X.liner), 300, dt);
+      // mineral más grueso: menos superficie expuesta y menos recuperación en la pila nueva (exponente didáctico 0,4)
+      X.p80F = lag(X.p80F, clamp(Math.pow(12.5 / X.p80, 0.4), 0.6, 1.05), 12 * 3600, dt);
+      X.oreAvail = X.stock > 50 ? 1 : 0;
+
+      /* --- Área 100: aglomeración --- */
       if (!running('M-103') && running('CV-101')) ilkStop('CV-101', 'tambor detenido');
       if (!running('CV-101') && running('FD-101')) ilkStop('FD-101', 'correa detenida');
       ['P-102', 'P-104'].forEach((p) => {
@@ -1363,6 +1488,7 @@
       if (!running('FD-101')) fdOut = 0;
       X.feeder = lag(X.feeder, fdOut, 4, dt);
       const oreOut = running('FD-101') ? X.feeder * 22 * X.oreAvail * (1 + 0.04 * gauss()) : 0;
+      X.stock = clamp(X.stock + ((X.crushQ - oreOut) * dt) / 3600, 0, 60000);
       const belt = running('CV-101');
       X.bi = (X.bi + 1) % 240;
       X.beltBuf[X.bi] = belt ? oreOut : 0;
@@ -1419,6 +1545,7 @@
       }
       X.acidShift += (X.acidQ * 1.84 * dt) / 3600;
       X.oreShift += (X.tonDrum * dt) / 3600;
+      X.waterShift = (X.waterShift || 0) + ((X.makeup + X.waterQ) * dt) / 3600;
 
       /* --- Área 200 --- */
       const nP1 = (running('P-201A') ? 1 : 0) + (running('P-201B') ? 1 : 0);
@@ -1443,11 +1570,14 @@
       X.oreFf = lag(X.oreFf, X.oreF, 6 * 3600, dt);
       const cuDay = (1700 * 24 * 0.006 * 1000) / 24; // kg/h de cobre que entra a la pila en régimen
       X.secR = [(R(30) / 100) * X.stackF, (R(60) - R(30)) / 100, (R(90) - R(60)) / 100];
-      X.secCu = X.secR.map((r, k) => cuDay * r * X.fMod[k] * X.oreFf);
+      X.secCu = X.secR.map((r, k) => cuDay * r * X.fMod[k] * X.oreFf * (k === 0 ? X.p80F : 1));
       X.leach = X.secCu[0] + X.secCu[1] + X.secCu[2];
-      X.qPLS = lag(X.qPLS, 0.97 * qTot, 3600, dt);
-      const cuInPLS = X.qPLS > 100 ? X.craf + X.leach / X.qPLS : X.cuPLS;
-      X.cuPLS = lag(X.cuPLS, Math.min(cuInPLS, 6), 1800, dt);
+      // Retención de solución en la pila: el drenaje sigue horas después de cortar el riego y la ley del PLS
+      // responde como dos estanques en serie de 12 h (residencia media de 24 h; una pila de 10 m real retiene días).
+      X.qPLS = lag(X.qPLS, 0.97 * qTot, 6 * 3600, dt);
+      const cuInPLS = X.qPLS > 100 ? X.craf + X.leach / X.qPLS : X.cuSol;
+      X.cuSol = lag(X.cuSol, Math.min(cuInPLS, 6), 12 * 3600, dt);
+      X.cuPLS = lag(X.cuPLS, X.cuSol, 12 * 3600, dt);
       X.pHtrue = lag(
         X.pHtrue,
         1.9 + 0.35 * (1 - clamp(dose / 20, 0, 2)) * (X.tonDrum > 50 ? 1 : 0) + (X.oreF < 1 ? 0.25 : 0),
@@ -1488,6 +1618,7 @@
       const v305 = running('P-305') ? ff301.step(X.qOrg, dt) : 0;
       X.qOrg = lag(X.qOrg, running('P-305') ? (v305 / 100) * 3500 : 0, 5, dt);
       for (let k = 0; k < 3; k++) X.mixEff[k] = lag(X.mixEff[k], running('M-30' + (k + 1)) ? 1 : 0, 120, dt);
+      X.washEff = lag(X.washEff, running('M-304') ? 1 : 0, 120, dt);
       X.crud = clamp(X.crud + X.crudRate * dt, 0, 0.3);
       X.iface = lag(
         X.iface,
@@ -1536,8 +1667,16 @@
       }
       const aic = L['AIC-405'],
         iic = L['IIC-401'];
-      const aop = aic.step(X.Ce, dt);
-      iic.casSP = clamp((aop / 100) * 50, 15, 45);
+      // AIC-405 solo manda en cascada; fuera de ella sigue a la corriente para que el paso a cascada no tenga salto
+      if (iic.mode === 'CAS') {
+        const aop = aic.step(X.Ce, dt);
+        iic.casSP = clamp((aop / 100) * 50, 15, 45);
+      } else {
+        aic.pv = X.Ce;
+        aic.op = clamp((RECT.I / 50) * 100, 0, 100);
+        aic.i = null;
+      }
+      X.Tavg = lag(X.Tavg, X.T, 3600, dt);
       const iop = RECT.state === 'RUN' ? iic.step(RECT.I, dt) : ((iic.i = null), iic.op);
       const Itarget = RECT.state === 'RUN' ? (iop / 100) * 50 : 0;
       RECT.I =
@@ -1577,8 +1716,10 @@
         vSum = 0,
         lostS = 0;
       const base = 0.955 - feEff - tEff;
+      const lotT = new Float64Array(NLOT);
       for (let k = 0; k < NCELL; k++) {
         const s = (X.shorts[k] * 2) / NCAT;
+        lotT[lotOf(k)] += (I * 1.1855 * Math.max(0, base - s) * dt) / 3600 / 1000; // t depositadas en este paso
         ceSum += Math.max(0, base - s);
         lostS += Math.min(base, s);
         vSum += Vc * (1 - (0.35 * X.shorts[k]) / 6);
@@ -1602,8 +1743,12 @@
       X.Ce += ((X.T - X.D - X.bleedQ * X.Ce) * dt) / 3600 / V;
       X.Acid += (1.543 * (X.D + X.bleedQ * X.Ce - X.T) * dt) / 3600 / V; // la reposición del sangrado entra con ácido
       X.Acid = clamp(X.Acid + ((182 - X.Acid) * X.bleedQ * dt) / 3600 / V, 100, 260);
-      const feIn = X.qOrg * X.ent * 1e-6 * 5.8 + X.T / 2000; // kg/h
+      // Arrastre acuoso que llega a la reextracción: la etapa de lavado W1 retira el 90 % (agua de lavado de baja ley)
+      const aqEnt = X.qOrg * X.ent * 1e-6 * (1 - 0.9 * X.washEff); // m³/h de PLS que viajan con el orgánico
+      const feIn = aqEnt * 5.8 + X.T / 1350; // kg/h: arrastre físico + transferencia química (selectividad Cu/Fe)
       X.Fe += ((feIn - X.bleedQ * X.Fe) * dt) / 3600 / V;
+      X.Cl += ((aqEnt * X.ClPLS * 1000 - X.bleedQ * X.Cl) * dt) / 3600 / V; // mg/L: el sangrado es la única purga
+      X.pit += (Math.max(0, X.Cl - 30) * dt) / 3600; // mg/L·h sobre 30 mg/L: índice de picado del acero inoxidable
       X.Co += ((((coQ * 20) / 1000 - (X.bleedQ * X.Co) / 1000) * dt) / 3600 / V) * 1000; // mg/L
       // temperatura
       const qhx = X.hxOk ? (L['TIC-403'].step(X.Te, dt) / 100) * 4 : (L['TIC-403'].step(X.Te, dt), 0); // MW
@@ -1630,6 +1775,43 @@
       X.FeC = lag(X.FeC, 1 + X.Fe * 1.5, 3600, dt);
       const sum = X.Pb + X.Sppm + X.FeC + 4 + 1.5;
       X.quality = X.Pb <= 5 && X.Sppm <= 15 && X.FeC <= 10 && sum <= 65;
+      for (let g = 0; g < NLOT; g++) {
+        const L2 = X.lots[g];
+        L2.t += lotT[g];
+        L2.pb += lotT[g] * X.Pb;
+        L2.s += lotT[g] * X.Sppm;
+        L2.fe += lotT[g] * X.FeC;
+        L2.h += dt / 3600;
+      }
+      // cosecha diaria a las 06:00: el lote que cumple 7 días sale a la máquina despegadora
+      if (ts % 86400 === 6 * 3600) {
+        const day = Math.floor(ts / 86400),
+          g = (day - 1 + NLOT) % NLOT,
+          L2 = X.lots[g],
+          n = Math.ceil(NCELL / NLOT),
+          pb = L2.t > 0 ? L2.pb / L2.t : 0,
+          sS = L2.t > 0 ? L2.s / L2.t : 0,
+          fe = L2.t > 0 ? L2.fe / L2.t : 0;
+        const ok = pb <= 5 && sS <= 15 && fe <= 10;
+        X.harvests.unshift({
+          t: ts,
+          lote: g + 1,
+          celdas: `${g * n + 1}–${Math.min(NCELL, (g + 1) * n)}`,
+          ton: L2.t,
+          dias: L2.h / 24,
+          pb,
+          s: sS,
+          fe,
+          gradoA: ok,
+        });
+        if (X.harvests.length > 14) X.harvests.pop();
+        log(
+          'Nave',
+          `Cosecha del lote ${g + 1} (celdas ${X.harvests[0].celdas}): ${L2.t.toFixed(1).replace('.', ',')} t, Pb ${pb.toFixed(1).replace('.', ',')} ppm → ${ok ? 'grado A' : 'FUERA DE NORMA'}`,
+          ok ? 'op' : 'warn'
+        );
+        X.lots[g] = {t: 0, pb: 0, s: 0, fe: 0, h: 0};
+      }
 
       /* --- Área 500 y balance eléctrico --- */
       let mccKW = 0;
@@ -1675,6 +1857,9 @@
       const set = (k, v) => {
         T[k].v = v;
       };
+      set('AIT-100', X.p80);
+      set('LIT-100', X.stock);
+      set('WIT-100', X.crushQ);
       set('WIT-101', X.ton);
       set('SIT-101', X.feeder);
       set('FIT-102', X.acidQ);
@@ -1693,6 +1878,7 @@
       set('LIT-204', X.lvPLS);
       set('AIT-206', X.cuPLS);
       set('AIT-207', X.pHtrue + X.pHbias);
+      set('AIT-210', X.ClPLS);
       set('FIT-205', X.qFeed);
       set('AIT-208', X.craf);
       set('FIT-301', X.qOrg);
@@ -1713,6 +1899,11 @@
       set('AIT-406', X.Acid);
       set('AIT-407', X.Fe * 1000);
       set('AIT-408', X.Co);
+      set('AIT-410', X.Cl);
+      set('FIT-410', running('P-305') ? X.qAdv : 0);
+      X.ceSpent = X.qEl > 50 ? X.Ce - X.D / X.qEl : X.Ce;
+      set('AIT-412', X.ceSpent);
+      set('AIT-411', X.ceSpent + (running('P-305') ? X.T / X.qAdv : 0));
       set('LIT-401', X.lvEl);
       set('KY-405', X.D / 1000);
       set('KY-406', X.CE);
@@ -1733,9 +1924,9 @@
       X.cathTotal += (X.D * dt) / 3600 / 1000;
       X.energyShift += (MW * dt) / 3600;
       X.kwhTotal += (MW * dt) / 3600;
-      X.plannedShift += (6.45 * dt) / 3600;
+      X.plannedShift += (X.planTph * dt) / 3600;
       X.lostShorts += (I * 1.1855 * lostS * dt) / 3600 / 1000;
-      if (RECT.state !== 'RUN') X.lostRect += (6.45 * dt) / 3600;
+      if (RECT.state !== 'RUN') X.lostRect += (X.planTph * dt) / 3600;
       if (RECT.state !== 'RUN') X.downShift += dt / 3600;
       const sid = Math.floor((ts - 8 * 3600) / 28800);
       if (sid !== X.shiftId) {
@@ -1747,6 +1938,7 @@
           mwh: X.energyShift,
           acid: X.acidShift,
           ore: X.oreShift,
+          water: X.waterShift,
           lostShorts: X.lostShorts,
           lostRect: X.lostRect,
           down: X.downShift,
@@ -1757,6 +1949,7 @@
         X.cathShift = 0;
         X.energyShift = 0;
         X.acidShift = 0;
+        X.waterShift = 0;
         X.oreShift = 0;
         X.plannedShift = 0;
         X.lostShorts = 0;
@@ -1764,6 +1957,14 @@
         X.downShift = 0;
         X.alarmsShift = 0;
         log('Sistema', `Cambio de turno: entra el turno ${shiftOf(ts)}`);
+        if (
+          X.planAuto &&
+          iic.mode === 'AUTO' &&
+          RECT.state === 'RUN' &&
+          seqs[400].st !== 'RUN' &&
+          iic.sp >= 15
+        )
+          cmd.planCurrent('Plan de producción');
       }
 
       /* --- alarmas --- */
@@ -1879,6 +2080,7 @@
     X.lostShorts = 0;
     X.lostRect = 0;
     X.acidShift = 0;
+    X.waterShift = 0;
     X.oreShift = 0;
     X.downShift = 0;
     log('Sistema', 'Planta en régimen. Turno A a cargo.');
@@ -1901,8 +2103,14 @@
       NCELL,
       NCAT,
       VEL,
-      CU_PRICE,
-      E_PRICE,
+      get CU_PRICE() {
+        return X.cuPrice;
+      },
+      get E_PRICE() {
+        return X.ePrice;
+      },
+      planI,
+      log,
       step,
       cmd,
       scenario,

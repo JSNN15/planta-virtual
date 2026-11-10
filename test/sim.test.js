@@ -125,8 +125,12 @@ test('nave EW: parada a corriente de protección y puesta en servicio', () => {
   assert.ok(P.cmd.seq('start400'));
   run(P, 1800);
   assert.strictEqual(P.seqs[400].st, 'DONE', P.seqs[400].msg);
-  assert.strictEqual(P.L['IIC-401'].mode, 'CAS');
-  between(P.RECT.I, 33, 41, 'corriente tras la rampa kA');
+  assert.strictEqual(
+    P.L['IIC-401'].mode,
+    'AUTO',
+    'tras la puesta en servicio la corriente queda en la consigna del plan'
+  );
+  between(P.RECT.I, 30, 42, 'corriente tras la rampa kA');
   run(P, 6 * 3600);
   between(P.X.Ce, 40, 50, 'Cu electrolito g/L');
   assert.ok(P.X.quality, 'con corriente de protección el cátodo sigue en grado A');

@@ -1,0 +1,104 @@
+{
+  "descripcion": "Rangos químicos de operación. Fuera de ellos el proceso pierde eficiencia, calidad o vida de los activos.",
+  "reglas": [
+    {
+      "id": "Q1",
+      "variable": "Cobre en electrolito de celdas",
+      "tag": "AIT-405",
+      "min": 40,
+      "max": 48,
+      "unidad": "g/L",
+      "por_que": "Bajo 40 g/L el depósito se vuelve nodular; sobre 50 g/L se pierde capacidad de reextracción."
+    },
+    {
+      "id": "Q2",
+      "variable": "Ácido en electrolito",
+      "tag": "AIT-406",
+      "min": 160,
+      "max": 195,
+      "unidad": "g/L",
+      "por_que": "Más ácido sube la conductividad pero dificulta la reextracción y corroe."
+    },
+    {
+      "id": "Q3",
+      "variable": "Hierro en electrolito",
+      "tag": "AIT-407",
+      "min": 0,
+      "max": 1500,
+      "unidad": "mg/L",
+      "por_que": "El Fe³⁺ se reduce en el cátodo y consume corriente útil."
+    },
+    {
+      "id": "Q4",
+      "variable": "Cobalto en electrolito",
+      "tag": "AIT-408",
+      "min": 100,
+      "max": 200,
+      "unidad": "mg/L",
+      "por_que": "El cobalto baja el sobrepotencial del ánodo y protege el plomo de la corrosión."
+    },
+    {
+      "id": "Q5",
+      "variable": "Cloruro en electrolito",
+      "tag": "AIT-410",
+      "min": 0,
+      "max": 30,
+      "unidad": "mg/L",
+      "por_que": "Sobre 30 mg/L el cloruro pica el acero inoxidable 316L del cátodo permanente; a concentraciones mayores se desprende cloro en el ánodo."
+    },
+    {
+      "id": "Q6",
+      "variable": "Temperatura del electrolito",
+      "tag": "TIT-403",
+      "min": 42,
+      "max": 50,
+      "unidad": "°C",
+      "por_que": "Bajo 40 °C sube el voltaje y el depósito es rugoso; sobre 52 °C se degrada el orgánico arrastrado y aumenta la neblina ácida."
+    },
+    {
+      "id": "Q7",
+      "variable": "pH del PLS",
+      "tag": "AIT-207",
+      "min": 1.6,
+      "max": 2.2,
+      "unidad": "pH",
+      "por_que": "Sobre 2,3 precipita hierro en la pila; bajo 1,5 se arrastran impurezas y se consume ácido sin cobre."
+    },
+    {
+      "id": "Q8",
+      "variable": "Carga del orgánico",
+      "tag": "AIT-302",
+      "min": 5.5,
+      "max": 7.4,
+      "unidad": "g/L",
+      "por_que": "Entre 60 y 80 % de la carga máxima: menos es capacidad ociosa, más es pérdida de selectividad Cu/Fe."
+    },
+    {
+      "id": "Q9",
+      "variable": "Arrastre acuoso en orgánico",
+      "tag": "AIT-309",
+      "min": 0,
+      "max": 400,
+      "unidad": "ppm",
+      "por_que": "El arrastre lleva hierro, cloruro y manganeso del PLS al electrolito."
+    },
+    {
+      "id": "Q10",
+      "variable": "Calidad del cátodo (BS EN 1978, Cu-CATH-1)",
+      "tag": null,
+      "min": null,
+      "max": null,
+      "unidad": "ppm",
+      "por_que": "Pb ≤ 5, S ≤ 15, Fe ≤ 10 ppm y suma de impurezas ≤ 65 ppm para grado A de la LME."
+    },
+    {
+      "id": "Q11",
+      "variable": "Razón Fe/Mn en el electrolito",
+      "tag": null,
+      "min": 10,
+      "max": null,
+      "unidad": "",
+      "por_que": "Con poco hierro frente al manganeso se forma permanganato, que degrada el orgánico. No está modelado: se indica como límite conocido."
+    }
+  ]
+}

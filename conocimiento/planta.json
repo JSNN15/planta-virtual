@@ -1,0 +1,225 @@
+{
+  "descripcion": "Modelo de la planta: jerarquía ISA-95, niveles del modelo Purdue, corrientes del proceso y criticidad de equipos. Es la puerta de entrada para el asistente: qué hay, dónde está y qué importa más.",
+  "sitio": {
+    "nombre": "Planta virtual LX-SX-EW",
+    "tipo": "Lixiviación en pilas, extracción por solventes y electroobtención de cobre",
+    "capacidad": "1.700 t/h de mineral al 0,6 % Cu (≈ 15 Mt/año) · ≈ 55 kt/año de cátodo",
+    "advertencia": "Modelo digital didáctico: parámetros de literatura, no representa a ninguna operación."
+  },
+  "areas": [
+    {
+      "id": 100,
+      "nombre": "Chancado fino, aglomeración y curado",
+      "funcion": "Reduce el mineral a P80 ≈ 12,5 mm, lo mezcla con ácido y agua en el tambor para curarlo y aglomerar los finos.",
+      "unidades": [
+        "Chancador terciario CR-101 y acopio fino",
+        "Alimentador FD-101 y correa CV-101",
+        "Tambor aglomerador AD-101 (M-103)",
+        "Estanque diario de ácido TK-103"
+      ],
+      "variables_clave": ["AIT-100", "LIT-100", "WIT-101", "KY-102", "AIT-105"]
+    },
+    {
+      "id": 200,
+      "nombre": "Lixiviación en pilas y piscinas",
+      "funcion": "Riega el mineral con refino ácido; la solución disuelve el cobre y drena como PLS a la piscina.",
+      "unidades": [
+        "Bombas de riego P-201A/B",
+        "Tres sectores por edad del mineral (0 a 90 días)",
+        "Piscina de refino TK-201",
+        "Piscina PLS TK-202"
+      ],
+      "variables_clave": ["PIT-202", "FIT-200", "AIT-206", "AIT-207", "AIT-210", "LIT-204"]
+    },
+    {
+      "id": 300,
+      "nombre": "Extracción por solventes",
+      "funcion": "Un extractante orgánico toma el cobre del PLS (E1, E2), se lava del arrastre acuoso (W1) y lo entrega a un electrolito ácido (S1).",
+      "unidades": [
+        "Mezcladores-decantadores E1, E2, W1 y S1",
+        "Bomba de orgánico P-305",
+        "Estanques de orgánico TK-305 y TK-306"
+      ],
+      "variables_clave": ["KY-303", "KY-301", "AIT-208", "AIT-302", "AIT-309", "LIT-303"]
+    },
+    {
+      "id": 400,
+      "nombre": "Electroobtención",
+      "funcion": "La corriente continua deposita el cobre del electrolito en cátodos permanentes de acero inoxidable; se cosechan cada 7 días.",
+      "unidades": [
+        "Rectificador RT-401 de 12 pulsos",
+        "160 celdas en serie, 60 cátodos por celda",
+        "Estanque de electrolito TK-401, bombas P-401A/B",
+        "Intercambiador HX-401",
+        "Dosificación de cobalto y sangrado"
+      ],
+      "variables_clave": [
+        "IIT-401",
+        "AIT-405",
+        "AIT-411",
+        "AIT-412",
+        "AIT-407",
+        "AIT-410",
+        "KY-406",
+        "TIT-403"
+      ]
+    },
+    {
+      "id": 500,
+      "nombre": "Servicios y energía",
+      "funcion": "Energía eléctrica, ácido sulfúrico y agua de proceso.",
+      "unidades": [
+        "Barra de 23 kV y MCC-100 a 400",
+        "Filtro de armónicos y condensadores",
+        "Bodega de ácido TK-501 y bomba P-501",
+        "Piscina de agua TK-502"
+      ],
+      "variables_clave": ["JIT-500", "KY-501", "LIT-501", "LIT-502"]
+    }
+  ],
+  "corrientes": [
+    {
+      "id": "S1",
+      "de": 100,
+      "a": 200,
+      "fluido": "Mineral aglomerado",
+      "diseno": "1.700 t/h, 0,6 % Cu, 20 kg/t de ácido, 9 % de humedad"
+    },
+    {
+      "id": "S2",
+      "de": 200,
+      "a": 300,
+      "fluido": "PLS",
+      "diseno": "2.134 m³/h, 3,3 g/L Cu, pH 1,9, 3 g/L Cl"
+    },
+    {
+      "id": "S3",
+      "de": 300,
+      "a": 200,
+      "fluido": "Refino",
+      "diseno": "0,25 g/L Cu, más ácido que el PLS"
+    },
+    {
+      "id": "S4",
+      "de": 300,
+      "a": 400,
+      "fluido": "Electrolito rico",
+      "diseno": "≈ 47 g/L Cu, 700 m³/h de avance"
+    },
+    {
+      "id": "S5",
+      "de": 400,
+      "a": 300,
+      "fluido": "Electrolito pobre",
+      "diseno": "≈ 38 g/L Cu, 182 g/L H₂SO₄"
+    },
+    {
+      "id": "S6",
+      "de": 400,
+      "a": 200,
+      "fluido": "Sangrado de electrolito",
+      "diseno": "7 m³/h al refino: purga de Fe, Cl y Mn"
+    },
+    {
+      "id": "S7",
+      "de": 400,
+      "a": null,
+      "fluido": "Cátodo",
+      "diseno": "≈ 6,3 t/h grado A (BS EN 1978)"
+    }
+  ],
+  "purdue": [
+    {
+      "nivel": "0",
+      "nombre": "Proceso",
+      "en_esta_planta": "Sensores y actuadores: los 75 tags (AIT, FIT, LIT…), válvulas y motores. En el simulador, el motor físico sim.js."
+    },
+    {
+      "nivel": "1",
+      "nombre": "Control básico y seguridad",
+      "en_esta_planta": "Lazos PID, razones en cascada, permisivos, enclavamientos y disparos (sim.js). En planta real: PLC/DCS y un SIS independiente (IEC 61511)."
+    },
+    {
+      "nivel": "2",
+      "nombre": "Supervisión",
+      "en_esta_planta": "HMI de sala de control, alarmas ISA-18.2, secuencias ISA-106 y tendencias (hmi.js)."
+    },
+    {
+      "nivel": "3",
+      "nombre": "Operaciones de planta",
+      "en_esta_planta": "Historiador de 8 h, bitácora, mantenimiento, laboratorio, KPI de turno y el asistente de IA con su verificador y la base de conocimiento."
+    },
+    {
+      "nivel": "3.5",
+      "nombre": "Zona desmilitarizada (DMZ)",
+      "en_esta_planta": "Intermediario nv-gateway: única salida hacia la nube, con origen permitido, límite de consultas y prompts fijos. La planta nunca expone la clave."
+    },
+    {
+      "nivel": "4",
+      "nombre": "Negocio",
+      "en_esta_planta": "Vista de gerencia: plan, precio, pérdidas valorizadas y cosechas."
+    },
+    {
+      "nivel": "Nube",
+      "nombre": "Inferencia de IA",
+      "en_esta_planta": "NVIDIA NIM: Nemotron Lightning (entender), Nemotron Super (diagnosticar), Nemotron Embed (buscar en los manuales). Solo recibe datos; nunca escribe en la planta."
+    }
+  ],
+  "criticidad": [
+    {
+      "equipo": "RT-401",
+      "criticidad": "A",
+      "por_que": "Sin rectificador no hay producción; el corte largo deja plomo en el cátodo."
+    },
+    {
+      "equipo": "P-401A/B",
+      "criticidad": "A",
+      "por_que": "Sin circulación dispara el rectificador."
+    },
+    {
+      "equipo": "P-305",
+      "criticidad": "A",
+      "por_que": "Sin orgánico no hay extracción."
+    },
+    {
+      "equipo": "P-201A/B",
+      "criticidad": "A",
+      "por_que": "Sin riego no hay lixiviación."
+    },
+    {
+      "equipo": "P-202A/B",
+      "criticidad": "A",
+      "por_que": "Sin PLS se detiene SX."
+    },
+    {
+      "equipo": "CR-101",
+      "criticidad": "B",
+      "por_que": "El acopio fino da horas de autonomía."
+    },
+    {
+      "equipo": "M-103",
+      "criticidad": "B",
+      "por_que": "Detiene la aglomeración; la pila sigue entregando cobre por semanas."
+    },
+    {
+      "equipo": "M-301/302/303",
+      "criticidad": "B",
+      "por_que": "Una etapa menos baja la extracción, no la detiene."
+    },
+    {
+      "equipo": "M-304",
+      "criticidad": "B",
+      "por_que": "Sin lavado el electrolito se contamina en días."
+    },
+    {
+      "equipo": "HX-401",
+      "criticidad": "B",
+      "por_que": "La temperatura baja en horas."
+    },
+    {
+      "equipo": "P-102/104, P-501, FD-101, CV-101",
+      "criticidad": "C",
+      "por_que": "Efecto acotado o con respaldo operacional."
+    }
+  ]
+}

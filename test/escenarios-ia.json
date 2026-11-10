@@ -1,0 +1,30 @@
+{
+  "descripcion": "Banco de evaluación del asistente: cada escenario de falla del simulador, cuándo preguntar y qué debe contener un buen diagnóstico. Lo usan test/ia.test.js (diagnóstico por reglas) y herramientas/evaluar-ia.mjs (reglas y modelo).",
+  "pregunta": "¿Qué está pasando en la planta y qué hago?",
+  "casos": [
+    {"escenario": "cord", "segundos": 60, "causa": "CV-101", "accion": "rearmar_equipo"},
+    {"escenario": "liner", "segundos": 7200, "causa": "CR-101|P80", "accion": "cambiar_revestimientos"},
+    {"escenario": "bearing", "segundos": 14400, "causa": "M-103", "accion": "cambiar_rodamiento"},
+    {"escenario": "p201", "segundos": 60, "causa": "P-201A", "prohibida": "rearmar_equipo"},
+    {
+      "escenario": "mcc",
+      "segundos": 60,
+      "causa": "MCC-200",
+      "prohibida": "rearmar_equipo",
+      "manual": "OP-3.3"
+    },
+    {"escenario": "ph", "segundos": 7200, "causa": "AIT-207|pH", "accion": "calibrar_ph"},
+    {"escenario": "ore", "segundos": 72000, "causa": "PLS|AIT-206"},
+    {"escenario": "crud", "segundos": 7200, "causa": "LIT-303|AIT-309|borra", "accion": "retirar_borra"},
+    {"escenario": "wash", "segundos": 7200, "causa": "M-304|W1", "prohibida": "partir_lavado"},
+    {"escenario": "shorts", "segundos": 3600, "causa": "cortocircuito", "accion": "activar_monitoreo_celdas"},
+    {"escenario": "rt", "segundos": 60, "causa": "RT-401", "prohibida": "rearmar_equipo"},
+    {
+      "escenario": "hx",
+      "segundos": 21600,
+      "causa": "TIT-403|[Tt]emperatura",
+      "accion": "reparar_intercambiador"
+    },
+    {"escenario": "acid", "segundos": 7200, "causa": "[Áá]cido", "accion": "recibir_camion_acido"}
+  ]
+}
